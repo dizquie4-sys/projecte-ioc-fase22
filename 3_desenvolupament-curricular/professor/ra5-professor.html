@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RA5 · La meva identitat digital professional · PLE + Marca personal</title>
+    <title>RA5 · Professor · Avaluació automàtica</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
     <style>
-        /* ESTILS COMPLETS (exactament igual que l'original) */
+        /* ESTILS COMPLETS (exactament igual que els RA) */
         * {
             margin: 0;
             padding: 0;
@@ -19,7 +20,7 @@
             color: #212529;
         }
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -71,40 +72,6 @@
             border-left: 8px solid #FFC72C;
             padding-left: 18px;
             margin: 30px 0 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .section-title .help-btn {
-            background: #FFC72C;
-            color: #D1222B;
-            border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        .section-title .help-btn:hover {
-            background: #D1222B;
-            color: white;
-        }
-        .info-box {
-            background: #fff1f0;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 15px 0;
-            border-left: 5px solid #D1222B;
-        }
-        .info-box h3 {
-            color: #D1222B;
-            margin-bottom: 10px;
         }
         .btn {
             background: white;
@@ -144,25 +111,23 @@
             color: white;
             border: none;
         }
-        .btn-secondary {
-            background: #6c757d;
+        .btn-excel {
+            background: #1e88e5;
             color: white;
             border: none;
         }
-        .btn-close {
-            background: #6c757d;
+        .btn-pdf {
+            background: #dc3545;
             color: white;
             border: none;
         }
-        .btn-close:hover {
-            background: #5a6268;
-        }
-        .btn-up {
+        .btn-dalt {
             background: #FFC72C;
             color: #D1222B;
             border: none;
+            font-weight: bold;
         }
-        .btn-up:hover {
+        .btn-dalt:hover {
             background: #D1222B;
             color: white;
         }
@@ -172,6 +137,38 @@
             flex-wrap: wrap;
             margin: 20px 0;
             justify-content: center;
+        }
+        .import-area {
+            background: #f0f7ff;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #D1222B;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+        }
+        tr:hover {
+            background: #fff3cd;
+        }
+        .valoracio-box {
+            background: #e6f2ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #D1222B;
         }
         textarea, input, select {
             width: 100%;
@@ -185,36 +182,6 @@
             outline: 3px solid #FFC72C;
             border-color: #D1222B;
         }
-        .required::after {
-            content: " *";
-            color: #D1222B;
-            font-weight: bold;
-        }
-        .results-area {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 25px;
-            margin: 30px 0;
-            border: 2px solid #D1222B;
-            display: none;
-        }
-        .score-badge {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #2c3e50;
-        }
-        .json-container {
-            max-height: 200px;
-            overflow-y: auto;
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            margin: 10px 0;
-        }
         .footer {
             background: #f1f5f9;
             padding: 20px;
@@ -223,52 +190,6 @@
         hr {
             border: 2px dashed #FFC72C;
             margin: 30px 0;
-        }
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
-        }
-        .autoavaluacio-container {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 2px solid #FFC72C;
-            display: none;
-        }
-        .quiz-item {
-            margin-bottom: 20px;
-        }
-        .quiz-question {
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .quiz-options {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .quiz-options label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
-        .quiz-options input[type="radio"] {
-            width: auto;
-            margin: 0;
-        }
-        .feedback-quiz {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 10px;
-            display: none;
         }
         .enllac-normativa {
             display: inline-block;
@@ -285,7 +206,6 @@
         .enllac-normativa:hover {
             background: #D1222B;
             color: white;
-            text-decoration: none;
         }
         .info-links {
             margin: 15px 0;
@@ -317,398 +237,50 @@
             padding: 8px;
             font-size: 0.85rem;
         }
-        .rubrica-visual .nivell-1 { background: #f8d7da; }
-        .rubrica-visual .nivell-2 { background: #fff3cd; }
-        .rubrica-visual .nivell-3 { background: #d4edda; }
-        .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
         
-        .examen-container {
-            background: #f0f7ff;
-            border-radius: 20px;
-            padding: 25px;
-            margin: 20px 0;
-            border: 3px solid #D1222B;
-            display: none;
-        }
-        .examen-pregunta {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 5px solid #FFC72C;
-        }
-        .examen-pregunta p {
-            margin-bottom: 10px;
-        }
-        .examen-opcions {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin: 10px 0;
-        }
-        .examen-opcions label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
-        .examen-opcions input[type="radio"] {
-            width: auto;
-            margin: 0;
-        }
-        .examen-feedback {
-            margin-top: 8px;
-            padding: 8px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            display: none;
-        }
-        .examen-correcte {
-            background: #d4edda;
-            color: #155724;
-        }
-        .examen-incorrecte {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        .examen-resultat {
-            background: #fff3cd;
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px 0;
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-        .examen-superat {
-            background: #d4edda;
-            color: #155724;
-        }
-        .examen-no-superat {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        /* ESTILS PER ALS MODALS */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 20px;
-            width: 80%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: 3px solid #D1222B;
-            position: relative;
-        }
-        .close-modal {
-            color: #D1222B;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            position: sticky;
-            top: 0;
-            background: white;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 2px solid #D1222B;
-        }
-        .close-modal:hover {
-            background: #D1222B;
-            color: white;
-        }
-        .modal h2 {
-            color: #D1222B;
-            margin-bottom: 20px;
-        }
-        .modal h3 {
-            color: #D1222B;
-            margin: 20px 0 10px;
-        }
-        .modal ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-        .modal li {
-            margin-bottom: 5px;
-        }
-
-        /* ESTILS PER ALS BLOCS DESPLEGABLES */
-        .bloc-container {
-            background: #f8fafc;
-            border-radius: 20px;
+        /* PANEL DE RESPOSTES DESPLEGABLE */
+        .panel-respostes {
+            background: #f8f9fa;
             padding: 20px;
-            margin: 20px 0;
-            border: 2px solid #FFC72C;
-            display: none;
-        }
-        .bloc-title {
-            color: #D1222B;
-            margin-bottom: 15px;
-        }
-        
-        /* MODAL D'EXPLICACIÓ JSON */
-        .modal-explicacio {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        .modal-explicacio-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 600px;
-            border: 3px solid #D1222B;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .modal-explicacio-tancar {
-            color: #D1222B;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
+            border-radius: 10px;
+            margin: 10px 0;
             border: 2px solid #D1222B;
-        }
-        .modal-explicacio-tancar:hover {
-            background: #D1222B;
-            color: white;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
         }
         
-        /* BOTÓ FLOTANT ACCESSIBLE */
+        /* BOTÓ FLOTANT PER TORNAR A DALT */
         .btn-flotant {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            z-index: 9999;
-            background: #FFC72C;
-            color: #D1222B;
-            border: 2px solid #D1222B;
+            z-index: 99;
             border-radius: 50px;
-            padding: 12px 20px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            min-width: 60px;
-            min-height: 60px;
-            line-height: 1;
-        }
-        .btn-flotant:hover,
-        .btn-flotant:focus {
-            background: #D1222B;
-            color: white;
-            outline: 3px solid #FFC72C;
-            outline-offset: 2px;
-            transform: scale(1.05);
-        }
-        .btn-flotant:focus-visible {
-            outline: 3px solid #FFC72C;
-            box-shadow: 0 0 0 5px rgba(209,34,43,0.3);
         }
     </style>
 </head>
 <body>
-    <!-- BOTÓ FLOTANT ACCESSIBLE PER TORNAR A DALT -->
-    <button 
-        class="btn-flotant" 
-        id="tornarDaltBtn" 
-        title="Tornar a l'inici de la pàgina"
-        aria-label="Tornar a dalt"
-        role="button"
-        tabindex="0">
-        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    <!-- BOTÓ FLOTANT PER TORNAR A DALT -->
+    <button class="btn btn-dalt btn-flotant" id="tornarDaltBtn" title="Tornar a dalt">
+        ⬆️ Dalt
     </button>
-
-    <!-- MODAL D'EXPLICACIÓ DEL JSON -->
-    <div id="modalExplicacio" class="modal-explicacio">
-        <div class="modal-explicacio-content">
-            <span class="modal-explicacio-tancar">&times;</span>
-            <h2 style="color:#D1222B; margin-bottom:20px;">📤 Com enviar el teu treball</h2>
-            
-            <div style="margin:20px 0; padding:15px; background:#f0f7ff; border-radius:10px; border-left:5px solid #D1222B;">
-                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📁 Què és un fitxer JSON?</strong></p>
-                <p>És un format que conté TOTES les teves respostes en un sol fitxer. El professor el podrà llegir fàcilment.</p>
-            </div>
-            
-            <div style="margin:20px 0; padding:15px; background:#fff3cd; border-radius:10px; border-left:5px solid #FFC72C;">
-                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📥 Com el guardes?</strong></p>
-                <ol style="margin-left:20px;">
-                    <li>Omple totes les preguntes</li>
-                    <li>Prem el botó <strong>"Preparar per enviar"</strong></li>
-                    <li>Prem <strong>"📊 Exportar JSON"</strong></li>
-                    <li>El fitxer es desarà a la carpeta <strong>Descàrregues</strong></li>
-                </ol>
-            </div>
-            
-            <div style="margin:20px 0; padding:15px; background:#d4edda; border-radius:10px; border-left:5px solid #28a745;">
-                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📤 Com l'envies al professor?</strong></p>
-                <ul style="margin-left:20px;">
-                    <li><strong>Moodle:</strong> Puja'l com a tasca</li>
-                    <li><strong>Correu:</strong> Adjunta'l a un missatge</li>
-                    <li><strong>Drive:</strong> Comparteix l'enllaç</li>
-                </ul>
-            </div>
-            
-            <div style="text-align:center; margin-top:25px;">
-                <button class="btn btn-primary" id="tancarModalBtn">Entès</button>
-            </div>
-        </div>
-    </div>
 
     <div class="container">
         <div class="header">
             <div>
-                <h1 id="main-title">⚡ RA5 · La meva identitat digital professional · PLE + Marca personal</h1>
-                <p>FOL – IPO I · CFGM Instal·lacions Elèctriques</p>
+                <h1>⚡ RA5 · Professor · Avaluació automàtica</h1>
+                <p>La meva identitat digital professional · PLE + Marca personal</p>
             </div>
-            <div class="accessibility-icon" role="img" aria-label="Presentació accessible" title="Aquest contingut compleix criteris d'accessibilitat WCAG 2.1">
-                ♿
-            </div>
+            <div class="accessibility-icon">♿</div>
         </div>
         <div class="content">
-            <!-- Botons de la capçalera -->
-            <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-bottom: 20px;">
-                <button class="btn btn-primary" id="pdfInstruccionsBtn">
-                    📥 PDF Instruccions completes
-                </button>
-                <button class="btn btn-primary" id="modalPortafolisBtn">
-                    📋 Instruccions del portafolis
-                </button>
-            </div>
+            <div class="badge-groc">📌 Corrector automàtic per al RA5</div>
 
-            <!-- MODAL INSTRUCCIONS PORTAFOLIS -->
-            <div id="modalPortafolis" class="modal">
-                <div class="modal-content">
-                    <span class="close-modal">&times;</span>
-                    <h2>📋 INSTRUCCIONS DEL PORTAFOLIS DIGITAL PROFESSIONAL</h2>
-                    
-                    <h3>Què és el portafolis?</h3>
-                    <p>El portafolis digital és una recopilació de les teves evidències d'aprenentatge al llarg del mòdul. Ha de mostrar la teva evolució i les teves competències professionals.</p>
-                    
-                    <h3>Contingut obligatori:</h3>
-                    <ul>
-                        <li><strong>RA1 (Coneix el teu sector):</strong> Informe d'anàlisi ocupacional</li>
-                        <li><strong>RA2 (Investigació d'accidents):</strong> Informe d'investigació + Avaluació de riscos</li>
-                        <li><strong>RA3 (De l'oferta al conveni):</strong> Taula de contrast + conclusions grupals</li>
-                        <li><strong>RA4 (El meu perfil professional):</strong> DAFO + Full de ruta</li>
-                        <li><strong>RA5 (Identitat digital):</strong> PLE + Reflexió identitat digital + CV digital</li>
-                        <li><strong>Reflexió global:</strong> Connexions entre els RA i aprenentatges</li>
-                    </ul>
-                    
-                    <h3>Criteris d'avaluació del portafolis:</h3>
-                    <ul>
-                        <li><strong>Completesa (30%):</strong> Hi són totes les evidències?</li>
-                        <li><strong>Reflexió (30%):</strong> Qualitat de la reflexió global i connexions</li>
-                        <li><strong>Organització (20%):</strong> Estructura clara i professional</li>
-                        <li><strong>Accessibilitat (20%):</strong> El portafolis és usable per a tothom?</li>
-                    </ul>
-                    
-                    <h3>Dates clau:</h3>
-                    <ul>
-                        <li><strong>Lliurament final:</strong> [Data a determinar]</li>
-                        <li><strong>Revisió intermèdia:</strong> [Data a determinar]</li>
-                    </ul>
-                    
-                    <p style="margin-top:20px; font-style:italic;">Aquestes instruccions estan subjectes a possibles modificacions. Consulta sempre l'aula virtual per a la versió actualitzada.</p>
-                </div>
-            </div>
-
-            <!-- Distintiu groc -->
-            <div class="badge-groc">📌 Activitat · 4 hores</div>
-
-            <!-- =========================================== -->
-            <!-- 1. OBJECTIUS I JUSTIFICACIÓ + RÚBRICA -->
-            <!-- =========================================== -->
-            <h2 class="section-title" id="objectius">🔍 Objectius i justificació</h2>
-            <p>Aquesta activitat té com a finalitat que l'alumnat sigui capaç de dissenyar el seu propi Entorn Personal d'Aprenentatge (PLE), reflexionar sobre la seva identitat digital i construir una marca personal coherent amb els seus objectius professionals. Dona resposta als criteris d'avaluació 5.3, 5.4, 5.6 i 5.8 del RA5.</p>
-
-            <!-- RÚBRICA VISIBLE (PER A L'ALUMNAT) -->
-            <div class="rubrica-visual">
-                <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ (per a la teva orientació)</h3>
-                <p>Aquesta rúbrica mostra els criteris amb què es valorarà la teva activitat. Els nivells van de 1 (No assolit) a 4 (Excel·lent).</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Criteri</th>
-                            <th>Pes</th>
-                            <th>1 - No assolit</th>
-                            <th>2 - En procés</th>
-                            <th>3 - Assolit</th>
-                            <th>4 - Excel·lent</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>PLE (Entorn Personal d'Aprenentatge)</strong></td>
-                            <td>30%</td>
-                            <td class="nivell-1">No identifica o incomplet</td>
-                            <td class="nivell-2">Identifica elements bàsics sense millores</td>
-                            <td class="nivell-3">PLE complet amb proposta de millora</td>
-                            <td class="nivell-4">PLE molt complet, ben estructurat i millores innovadores</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Identitat digital i marca personal</strong></td>
-                            <td>30%</td>
-                            <td class="nivell-1">No analitza o reflexió superficial</td>
-                            <td class="nivell-2">Cerca bàsica sense definir pilars</td>
-                            <td class="nivell-3">Analitza resultats i defineix 3 pilars</td>
-                            <td class="nivell-4">Anàlisi profund, pilars coherents i visió estratègica</td>
-                        </tr>
-                        <tr>
-                            <td><strong>CV digital</strong></td>
-                            <td>30%</td>
-                            <td class="nivell-1">No inclou LinkedIn ni CV</td>
-                            <td class="nivell-2">LinkedIn o CV poc elaborats</td>
-                            <td class="nivell-3">LinkedIn actualitzat + CV visual</td>
-                            <td class="nivell-4">Perfils professionals, integrats amb PLE i full de ruta</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Qualitat formal</strong></td>
-                            <td>10%</td>
-                            <td class="nivell-1">Incomplet o inintel·ligible</td>
-                            <td class="nivell-2">Confús o errors significatius</td>
-                            <td class="nivell-3">Clar i organitzat</td>
-                            <td class="nivell-4">Professional, ben estructurat</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p style="margin-top:10px; font-style:italic;">Aquesta rúbrica és orientativa. El professor la utilitzarà per a la qualificació final.</p>
-            </div>
-
-            <!-- ENLLAÇOS D'INTERÈS -->
+            <!-- ENLLAÇOS D'INTERÈS (conservats del RA5) -->
             <div class="info-links">
-                <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
+                <p><strong>📚 Enllaços d'interès per a la correcció:</strong></p>
                 <div>
                     <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u5-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: Entorn personal d'aprenentatge (IOC)</a>
                     <a href="https://www.linkedin.com" target="_blank" class="enllac-normativa">LinkedIn</a>
@@ -717,990 +289,599 @@
                 </div>
             </div>
 
-            <!-- =========================================== -->
-            <!-- METODOLOGIA I DESENVOLUPAMENT (AMB ELS 3 BLOCS) -->
-            <!-- =========================================== -->
-            <h2 class="section-title" id="metodologia">🧭 Metodologia i desenvolupament</h2>
-            
-            <div class="info-box">
-                <h3>📌 Bloc 1 · El meu PLE (1,5 hores)</h3>
-                <p><strong>Objectiu:</strong> Identificar i representar el teu Entorn Personal d'Aprenentatge.</p>
-                <ol>
-                    <li>Identifica fonts d'informació, eines digitals i xarxes de contacte que utilitzes habitualment per aprendre.</li>
-                    <li>Representa gràficament el teu PLE actual (Canva, Genially, Miro, etc.).</li>
-                    <li>Proposa millores per optimitzar el teu PLE.</li>
-                </ol>
-                <p><em>Consulta el <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u5-pdfindex.pdf#page=23" target="_blank">llibre digital (pàg. 23-25)</a> per a més informació sobre el PLE.</em></p>
-            </div>
-
-            <div class="info-box">
-                <h3>🎯 Bloc 2 · Identitat digital i marca personal (1,5 hores)</h3>
-                <p><strong>Objectiu:</strong> Reflexionar sobre la teva presència digital i definir la teva marca personal.</p>
-                <ol>
-                    <li>Realitza una cerca del teu nom a Google i analitza els resultats.</li>
-                    <li>Reflexiona sobre la imatge que projectes i la imatge que vols projectar.</li>
-                    <li>Defineix els tres pilars de la teva marca personal (ex: "expert en instal·lacions fotovoltaiques", "compromès amb la prevenció", "especialista en domòtica").</li>
-                </ol>
-                <p><em>Consulta el <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u5-pdfindex.pdf#page=16" target="_blank">llibre digital (pàg. 16-21)</a> per a identitat digital i marca personal.</em></p>
-            </div>
-
-            <div class="info-box">
-                <h3>💼 Bloc 3 · CV digital (1 hora)</h3>
-                <p><strong>Objectiu:</strong> Crear o actualitzar el teu perfil professional digital.</p>
-                <ol>
-                    <li>Crea o actualitza el teu perfil de LinkedIn incorporant els elements de marca personal.</li>
-                    <li>Elabora un currículum digital en format visual (Canva, VisualCV) que integri el teu PLE i el teu full de ruta (RA4).</li>
-                </ol>
-            </div>
-
-            <!-- FASE 4: Producte i evidència -->
-            <div class="info-box" style="background: #e6f2ff; border-left-color: #D1222B;">
-                <h3 style="color:#D1222B;">📦 Producte i evidència d'aprenentatge</h3>
-                <p>En finalitzar l'activitat, hauràs de generar:</p>
-                <ul>
-                    <li><strong>Representació visual del PLE (PDF o enllaç).</strong> S'incorpora al portafolis.</li>
-                    <li><strong>Document de reflexió sobre identitat digital i marca personal (PDF).</strong> S'incorpora al portafolis.</li>
-                    <li><strong>Enllaç al perfil de LinkedIn (URL) i arxiu del CV digital (PDF).</strong> S'incorporen al portafolis.</li>
-                </ul>
-                <p style="margin-top:10px;">✅ Aquests documents seran les evidències principals d'aprenentatge.</p>
-            </div>
-
-            <!-- =========================================== -->
-            <!-- BOTONS DELS BLOCS (DESPLEGABLES) -->
-            <!-- =========================================== -->
-            <div style="text-align:center; margin:20px 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                <button class="btn btn-primary" id="toggleBloc1Btn" aria-expanded="false">
-                    📘 Bloc 1 · El meu PLE
-                </button>
-                <button class="btn btn-primary" id="toggleBloc2Btn" aria-expanded="false">
-                    🎯 Bloc 2 · Identitat digital
-                </button>
-                <button class="btn btn-primary" id="toggleBloc3Btn" aria-expanded="false">
-                    💼 Bloc 3 · CV digital
-                </button>
-            </div>
-
-            <!-- =========================================== -->
-            <!-- BLOC 1: EL MEU PLE -->
-            <!-- =========================================== -->
-            <div class="bloc-container" id="bloc1Container" aria-hidden="true">
-                <h3 class="bloc-title">📘 Bloc 1 · El meu PLE (Entorn Personal d'Aprenentatge)</h3>
-                
-                <label class="required" for="ple_fonts">Fonts d'informació (blogs, webs, canals YouTube, etc.)</label>
-                <textarea id="ple_fonts" rows="3" placeholder="Ex: Blogs tècnics d'instal·lacions elèctriques, YouTube (ElectroBot), webs de fabricants..."></textarea>
-                
-                <label class="required" for="ple_eines">Eines digitals (aplicacions, programari, etc.)</label>
-                <textarea id="ple_eines" rows="3" placeholder="Ex: Canva, LinkedIn, Google Drive, Trello, Quizlet..."></textarea>
-                
-                <label class="required" for="ple_xarxes">Xarxes de contacte (LinkedIn, grups, fòrums, etc.)</label>
-                <textarea id="ple_xarxes" rows="3" placeholder="Ex: Grups de LinkedIn d'electricistes, fòrum de l'IOC, companys de feina..."></textarea>
-                
-                <label class="required" for="ple_representacio">Enllaç a la representació visual del teu PLE (Canva, Genially, Miro...)</label>
-                <input type="url" id="ple_representacio" placeholder="https://...">
-                
-                <label class="required" for="ple_millores">Propostes de millora per optimitzar el teu PLE</label>
-                <textarea id="ple_millores" rows="4" placeholder="Ex: Afegir més fonts tècniques, crear un sistema de gestió del temps per a l'aprenentatge, seguir nous perfils..."></textarea>
-            </div>
-
-            <!-- =========================================== -->
-            <!-- BLOC 2: IDENTITAT DIGITAL I MARCA PERSONAL -->
-            <!-- =========================================== -->
-            <div class="bloc-container" id="bloc2Container" aria-hidden="true">
-                <h3 class="bloc-title">🎯 Bloc 2 · Identitat digital i marca personal</h3>
-                
-                <label class="required" for="cerca_resultats">Resultats de la cerca a Google (què apareix del teu nom?)</label>
-                <textarea id="cerca_resultats" rows="4" placeholder="Ex: Apareix el meu perfil de LinkedIn, un comentari en un fòrum, fotos de xarxes socials..."></textarea>
-                
-                <label class="required" for="imatge_actual">Quina imatge projectes actualment? (reflexió)</label>
-                <textarea id="imatge_actual" rows="3" placeholder="Ex: Una persona interessada en tecnologia, però potser poc professional..."></textarea>
-                
-                <label class="required" for="imatge_desitjada">Quina imatge vols projectar? (reflexió)</label>
-                <textarea id="imatge_desitjada" rows="3" placeholder="Ex: Un professional tècnic, fiable, especialitzat en energies renovables..."></textarea>
-                
-                <label class="required" for="pilar1">Pilar 1 de la teva marca personal</label>
-                <input type="text" id="pilar1" placeholder="Ex: Expert en instal·lacions fotovoltaiques">
-                
-                <label class="required" for="pilar2">Pilar 2 de la teva marca personal</label>
-                <input type="text" id="pilar2" placeholder="Ex: Compromès amb la prevenció de riscos">
-                
-                <label class="required" for="pilar3">Pilar 3 de la teva marca personal</label>
-                <input type="text" id="pilar3" placeholder="Ex: Especialista en domòtica i automatismes">
-            </div>
-
-            <!-- =========================================== -->
-            <!-- BLOC 3: CV DIGITAL -->
-            <!-- =========================================== -->
-            <div class="bloc-container" id="bloc3Container" aria-hidden="true">
-                <h3 class="bloc-title">💼 Bloc 3 · CV digital</h3>
-                
-                <label class="required" for="linkedin">Enllaç al teu perfil de LinkedIn (actualitzat)</label>
-                <input type="url" id="linkedin" placeholder="https://linkedin.com/in/...">
-                
-                <label class="required" for="cv_digital">Enllaç o arxiu del CV digital (Canva, VisualCV, PDF...)</label>
-                <input type="url" id="cv_digital" placeholder="https://...">
-                
-                <label for="cv_descripcio">Breu descripció del CV (opcional)</label>
-                <textarea id="cv_descripcio" rows="2" placeholder="Ex: CV visual que integra el meu PLE i el full de ruta de RA4..."></textarea>
-            </div>
-
-            <!-- =========================================== -->
-            <!-- 5. DADES DE L'ESTUDIANT -->
-            <!-- =========================================== -->
-            <h2 class="section-title">📋 Dades de l'estudiant</h2>
-            <label class="required" for="nom">Nom i cognoms</label>
-            <input type="text" id="nom" placeholder="Ex: Maria Garcia" aria-required="true">
-            
-            <label class="required" for="grup">Grup</label>
-            <input type="text" id="grup" placeholder="Ex: Grup A" aria-required="true">
-            
-            <label for="autovaloracio">Autovaloració de l'activitat (dificultat, utilitat...)</label>
-            <select id="autovaloracio">
-                <option value="">-- Selecciona --</option>
-                <option value="1">1 - Molt difícil</option>
-                <option value="2">2 - Una mica difícil</option>
-                <option value="3">3 - Neutral</option>
-                <option value="4">4 - Fàcil</option>
-                <option value="5">5 - Molt fàcil i útil</option>
-            </select>
-
-            <!-- Botons d'autoavaluació (les de sempre) -->
-            <div style="text-align:center; margin:20px 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                <button class="btn btn-primary" id="toggleAutoavaluacioBtn" aria-expanded="false">
-                    📝 Autoavaluació prèvia (10 preguntes)
-                </button>
-                <button class="btn btn-primary" id="toggleExamenBtn" aria-expanded="false">
-                    📝 AUTOAVALUACIÓ PER A L'EXAMEN FINAL (20 preguntes)
-                </button>
-            </div>
-
-            <!-- AUTOAVALUACIÓ 10 PREGUNTES -->
-            <div class="autoavaluacio-container" id="autoavaluacioContainer" aria-hidden="true">
-                <h3 style="color:#D1222B;">Autoavaluació (10 preguntes)</h3>
-                <p>Respon aquestes 10 preguntes per comprovar els teus coneixements sobre identitat digital i PLE.</p>
-
-                <div class="quiz-item">
-                    <div class="quiz-question">1. Què és un PLE (Entorn Personal d'Aprenentatge)?</div>
-                    <div class="quiz-options">
-                        <label><input type="radio" name="quizA1" value="a"> Un conjunt d'eines, fonts i xarxes per aprendre</label>
-                        <label><input type="radio" name="quizA1" value="b"> Un currículum digital</label>
-                        <label><input type="radio" name="quizA1" value="c"> Un perfil de LinkedIn</label>
-                    </div>
-                </div>
-                <div class="quiz-item">
-                    <div class="quiz-question">2. Què és la identitat digital?</div>
-                    <div class="quiz-options">
-                        <label><input type="radio" name="quizA2" value="a"> La imatge que projectes a internet</label>
-                        <label><input type="radio" name="quizA2" value="b"> El teu DNI electrònic</label>
-                        <label><input type="radio" name="quizA2" value="c"> La teva adreça de correu</label>
-                    </div>
-                </div>
-                <div class="quiz-item">
-                    <div class="quiz-question">3. I la marca personal?</div>
-                    <div class="quiz-options">
-                        <label><input type="radio" name="quizA3" value="a"> Com et presentes i et diferencies professionalment</label>
-                        <label><input type="radio" name="quizA3" value="b"> El teu logotip personal</label>
-                        <label><input type="radio" name="quizA3" value="c"> Una empresa individual</label>
-                    </div>
-                </div>
-                <div class="quiz-item">
-                    <div class="quiz-question">4. Què és LinkedIn?</div>
-                    <div class="quiz-options">
-                        <label><input type="radio" name="quizA4" value="a"> Una xarxa social professional</label>
-                        <label><input type="radio" name="quizA4" value="b"> Un portal d'ocupació</label>
-                        <label><input type="radio" name="quizA4" value="c"> Un cercador d'empreses</label>
-                    </div>
-                </div>
-                <div class="quiz-item">
-                    <div class="quiz-question">5. Quants pilars es recomanen per definir la marca personal?</div>
-                    <div class="quiz-options">
-                        <label><input type="radio" name="quizA5" value="a"> 1-2</label>
-                        <label><input type="radio" name="quizA5" value="b"> 3</label>
-                        <label><input type="radio" name="quizA5" value="c"> 5-6</label>
-                    </div>
-                </div>
-                <div class="quiz-item">
-                    <div class="quiz-question">6. El 'Lifelong Learning' significa...</div>
-                    <div class="quiz-options">
-                        <label><input type="radio" name="quizA6" value="a"> Aprenentatge al llarg de la vida</label>
-                        <label><input type="radio" name="quizA6" value="b"> Aprenentatge a distància</label>
-                        <label><input type="radio" name="quizA6" value="c"> Aprenentatge en equip</label>
-                    </div>
-                </div>
-                <div class="quiz-item">
-                    <div class="quiz-question">7. Un PLE pot incloure...</div>
-                    <div class="quiz-options">
-                        <label><input type="radio" name="quizA7" value="a"> Blogs, xarxes, eines digitals</label>
-                        <label><input type="radio" name="quizA7" value="b"> Només cursos oficials</label>
-                        <label><input type="radio" name="quizA7" value="c"> Només llibres de text</label>
-                    </div>
-                </div>
-                <div class="quiz-item">
-                    <div class="quiz-question">8. Què has de fer abans de definir la teva marca personal?</div>
-                    <div class="quiz-options">
-                        <label><input type="radio" name="quizA8" value="a"> Analitzar la teva identitat digital actual</label>
-                        <label><input type="radio" name="quizA8" value="b"> Crear un CV</label>
-                        <label><input type="radio" name="quizA8" value="c"> Dibuixar un logotip</label>
-                    </div>
-                </div>
-                <div class="quiz-item">
-                    <div class="quiz-question">9. Un CV digital pot ser...</div>
-                    <div class="quiz-options">
-                        <label><input type="radio" name="quizA9" value="a"> Visual, interactiu, enllaçat al PLE</label>
-                        <label><input type="radio" name="quizA9" value="b"> Només en paper</label>
-                        <label><input type="radio" name="quizA9" value="c"> Sempre en format Word</label>
-                    </div>
-                </div>
-                <div class="quiz-item">
-                    <div class="quiz-question">10. Què has de fer amb el PLE, la reflexió i el CV?</div>
-                    <div class="quiz-options">
-                        <label><input type="radio" name="quizA10" value="a"> Guardar-los a l'ordinador</label>
-                        <label><input type="radio" name="quizA10" value="b"> Penjar-los a Moodle i incorporar-los al portafolis</label>
-                        <label><input type="radio" name="quizA10" value="c"> Enviar-los per correu al professor</label>
-                    </div>
-                </div>
-
-                <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; margin-bottom:20px;">
-                    <button class="btn btn-primary" id="checkQuizABtn">✅ Comprova respostes</button>
-                    <button class="btn btn-outline" id="resetQuizABtn">↻ Tornar a començar</button>
-                    <button class="btn btn-close" id="closeQuizABtn">✖ Tancar</button>
-                </div>
-                <div id="quizAFeedback" class="feedback-quiz"></div>
-            </div>
-
-            <!-- AUTOAVALUACIÓ 20 PREGUNTES (per a l'examen final) -->
-            <div class="examen-container" id="examenContainer" aria-hidden="true">
-                <h2 style="color:#D1222B; margin-bottom:20px;">📝 AUTOAVALUACIÓ PER A L'EXAMEN FINAL (20 preguntes)</h2>
-                <p style="margin-bottom:20px;">Aquestes preguntes són representatives del que trobaràs a l'examen final. 
-                Has d'obtenir un mínim del <strong>70% (14/20)</strong> per considerar que has assolit els continguts.</p>
-
-                <div id="examen-preguntes"></div>
-
-                <div style="text-align:center; margin:20px 0;">
-                    <button class="btn btn-primary" id="comprovarExamenBtn">✅ Comprova respostes</button>
-                    <button class="btn btn-secondary" id="reiniciarExamenBtn">↻ Reiniciar examen</button>
-                    <button class="btn btn-close" id="closeExamenBtn">✖ Tancar</button>
-                </div>
-
-                <div id="examen-resultat" class="examen-resultat"></div>
-                <div id="examen-feedback-global" style="margin-top:15px;"></div>
-            </div>
-
-            <!-- Botons d'acció finals -->
-            <div class="buttons">
-                <button class="btn btn-danger" id="resetBtn">🗑️ Esborrar tot</button>
-                <button class="btn btn-primary" id="submitBtn">✅ Preparar per enviar</button>
-            </div>
-
-            <!-- Àrea de resultats (amb els botons EN L'ORDRE ORIGINAL) -->
-            <div class="results-area" id="resultsArea">
-                <h2 style="color:#D1222B;">📈 Dades per al professor</h2>
-                <p>Prem "Exporta JSON" per generar un fitxer amb les teves respostes.</p>
+            <!-- IMPORTADOR JSON -->
+            <div class="import-area">
+                <h2 style="color:#D1222B;">📥 Importar JSON dels alumnes (RA5)</h2>
+                <p>Selecciona els fitxers JSON que han enviat els alumnes.</p>
+                <input type="file" id="jsonFiles" multiple accept=".json" style="padding:10px; border:2px dashed #D1222B; width:100%;">
                 <div class="buttons">
-                    <button class="btn btn-primary" id="pdfBtn">📥 Descarregar PDF (per a Moodle)</button>
-                    <button class="btn btn-success" id="jsonBtn">📊 Exportar JSON</button>
-                    <button class="btn btn-primary" id="copyJsonBtn">📋 Copiar JSON al portapapers</button>
+                    <button class="btn btn-primary" id="carregarJsonBtn">📂 Carregar fitxers</button>
+                    <button class="btn btn-danger" id="netejarBtn">🗑️ Netejar tot</button>
                 </div>
-                <div style="text-align: center; margin-top: 10px;">
-                    <button class="btn btn-secondary" id="explicacioJsonBtn">❓ Com enviar (explicació)</button>
-                </div>
-                <div id="jsonContainer" class="json-container" style="display:none;"></div>
-                <div id="copyStatus" style="display:none; background:#d4edda; padding:10px; border-radius:10px; margin-top:10px;">✅ JSON copiat!</div>
+                <div id="statusMessage" style="margin-top:15px; padding:10px; border-radius:10px; display:none;"></div>
             </div>
 
-            <!-- Recordatori final millorat -->
-            <div style="background: #e6f2ff; border-radius: 20px; padding: 20px; margin: 30px 0; border-left: 5px solid #D1222B;">
-                <span style="font-size:1.3rem; font-weight:bold;">📁 LLIURAMENT DE L'ACTIVITAT</span>
-                
-                <p style="margin-top:15px;">Abans de tancar aquesta pàgina, assegura't que has completat els següents passos:</p>
-                
-                <div style="background: white; border-radius: 15px; padding: 20px; margin: 15px 0; border: 2px solid #D1222B;">
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">1</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📥 DESA EL TEU TREBALL (OPCIONAL)</strong>
-                            <p style="margin-top:5px;">Totes les respostes es guarden automàticament al teu navegador. Pots tancar i tornar-hi més tard sense perdre res.</p>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">2</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📤 EXPORTA EL FITXER JSON</strong>
-                            <p style="margin-top:5px;">Prem el botó <strong>"📊 Exportar JSON"</strong> (a la secció de resultats). Es generarà un fitxer amb les teves respostes que es desarà a la carpeta <strong>DESCARREGUES</strong>.</p>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">3</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📎 PENJA A MOODLE</strong>
-                            <p style="margin-top:5px;">Puja a Moodle els següents documents:</p>
-                            <ul style="margin-left: 20px; margin-top: 5px;">
-                                <li><strong>📁 Fitxer JSON</strong> (obligatori - conté totes les respostes)</li>
-                                <li><strong>🖼️ Representació visual del PLE</strong> (enllaç o PDF)</li>
-                                <li><strong>📝 Reflexió sobre identitat digital</strong> (document PDF)</li>
-                                <li><strong>💼 CV digital</strong> (enllaç a LinkedIn i arxiu del CV)</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">4</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📁 INCORPORA AL PORTAFOLIS</strong>
-                            <p style="margin-top:5px;">Guarda una còpia de tots els documents al teu <strong>portafolis digital professional</strong>.</p>
-                        </div>
-                    </div>
-                    
+            <!-- TAULA DE RESULTATS -->
+            <div id="taulaContainer" style="display:none;">
+                <h2 class="section-title">📊 Resultats del grup (RA5)</h2>
+                <div style="overflow-x: auto;">
+                    <table id="resultatsTaula">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Grup</th>
+                                <th>PLE</th>
+                                <th>Identitat</th>
+                                <th>CV</th>
+                                <th>Qualitat</th>
+                                <th>Nota final</th>
+                                <th>PDF</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taulaBody"></tbody>
+                    </table>
                 </div>
-                
-                <div style="background: #FFC72C; border-radius: 15px; padding: 15px; margin-top: 15px; border: 2px solid #D1222B; text-align: center;">
-                    <p style="font-weight:bold; color:#D1222B; font-size: 1.1rem;">⚠️ IMPORTANT: El fitxer JSON és l'única evidència que conté TOTES les teves respostes.</p>
-                    <p style="margin-top:5px;">Sense aquest fitxer, el professor no podrà avaluar correctament la teva activitat.</p>
+
+                <!-- RÚBRICA VISIBLE (PER CONSULTA) -->
+                <div class="rubrica-visual">
+                    <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ RA5</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criteri</th>
+                                <th>Pes</th>
+                                <th>1 - No assolit</th>
+                                <th>2 - En procés</th>
+                                <th>3 - Assolit</th>
+                                <th>4 - Excel·lent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>PLE</strong></td>
+                                <td>30%</td>
+                                <td>No identifica o incomplet</td>
+                                <td>Identifica elements bàsics sense millores</td>
+                                <td>PLE complet amb proposta de millora</td>
+                                <td>PLE molt complet, ben estructurat i millores innovadores</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Identitat digital</strong></td>
+                                <td>30%</td>
+                                <td>No analitza o reflexió superficial</td>
+                                <td>Cerca bàsica sense definir pilars</td>
+                                <td>Analitza resultats i defineix 3 pilars</td>
+                                <td>Anàlisi profund, pilars coherents i visió estratègica</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CV digital</strong></td>
+                                <td>30%</td>
+                                <td>No inclou LinkedIn ni CV</td>
+                                <td>LinkedIn o CV poc elaborats</td>
+                                <td>LinkedIn actualitzat + CV visual</td>
+                                <td>Perfils professionals, integrats amb PLE i full de ruta</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Qualitat formal</strong></td>
+                                <td>10%</td>
+                                <td>Incomplet o inintel·ligible</td>
+                                <td>Confús o errors significatius</td>
+                                <td>Clar i organitzat</td>
+                                <td>Professional, ben estructurat</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="margin-top:10px; font-style:italic; color:#D1222B;">* Els valors automàtics són orientatius. Pots modificar-los manualment.</p>
+                </div>
+
+                <!-- SELECCIÓ D'ALUMNE PER VALORAR -->
+                <div class="valoracio-box">
+                    <h3 style="color:#D1222B;">📝 Avaluació individual (RA5)</h3>
+                    <select id="selectorAlumne" style="width:100%; padding:10px; margin:10px 0;">
+                        <option value="">-- Selecciona un alumne --</option>
+                    </select>
+                    
+                    <!-- BOTÓ PER MOSTRAR/AMAGAR RESPOSTES -->
+                    <div style="text-align: center; margin: 10px 0;">
+                        <button class="btn btn-primary" id="toggleRespostesBtn">
+                            📋 Mostrar/amagar respostes completes
+                        </button>
+                    </div>
+                    
+                    <!-- PANEL DE RESPOSTES DESPLEGABLE -->
+                    <div id="panelRespostes" class="panel-respostes">
+                        <h4 style="color:#D1222B; margin-bottom:10px;">Respostes de l'alumne</h4>
+                        <div id="contingutRespostes">
+                            Selecciona un alumne i fes clic a "Mostrar respostes".
+                        </div>
+                    </div>
+                    
+                    <h4 style="color:#D1222B;">Rúbrica RA5 (punts 1-4)</h4>
+                    
+                    <label><strong>PLE (30%):</strong></label>
+                    <input type="number" id="notaPLE" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Identitat digital (30%):</strong></label>
+                    <input type="number" id="notaIdentitat" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>CV digital (30%):</strong></label>
+                    <input type="number" id="notaCV" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Qualitat formal (10%):</strong></label>
+                    <input type="number" id="notaQualitat" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Punts forts observats:</strong></label>
+                    <textarea id="puntsForts" rows="3"></textarea>
+                    
+                    <label><strong>Aspectes a millorar:</strong></label>
+                    <textarea id="aspectesMillora" rows="3"></textarea>
+                    
+                    <label><strong>Recomanació professional:</strong></label>
+                    <textarea id="recomanacio" rows="2"></textarea>
+                    
+                    <label><strong>Valoració qualitativa global:</strong></label>
+                    <textarea id="valoracioGlobal" rows="4"></textarea>
+                    
+                    <div class="buttons">
+                        <button class="btn btn-primary" id="guardarAvaluacioBtn">💾 Guardar avaluació</button>
+                        <button class="btn btn-pdf" id="generarPdfIndividualBtn">📥 Generar PDF individual</button>
+                    </div>
+                </div>
+
+                <!-- BOTONS GENERALS -->
+                <div class="buttons">
+                    <button class="btn btn-excel" id="excelBtn">📥 Exportar a Excel</button>
+                    <button class="btn btn-pdf" id="pdfTotsBtn">📥 Generar PDFs de tots</button>
                 </div>
             </div>
+
             <hr>
+            <p style="text-align:center; color:#6c757d;">Eina de correcció per al professorat · RA5 · Les dades no es guarden al servidor</p>
         </div>
-        <div class="footer">Diego Izquierdo · FOL · IOC · Contingut accessible ♿</div>
+        <div class="footer">Diego Izquierdo · FOL · IOC · Avaluació RA5 ♿</div>
     </div>
 
     <script>
         // ===========================================
-        // FUNCIONS DEL MODAL
+        // FUNCIONS PRINCIPALS (el mateix que als altres RA professor)
         // ===========================================
-        var modalPortafolis = document.getElementById('modalPortafolis');
-        var btnPortafolis = document.getElementById('modalPortafolisBtn');
-        var spanPortafolis = document.getElementsByClassName('close-modal')[0];
-        
-        btnPortafolis.onclick = function() {
-            modalPortafolis.style.display = 'block';
+        let alumnes = [];
+        let alumnesAvaluats = {};
+
+        function getNivellText(valor) {
+            const nivells = ['No assolit', 'En procés', 'Assolit', 'Excel·lent'];
+            return nivells[valor - 1] || 'No assolit';
         }
-        
-        spanPortafolis.onclick = function() {
-            modalPortafolis.style.display = 'none';
+
+        function calcularNotaFinal(ple, identitat, cv, qualitat) {
+            let nota = (ple * 0.3 + identitat * 0.3 + cv * 0.3 + qualitat * 0.1) * 2.5;
+            return nota.toFixed(2);
         }
-        
-        window.onclick = function(event) {
-            if (event.target == modalPortafolis) {
-                modalPortafolis.style.display = 'none';
+
+        function generarPuntsFortsAuto(alumne) {
+            let punts = [];
+            
+            if (alumne.ple_fonts && alumne.ple_eines && alumne.ple_xarxes) {
+                if (alumne.ple_fonts.length > 30 && alumne.ple_eines.length > 30 && alumne.ple_xarxes.length > 30) {
+                    punts.push('RA5: PLE complet amb fonts, eines i xarxes ben definides.');
+                }
+            }
+            
+            if (alumne.pilar1 && alumne.pilar2 && alumne.pilar3) {
+                punts.push('RA5: Tres pilars de marca personal ben definits.');
+            }
+            
+            if (alumne.linkedin && alumne.cv_digital) {
+                punts.push('RA5: Perfil de LinkedIn i CV digital proporcionats.');
+            }
+            
+            if (punts.length === 0) punts.push('Treball correcte en general.');
+            return punts.join('\n');
+        }
+
+        function generarAspectesMilloraAuto(alumne) {
+            let millores = [];
+            
+            if (!alumne.ple_fonts || alumne.ple_fonts.length < 20) 
+                millores.push('RA5: Cal ampliar les fonts d\'informació del PLE.');
+            if (!alumne.ple_eines || alumne.ple_eines.length < 20) 
+                millores.push('RA5: Cal ampliar les eines digitals del PLE.');
+            if (!alumne.ple_xarxes || alumne.ple_xarxes.length < 20) 
+                millores.push('RA5: Cal ampliar les xarxes de contacte del PLE.');
+            
+            if (!alumne.pilar1 || !alumne.pilar2 || !alumne.pilar3) 
+                millores.push('RA5: Cal definir els tres pilars de la marca personal.');
+            
+            if (!alumne.linkedin) 
+                millores.push('RA5: Cal proporcionar l\'enllaç al perfil de LinkedIn.');
+            if (!alumne.cv_digital) 
+                millores.push('RA5: Cal proporcionar l\'enllaç al CV digital.');
+            
+            if (millores.length === 0) millores.push('Treball complet, felicitats!');
+            return millores.join('\n');
+        }
+
+        function generarRecomanacioAuto(alumne, nota) {
+            if (nota >= 8) {
+                return 'Excel·lent treball. Continua desenvolupant la teva marca personal i el teu PLE.';
+            } else if (nota >= 6) {
+                return 'Bona feina. Revisa els aspectes a millorar per assolir l\'excel·lència en la teva identitat digital.';
+            } else {
+                return 'Treball suficient. Es recomana revisar els continguts bàsics del RA5 i la metodologia PLE.';
             }
         }
 
-        // ===========================================
-        // GUARDAT AUTOMÀTIC AMB LOCALSTORAGE (PREFIX ra5_)
-        // ===========================================
-        const PREFIX = 'ra5_';
-        
-        function carregarDadesGuardades() {
-            document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
-                let valorGuardat = localStorage.getItem(PREFIX + camp.id);
-                if (valorGuardat) camp.value = valorGuardat;
+        function generarValoracioGlobalAuto(alumne, nota, nom) {
+            if (nota >= 8) {
+                return `${nom}, el teu treball demostra una comprensió excel·lent de la identitat digital i la gestió del PLE. Has dissenyat un entorn d'aprenentatge molt complet, has reflexionat profundament sobre la teva marca personal i has creat un CV digital professional. En conjunt, has fet una molt bona feina. Felicitats!`;
+            } else if (nota >= 6) {
+                return `${nom}, el teu treball demostra una comprensió sòlida de la identitat digital i la gestió del PLE. Has identificat correctament els elements principals i has definit una marca personal coherent. Amb una mica més de detall, assoliràs l'excel·lència. Bona feina!`;
+            } else {
+                return `${nom}, el teu treball demostra una comprensió bàsica de la identitat digital i la gestió del PLE. Cal revisar els continguts fonamentals del RA5 i aprofundir en l'anàlisi de la teva presència digital. Amb més dedicació, podràs millorar. Ànims!`;
+            }
+        }
+
+        function processarJSON(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    alumnes.push({
+                        nom: data.nom || 'Sense nom',
+                        grup: data.grup || 'Sense grup',
+                        ple_fonts: data.ple_fonts || '',
+                        ple_eines: data.ple_eines || '',
+                        ple_xarxes: data.ple_xarxes || '',
+                        ple_representacio: data.ple_representacio || '',
+                        ple_millores: data.ple_millores || '',
+                        cerca_resultats: data.cerca_resultats || '',
+                        imatge_actual: data.imatge_actual || '',
+                        imatge_desitjada: data.imatge_desitjada || '',
+                        pilar1: data.pilar1 || '',
+                        pilar2: data.pilar2 || '',
+                        pilar3: data.pilar3 || '',
+                        linkedin: data.linkedin || '',
+                        cv_digital: data.cv_digital || '',
+                        cv_descripcio: data.cv_descripcio || '',
+                        notaPLE: 'pendent',
+                        notaIdentitat: 'pendent',
+                        notaCV: 'pendent',
+                        notaQualitat: 'pendent',
+                        notaFinal: 'pendent',
+                        data: data.data || new Date().toISOString()
+                    });
+                    
+                    callback(null);
+                } catch (error) {
+                    callback('Error: ' + error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function getCognom(nomComplet) {
+            let parts = nomComplet.trim().split(' ');
+            return parts[parts.length - 1];
+        }
+
+        function actualitzarTaula() {
+            alumnes.sort((a, b) => {
+                let cognomA = getCognom(a.nom);
+                let cognomB = getCognom(b.nom);
+                return cognomA.localeCompare(cognomB, 'ca');
+            });
+
+            let tbody = document.getElementById('taulaBody');
+            let selector = document.getElementById('selectorAlumne');
+            tbody.innerHTML = '';
+            selector.innerHTML = '<option value="">-- Selecciona un alumne --</option>';
+            
+            alumnes.forEach((a, index) => {
+                let notaFinal = a.notaFinal === 'pendent' ? 'pendent' : a.notaFinal;
+                
+                let row = `<tr>
+                    <td>${a.nom}</td>
+                    <td>${a.grup}</td>
+                    <td>${a.notaPLE}</td>
+                    <td>${a.notaIdentitat}</td>
+                    <td>${a.notaCV}</td>
+                    <td>${a.notaQualitat}</td>
+                    <td><strong>${notaFinal}</strong></td>
+                    <td><button class="btn btn-pdf" onclick="generarPdfIndividual(${index})">📄</button></td>
+                </tr>`;
+                tbody.innerHTML += row;
+                
+                selector.innerHTML += `<option value="${index}">${a.nom} (${a.grup})</option>`;
             });
             
-            document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                let nom = radio.name;
-                let valorGuardat = localStorage.getItem(PREFIX + nom);
-                if (valorGuardat === radio.value) radio.checked = true;
-            });
+            document.getElementById('taulaContainer').style.display = 'block';
         }
-        
-        function guardarCamp(camp) {
-            localStorage.setItem(PREFIX + camp.id, camp.value);
-        }
-        
-        function guardarRadio(name, value) {
-            localStorage.setItem(PREFIX + name, value);
-        }
-        
-        // Carregar en iniciar
-        window.addEventListener('load', carregarDadesGuardades);
-        
-        // Guardar en cada canvi
-        document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
-            camp.addEventListener('input', function() { guardarCamp(this); });
-        });
-        
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                guardarRadio(this.name, this.value);
-            });
-        });
 
-        // ===========================================
-        // MODAL D'EXPLICACIÓ JSON
-        // ===========================================
-        function obrirModalExplicacio() {
-            document.getElementById('modalExplicacio').style.display = 'block';
-        }
-        
-        document.getElementById('explicacioJsonBtn')?.addEventListener('click', obrirModalExplicacio);
-        
-        document.querySelector('.modal-explicacio-tancar').addEventListener('click', function() {
-            document.getElementById('modalExplicacio').style.display = 'none';
-        });
-        
-        document.getElementById('tancarModalBtn').addEventListener('click', function() {
-            document.getElementById('modalExplicacio').style.display = 'none';
-        });
-        
-        window.addEventListener('click', function(event) {
-            let modal = document.getElementById('modalExplicacio');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        });
-
-        // ===========================================
-        // BOTÓ FLOTANT TORNAR A DALT
-        // ===========================================
         document.getElementById('tornarDaltBtn').addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-        
-        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        document.getElementById('toggleRespostesBtn').addEventListener('click', function() {
+            let panel = document.getElementById('panelRespostes');
+            let contingut = document.getElementById('contingutRespostes');
+            let index = document.getElementById('selectorAlumne').value;
+            
+            if (index === '') {
+                alert('Selecciona un alumne primer');
+                return;
             }
-        });
-
-        // ===========================================
-        // PDF D'INSTRUCCIONS AMPLIAT (amb totes les preguntes)
-        // ===========================================
-        document.getElementById('pdfInstruccionsBtn').addEventListener('click', function() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
             
-            doc.setFontSize(20);
-            doc.setTextColor(209,34,43);
-            doc.text('RA5 · La meva identitat digital professional', 20, 20);
+            let alumne = alumnes[index];
             
-            doc.setFontSize(12);
-            doc.setTextColor(0,0,0);
-            doc.text('DESCRIPCIÓ', 20, 35);
-            doc.setFontSize(10);
-            doc.text('Activitat de 4 hores per dissenyar el PLE, reflexionar sobre la identitat digital i crear el CV digital', 20, 45);
-            
-            doc.setFontSize(12);
-            doc.text('OBJECTIUS', 20, 60);
-            doc.setFontSize(10);
-            doc.text('• Dissenyar el teu Entorn Personal d\'Aprenentatge (PLE)', 25, 70);
-            doc.text('• Reflexionar sobre la teva identitat digital', 25, 77);
-            doc.text('• Definir 3 pilars de marca personal', 25, 84);
-            doc.text('• Crear o actualitzar el perfil de LinkedIn', 25, 91);
-            doc.text('• Elaborar un CV digital', 25, 98);
-            
-            doc.setFontSize(12);
-            doc.text('METODOLOGIA', 20, 113);
-            doc.setFontSize(10);
-            doc.text('Bloc 1 (1,5h): PLE (fonts, eines, xarxes + representació + millores)', 25, 123);
-            doc.text('Bloc 2 (1,5h): Identitat digital (cerca Google + anàlisi + 3 pilars)', 25, 130);
-            doc.text('Bloc 3 (1h): CV digital (LinkedIn + CV visual)', 25, 137);
-            
-            // PREGUNTES DE L'ACTIVITAT (NOU)
-            doc.setFontSize(12);
-            doc.text('PREGUNTES DE L\'ACTIVITAT', 20, 157);
-            doc.setFontSize(10);
-            
-            let y = 167;
-            const preguntes = [
-                'BLOC 1 - PLE:',
-                '• Fonts d\'informació (blogs, webs, canals YouTube...)',
-                '• Eines digitals (aplicacions, programari...)',
-                '• Xarxes de contacte (LinkedIn, grups, fòrums...)',
-                '• Enllaç a la representació visual del PLE',
-                '• Propostes de millora per optimitzar el PLE',
-                '',
-                'BLOC 2 - IDENTITAT DIGITAL:',
-                '• Resultats de la cerca a Google (què apareix del teu nom?)',
-                '• Quina imatge projectes actualment?',
-                '• Quina imatge vols projectar?',
-                '• Pilar 1 de la teva marca personal',
-                '• Pilar 2 de la teva marca personal',
-                '• Pilar 3 de la teva marca personal',
-                '',
-                'BLOC 3 - CV DIGITAL:',
-                '• Enllaç al teu perfil de LinkedIn',
-                '• Enllaç o arxiu del CV digital',
-                '• Breu descripció del CV (opcional)'
-            ];
-            
-            preguntes.forEach(p => {
-                if (p === '') {
-                    y += 3;
-                } else {
-                    doc.text(p, 25, y);
-                    y += 6;
-                }
-            });
-            
-            // Rúbrica
-            doc.addPage();
-            doc.setFontSize(12);
-            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 20);
-            
-            doc.setFontSize(8);
-            doc.text('Criteri', 20, 30);
-            doc.text('Excel·lent (4)', 50, 30);
-            doc.text('Assolit (3)', 85, 30);
-            doc.text('En procés (2)', 120, 30);
-            doc.text('No assolit (1)', 155, 30);
-            doc.text('Pes', 185, 30);
-            
-            doc.line(20, 32, 195, 32);
-            
-            // Criteri 1
-            doc.text('C1: PLE', 20, 42);
-            doc.text('PLE complet', 50, 42);
-            doc.text('millores', 50, 47);
-            doc.text('PLE complet', 85, 42);
-            doc.text('bàsic', 85, 47);
-            doc.text('Elements', 120, 42);
-            doc.text('bàsics', 120, 47);
-            doc.text('Incomplet', 155, 42);
-            doc.text('30%', 185, 45);
-            
-            // Criteri 2
-            doc.text('C2: Identitat', 20, 57);
-            doc.text('Anàlisi', 50, 57);
-            doc.text('profund', 50, 62);
-            doc.text('3 pilars', 85, 57);
-            doc.text('definits', 85, 62);
-            doc.text('Cerca', 120, 57);
-            doc.text('bàsica', 120, 62);
-            doc.text('No analitza', 155, 57);
-            doc.text('30%', 185, 60);
-            
-            // Criteri 3
-            doc.text('C3: CV', 20, 72);
-            doc.text('LinkedIn+CV', 50, 72);
-            doc.text('integrats', 50, 77);
-            doc.text('LinkedIn', 85, 72);
-            doc.text('+ CV', 85, 77);
-            doc.text('Un dels', 120, 72);
-            doc.text('dos', 120, 77);
-            doc.text('No inclou', 155, 72);
-            doc.text('30%', 185, 75);
-            
-            // Criteri 4
-            doc.text('C4: Qualitat', 20, 87);
-            doc.text('Professional', 50, 87);
-            doc.text('Clar', 85, 87);
-            doc.text('Confús', 120, 87);
-            doc.text('Incomplet', 155, 87);
-            doc.text('10%', 185, 87);
-            
-            doc.save('RA5_instruccions_completes.pdf');
-        });
-
-        // ===========================================
-        // Toggle Bloc 1, 2, 3 (conservat de l'original)
-        // ===========================================
-        document.getElementById('toggleBloc1Btn').addEventListener('click', function() {
-            let container = document.getElementById('bloc1Container');
-            let isHidden = container.style.display === 'none' || container.style.display === '';
-            container.style.display = isHidden ? 'block' : 'none';
-            this.setAttribute('aria-expanded', isHidden);
-            container.setAttribute('aria-hidden', !isHidden);
-        });
-
-        document.getElementById('toggleBloc2Btn').addEventListener('click', function() {
-            let container = document.getElementById('bloc2Container');
-            let isHidden = container.style.display === 'none' || container.style.display === '';
-            container.style.display = isHidden ? 'block' : 'none';
-            this.setAttribute('aria-expanded', isHidden);
-            container.setAttribute('aria-hidden', !isHidden);
-        });
-
-        document.getElementById('toggleBloc3Btn').addEventListener('click', function() {
-            let container = document.getElementById('bloc3Container');
-            let isHidden = container.style.display === 'none' || container.style.display === '';
-            container.style.display = isHidden ? 'block' : 'none';
-            this.setAttribute('aria-expanded', isHidden);
-            container.setAttribute('aria-hidden', !isHidden);
-        });
-
-        // ===========================================
-        // Toggle autoavaluació 10 preguntes (conservat)
-        // ===========================================
-        document.getElementById('toggleAutoavaluacioBtn').addEventListener('click', function() {
-            let container = document.getElementById('autoavaluacioContainer');
-            let isHidden = container.style.display === 'none' || container.style.display === '';
-            container.style.display = isHidden ? 'block' : 'none';
-            this.setAttribute('aria-expanded', isHidden);
-            container.setAttribute('aria-hidden', !isHidden);
-        });
-
-        document.getElementById('toggleExamenBtn').addEventListener('click', function() {
-            let container = document.getElementById('examenContainer');
-            let isHidden = container.style.display === 'none' || container.style.display === '';
-            container.style.display = isHidden ? 'block' : 'none';
-            this.setAttribute('aria-expanded', isHidden);
-            container.setAttribute('aria-hidden', !isHidden);
-        });
-
-        document.getElementById('closeQuizABtn').addEventListener('click', function() {
-            document.getElementById('autoavaluacioContainer').style.display = 'none';
-            document.getElementById('toggleAutoavaluacioBtn').setAttribute('aria-expanded', 'false');
-        });
-
-        document.getElementById('closeExamenBtn').addEventListener('click', function() {
-            document.getElementById('examenContainer').style.display = 'none';
-            document.getElementById('toggleExamenBtn').setAttribute('aria-expanded', 'false');
-        });
-
-        // ===========================================
-        // Comprova autoavaluació 10 preguntes (conservat)
-        // ===========================================
-        document.getElementById('checkQuizABtn').addEventListener('click', function() {
-            let correctes = 0;
-            
-            if (document.querySelector('input[name="quizA1"]:checked')?.value === 'a') correctes++;
-            if (document.querySelector('input[name="quizA2"]:checked')?.value === 'a') correctes++;
-            if (document.querySelector('input[name="quizA3"]:checked')?.value === 'a') correctes++;
-            if (document.querySelector('input[name="quizA4"]:checked')?.value === 'a') correctes++;
-            if (document.querySelector('input[name="quizA5"]:checked')?.value === 'b') correctes++;
-            if (document.querySelector('input[name="quizA6"]:checked')?.value === 'a') correctes++;
-            if (document.querySelector('input[name="quizA7"]:checked')?.value === 'a') correctes++;
-            if (document.querySelector('input[name="quizA8"]:checked')?.value === 'a') correctes++;
-            if (document.querySelector('input[name="quizA9"]:checked')?.value === 'a') correctes++;
-            if (document.querySelector('input[name="quizA10"]:checked')?.value === 'b') correctes++;
-
-            let feedback = document.getElementById('quizAFeedback');
-            feedback.style.display = 'block';
-            
-            if (correctes === 10) {
-                feedback.innerHTML = '✅ Excel·lent! Has respost correctament totes les preguntes.';
-                feedback.style.background = '#d4edda';
-                feedback.style.color = '#155724';
-            } else if (correctes >= 7) {
-                feedback.innerHTML = `✅ Has obtingut ${correctes}/10. Molt bé! Revisa els errors.`;
-                feedback.style.background = '#fff3cd';
-                feedback.style.color = '#856404';
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                let respostesHTML = `
+                    <p><strong>PLE:</strong></p>
+                    <p><strong>Fonts:</strong> ${alumne.ple_fonts || '(sense resposta)'}</p>
+                    <p><strong>Eines:</strong> ${alumne.ple_eines || '(sense resposta)'}</p>
+                    <p><strong>Xarxes:</strong> ${alumne.ple_xarxes || '(sense resposta)'}</p>
+                    <p><strong>Representació:</strong> ${alumne.ple_representacio || '(sense enllaç)'}</p>
+                    <p><strong>Millores:</strong> ${alumne.ple_millores || '(sense resposta)'}</p>
+                    <p><strong>Identitat digital:</strong></p>
+                    <p><strong>Cerca Google:</strong> ${alumne.cerca_resultats || '(sense resposta)'}</p>
+                    <p><strong>Imatge actual:</strong> ${alumne.imatge_actual || '(sense resposta)'}</p>
+                    <p><strong>Imatge desitjada:</strong> ${alumne.imatge_desitjada || '(sense resposta)'}</p>
+                    <p><strong>Pilars:</strong> ${alumne.pilar1 || ''}, ${alumne.pilar2 || ''}, ${alumne.pilar3 || ''}</p>
+                    <p><strong>CV digital:</strong></p>
+                    <p><strong>LinkedIn:</strong> ${alumne.linkedin || '(sense enllaç)'}</p>
+                    <p><strong>CV digital:</strong> ${alumne.cv_digital || '(sense enllaç)'}</p>
+                    <p><strong>Descripció CV:</strong> ${alumne.cv_descripcio || '(sense descripció)'}</p>
+                `;
+                
+                contingut.innerHTML = respostesHTML;
+                panel.style.display = 'block';
             } else {
-                feedback.innerHTML = `❌ Has obtingut ${correctes}/10. Torna a llegir l'activitat.`;
-                feedback.style.background = '#f8d7da';
-                feedback.style.color = '#721c24';
+                panel.style.display = 'none';
             }
         });
 
-        document.getElementById('resetQuizABtn').addEventListener('click', function() {
-            for(let i = 1; i <= 10; i++) {
-                let radios = document.querySelectorAll(`input[name="quizA${i}"]`);
-                radios.forEach(r => r.checked = false);
+        document.getElementById('selectorAlumne').addEventListener('change', function() {
+            let index = this.value;
+            if (index === '') {
+                document.getElementById('notaPLE').value = '3';
+                document.getElementById('notaIdentitat').value = '3';
+                document.getElementById('notaCV').value = '3';
+                document.getElementById('notaQualitat').value = '3';
+                document.getElementById('puntsForts').value = '';
+                document.getElementById('aspectesMillora').value = '';
+                document.getElementById('recomanacio').value = '';
+                document.getElementById('valoracioGlobal').value = '';
+                
+                document.getElementById('panelRespostes').style.display = 'none';
+                return;
             }
-            document.getElementById('quizAFeedback').style.display = 'none';
-        });
-
-        // ===========================================
-        // EXAMEN DE 20 PREGUNTES (conservat de l'original)
-        // ===========================================
-        const preguntesExamen = [
-            { pregunta: "1. El PLE és un entorn personal d'aprenentatge.", tipus: "vf", correcta: "v", explicacio: "Vertader. PLE = Personal Learning Environment." },
-            { pregunta: "2. Què és la identitat digital?", tipus: "mc", opcions: ["a) La imatge que projectes a internet", "b) El teu DNI electrònic", "c) La teva adreça de correu"], correcta: "a", explicacio: "És el conjunt d'informació sobre tu a internet." },
-            { pregunta: "3. La marca personal és com et diferencies professionalment.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
-            { pregunta: "4. Què és LinkedIn?", tipus: "mc", opcions: ["a) Una xarxa social professional", "b) Un portal d'ocupació", "c) Un cercador d'empreses"], correcta: "a", explicacio: "És la principal xarxa social professional." },
-            { pregunta: "5. Es recomana definir 3 pilars per a la marca personal.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
-            { pregunta: "6. El 'Lifelong Learning' significa...", tipus: "mc", opcions: ["a) Aprenentatge al llarg de la vida", "b) Aprenentatge a distància", "c) Aprenentatge en equip"], correcta: "a", explicacio: "És l'aprenentatge continu." },
-            { pregunta: "7. Un PLE pot incloure blogs, xarxes i eines digitals.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
-            { pregunta: "8. Abans de definir la marca personal, cal analitzar la identitat digital actual.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
-            { pregunta: "9. Un CV digital pot ser visual i interactiu.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
-            { pregunta: "10. Què és un objectiu SMART?", tipus: "mc", opcions: ["a) Específic, mesurable, assolible, rellevant, temporal", "b) Senzill, motivador, actiu, ràpid, total", "c) Social, màxim, actiu, real, tècnic"], correcta: "a", explicacio: "És una metodologia per definir objectius." },
-            { pregunta: "11. La resiliència és la capacitat d'adaptar-se a situacions complexes.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
-            { pregunta: "12. Què és l'aprenentatge autònom?", tipus: "mc", opcions: ["a) Aprendre per un mateix, gestionant el propi procés", "b) Aprendre en grup", "c) Aprendre amb un professor"], correcta: "a", explicacio: "És la capacitat de dirigir el propi aprenentatge." },
-            { pregunta: "13. Les soft skills són habilitats tècniques.", tipus: "vf", correcta: "f", explicacio: "Fals. Són habilitats transversals (comunicació, treball en equip...)." },
-            { pregunta: "14. Què és l'ocupabilitat?", tipus: "mc", opcions: ["a) La capacitat de trobar i mantenir feina", "b) Tenir un treball", "c) El salari"], correcta: "a", explicacio: "És la capacitat d'accedir al mercat laboral." },
-            { pregunta: "15. L'aprenentatge al llarg de la vida és opcional.", tipus: "vf", correcta: "f", explicacio: "Fals. És imprescindible en el món actual." },
-            { pregunta: "16. Què és la metacognició?", tipus: "mc", opcions: ["a) Reflexionar sobre el propi aprenentatge", "b) Aprendre ràpid", "c) Ensenyar als altres"], correcta: "a", explicacio: "És la consciència del propi procés d'aprenentatge." },
-            { pregunta: "17. Un CV Europass és obligatori.", tipus: "vf", correcta: "f", explicacio: "Fals. És un model recomanat però no obligatori." },
-            { pregunta: "18. Què és el SOC?", tipus: "mc", opcions: ["a) Servei d'Ocupació de Catalunya", "b) Sindicat Obrer Català", "c) Sistema d'Orientació Professional"], correcta: "a", explicacio: "És el Servei d'Ocupació de Catalunya." },
-            { pregunta: "19. La motivació intrínseca ve de factors externs.", tipus: "vf", correcta: "f", explicacio: "Fals. Ve de l'interès personal." },
-            { pregunta: "20. On has de penjar el PLE, la reflexió i el CV?", tipus: "mc", opcions: ["a) A l'ordinador", "b) A Moodle i al portafolis", "c) Enviar per correu"], correcta: "b", explicacio: "S'han de penjar a Moodle i incorporar al portafolis." }
-        ];
-
-        function generarPreguntesExamen() {
-            let html = '';
-            preguntesExamen.forEach((p, index) => {
-                html += `<div class="examen-pregunta">`;
-                html += `<p><strong>${p.pregunta}</strong></p>`;
-                
-                if (p.tipus === 'vf') {
-                    html += `<div class="examen-opcions">`;
-                    html += `<label><input type="radio" name="examen-${index}" value="v"> Vertader</label>`;
-                    html += `<label><input type="radio" name="examen-${index}" value="f"> Fals</label>`;
-                    html += `</div>`;
-                } else {
-                    html += `<div class="examen-opcions">`;
-                    p.opcions.forEach((opt, optIndex) => {
-                        let valor = String.fromCharCode(97 + optIndex);
-                        html += `<label><input type="radio" name="examen-${index}" value="${valor}"> ${opt}</label>`;
-                    });
-                    html += `</div>`;
-                }
-                html += `<div id="feedback-${index}" class="examen-feedback"></div>`;
-                html += `</div>`;
-            });
-            document.getElementById('examen-preguntes').innerHTML = html;
-        }
-
-        function comprovarExamen() {
-            let correctes = 0;
-            let total = preguntesExamen.length;
             
-            preguntesExamen.forEach((p, index) => {
-                let seleccio = document.querySelector(`input[name="examen-${index}"]:checked`);
-                let feedbackDiv = document.getElementById(`feedback-${index}`);
-                
-                if (seleccio) {
-                    if (seleccio.value === p.correcta) {
-                        correctes++;
-                        feedbackDiv.innerHTML = `✅ Correcte! ${p.explicacio || ''}`;
-                        feedbackDiv.className = 'examen-feedback examen-correcte';
-                    } else {
-                        let correctaText = p.correcta === 'v' ? 'Vertader' : p.correcta === 'f' ? 'Fals' : p.opcions[{'a':0,'b':1,'c':2}[p.correcta]];
-                        feedbackDiv.innerHTML = `❌ Incorrecte. La resposta correcta és: ${correctaText}. ${p.explicacio || ''}`;
-                        feedbackDiv.className = 'examen-feedback examen-incorrecte';
-                    }
-                    feedbackDiv.style.display = 'block';
-                } else {
-                    feedbackDiv.innerHTML = '❌ Sense respondre.';
-                    feedbackDiv.className = 'examen-feedback examen-incorrecte';
-                    feedbackDiv.style.display = 'block';
-                }
-            });
+            let alumne = alumnes[index];
             
-            let percentatge = (correctes / total * 100).toFixed(1);
-            let resultatDiv = document.getElementById('examen-resultat');
-            let feedbackGlobal = document.getElementById('examen-feedback-global');
-            
-            resultatDiv.innerHTML = `Resultat: ${correctes}/${total} (${percentatge}%)`;
-            
-            if (correctes >= 14) {
-                resultatDiv.classList.add('examen-superat');
-                resultatDiv.classList.remove('examen-no-superat');
-                feedbackGlobal.innerHTML = '<p style="color:#155724;">✅ SUPERAT! Estàs preparat per a l\'examen final.</p>';
+            if (alumnesAvaluats[index]) {
+                let av = alumnesAvaluats[index];
+                document.getElementById('notaPLE').value = av.ple;
+                document.getElementById('notaIdentitat').value = av.identitat;
+                document.getElementById('notaCV').value = av.cv;
+                document.getElementById('notaQualitat').value = av.qualitat;
+                document.getElementById('puntsForts').value = av.puntsForts || '';
+                document.getElementById('aspectesMillora').value = av.aspectesMillora || '';
+                document.getElementById('recomanacio').value = av.recomanacio || '';
+                document.getElementById('valoracioGlobal').value = av.valoracioGlobal || '';
             } else {
-                resultatDiv.classList.add('examen-no-superat');
-                resultatDiv.classList.remove('examen-superat');
-                feedbackGlobal.innerHTML = '<p style="color:#721c24;">❌ NO SUPERAT. Revisa els continguts i torna-ho a intentar.</p>';
-            }
-        }
-
-        function reiniciarExamen() {
-            preguntesExamen.forEach((_, index) => {
-                let radios = document.querySelectorAll(`input[name="examen-${index}"]`);
-                radios.forEach(r => r.checked = false);
-                let feedbackDiv = document.getElementById(`feedback-${index}`);
-                feedbackDiv.style.display = 'none';
-            });
-            document.getElementById('examen-resultat').innerHTML = '';
-            document.getElementById('examen-feedback-global').innerHTML = '';
-        }
-
-        generarPreguntesExamen();
-        document.getElementById('comprovarExamenBtn').addEventListener('click', comprovarExamen);
-        document.getElementById('reiniciarExamenBtn').addEventListener('click', reiniciarExamen);
-
-        // ===========================================
-        // BOTÓ RESET MILLORAT (esborra localStorage)
-        // ===========================================
-        document.getElementById('resetBtn').addEventListener('click', function() {
-            if (confirm('⚠️ Això esborrarà TOTES les respostes i les dades guardades. Estàs segur?')) {
+                document.getElementById('notaPLE').value = '3';
+                document.getElementById('notaIdentitat').value = '3';
+                document.getElementById('notaCV').value = '3';
+                document.getElementById('notaQualitat').value = '3';
                 
-                document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
-                    camp.value = '';
-                });
-                
-                document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                    radio.checked = false;
-                });
-                
-                for (let i = localStorage.length - 1; i >= 0; i--) {
-                    let clau = localStorage.key(i);
-                    if (clau.startsWith(PREFIX)) {
-                        localStorage.removeItem(clau);
-                    }
-                }
-                
-                document.getElementById('resultsArea').style.display = 'none';
-                
-                alert('✅ Totes les respostes s\'han esborrat correctament.');
+                let notaTemp = calcularNotaFinal(3, 3, 3, 3);
+                document.getElementById('puntsForts').value = generarPuntsFortsAuto(alumne);
+                document.getElementById('aspectesMillora').value = generarAspectesMilloraAuto(alumne);
+                document.getElementById('recomanacio').value = generarRecomanacioAuto(alumne, notaTemp);
+                document.getElementById('valoracioGlobal').value = generarValoracioGlobalAuto(alumne, notaTemp, alumne.nom.split(' ')[0]);
             }
         });
 
-        // ===========================================
-        // SUBMIT (conservat de l'original)
-        // ===========================================
-        document.getElementById('submitBtn').addEventListener('click', function() {
-            let requiredIds = ['nom', 'grup', 'ple_fonts', 'ple_eines', 'ple_xarxes', 'ple_representacio', 'ple_millores', 'cerca_resultats', 'imatge_actual', 'imatge_desitjada', 'pilar1', 'pilar2', 'pilar3', 'linkedin', 'cv_digital'];
-            let valid = true;
-            requiredIds.forEach(id => {
-                let field = document.getElementById(id);
-                if (field && !field.value.trim()) {
-                    field.style.borderColor = '#D1222B';
-                    valid = false;
-                } else if (field) {
-                    field.style.borderColor = '#ffd9d9';
-                }
-            });
-
-            if (!valid) { alert('Omple tots els camps obligatoris (*)'); return; }
-
-            window._estudiantData = {
-                nom: document.getElementById('nom').value,
-                grup: document.getElementById('grup').value,
-                autoval: document.getElementById('autovaloracio').value,
-                // Bloc 1
-                ple_fonts: document.getElementById('ple_fonts').value,
-                ple_eines: document.getElementById('ple_eines').value,
-                ple_xarxes: document.getElementById('ple_xarxes').value,
-                ple_representacio: document.getElementById('ple_representacio').value,
-                ple_millores: document.getElementById('ple_millores').value,
-                // Bloc 2
-                cerca_resultats: document.getElementById('cerca_resultats').value,
-                imatge_actual: document.getElementById('imatge_actual').value,
-                imatge_desitjada: document.getElementById('imatge_desitjada').value,
-                pilar1: document.getElementById('pilar1').value,
-                pilar2: document.getElementById('pilar2').value,
-                pilar3: document.getElementById('pilar3').value,
-                // Bloc 3
-                linkedin: document.getElementById('linkedin').value,
-                cv_digital: document.getElementById('cv_digital').value,
-                cv_descripcio: document.getElementById('cv_descripcio').value,
-                data: new Date().toISOString()
+        document.getElementById('guardarAvaluacioBtn').addEventListener('click', function() {
+            let index = document.getElementById('selectorAlumne').value;
+            if (index === '') {
+                alert('Selecciona un alumne');
+                return;
+            }
+            
+            let ple = parseInt(document.getElementById('notaPLE').value);
+            let identitat = parseInt(document.getElementById('notaIdentitat').value);
+            let cv = parseInt(document.getElementById('notaCV').value);
+            let qualitat = parseInt(document.getElementById('notaQualitat').value);
+            let notaFinal = calcularNotaFinal(ple, identitat, cv, qualitat);
+            
+            alumnesAvaluats[index] = {
+                ple: ple,
+                identitat: identitat,
+                cv: cv,
+                qualitat: qualitat,
+                puntsForts: document.getElementById('puntsForts').value,
+                aspectesMillora: document.getElementById('aspectesMillora').value,
+                recomanacio: document.getElementById('recomanacio').value,
+                valoracioGlobal: document.getElementById('valoracioGlobal').value,
+                notaFinal: notaFinal
             };
-
-            document.getElementById('resultsArea').style.display = 'block';
             
-            // Mostrar modal de recordatori després de preparar
-            setTimeout(() => {
-                document.getElementById('modalExplicacio').style.display = 'block';
-            }, 500);
+            alumnes[index].notaPLE = ple + '/4 - ' + getNivellText(ple);
+            alumnes[index].notaIdentitat = identitat + '/4 - ' + getNivellText(identitat);
+            alumnes[index].notaCV = cv + '/4 - ' + getNivellText(cv);
+            alumnes[index].notaQualitat = qualitat + '/4 - ' + getNivellText(qualitat);
+            alumnes[index].notaFinal = notaFinal;
+            
+            actualitzarTaula();
+            alert('Avaluació guardada correctament');
         });
 
-        // ===========================================
-        // PDF (conservat de l'original) - ARA FUNCIONA
-        // ===========================================
-        document.getElementById('pdfBtn').addEventListener('click', function() {
-            let d = window._estudiantData;
-            if (!d) { alert('Primer prepara les dades'); return; }
+        function generarPdfIndividual(index) {
+            let alumne = alumnes[index];
+            let avaluacio = alumnesAvaluats[index] || {
+                ple: 3,
+                identitat: 3,
+                cv: 3,
+                qualitat: 3,
+                puntsForts: generarPuntsFortsAuto(alumne),
+                aspectesMillora: generarAspectesMilloraAuto(alumne),
+                recomanacio: generarRecomanacioAuto(alumne, 7.5),
+                valoracioGlobal: generarValoracioGlobalAuto(alumne, 7.5, alumne.nom.split(' ')[0]),
+                notaFinal: calcularNotaFinal(3, 3, 3, 3)
+            };
             
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             
             doc.setFontSize(16);
-            doc.setTextColor(209,34,43);
-            doc.text('INFORME D\'ACTIVITAT - RA5', 20, 20);
+            doc.setTextColor(0, 0, 0);
+            doc.text('INFORME D\'AVALUACIÓ - RA5', 20, 20);
             
             doc.setFontSize(10);
-            doc.setTextColor(0,0,0);
-            doc.text('Estudiant: ' + (d.nom || ''), 20, 30);
-            doc.text('Grup: ' + (d.grup || ''), 20, 37);
+            doc.text('Microactivitat: La meva identitat digital professional', 20, 30);
+            doc.text('Professor: Diego Izquierdo Perán', 20, 37);
             doc.text('Data: ' + new Date().toLocaleDateString('ca-ES'), 20, 44);
             
-            let y = 54;
+            doc.text('DADES DE L\'ESTUDIANT', 20, 59);
+            doc.text('Nom: ' + alumne.nom, 20, 66);
+            doc.text('Grup: ' + alumne.grup, 20, 73);
             
-            doc.text('BLOC 1: PLE', 20, y);
-            y += 7;
-            doc.text('Fonts: ' + (d.ple_fonts || '-'), 20, y);
-            y += 7;
-            doc.text('Eines: ' + (d.ple_eines || '-'), 20, y);
-            y += 7;
-            doc.text('Xarxes: ' + (d.ple_xarxes || '-'), 20, y);
-            y += 7;
-            doc.text('Representació: ' + (d.ple_representacio || '-'), 20, y);
-            y += 7;
-            doc.text('Millores: ' + (d.ple_millores || '-'), 20, y);
-            y += 10;
+            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 88);
+            doc.text('1. PLE: ' + avaluacio.ple + '/4 - Nivell: ' + getNivellText(avaluacio.ple), 25, 98);
+            doc.text('2. Identitat digital: ' + avaluacio.identitat + '/4 - Nivell: ' + getNivellText(avaluacio.identitat), 25, 105);
+            doc.text('3. CV digital: ' + avaluacio.cv + '/4 - Nivell: ' + getNivellText(avaluacio.cv), 25, 112);
+            doc.text('4. Qualitat formal: ' + avaluacio.qualitat + '/4 - Nivell: ' + getNivellText(avaluacio.qualitat), 25, 119);
             
-            doc.text('BLOC 2: IDENTITAT DIGITAL', 20, y);
-            y += 7;
-            doc.text('Cerca Google: ' + (d.cerca_resultats || '-'), 20, y);
-            y += 7;
-            doc.text('Imatge actual: ' + (d.imatge_actual || '-'), 20, y);
-            y += 7;
-            doc.text('Imatge desitjada: ' + (d.imatge_desitjada || '-'), 20, y);
-            y += 7;
-            doc.text('Pilar 1: ' + (d.pilar1 || '-'), 20, y);
-            y += 7;
-            doc.text('Pilar 2: ' + (d.pilar2 || '-'), 20, y);
-            y += 7;
-            doc.text('Pilar 3: ' + (d.pilar3 || '-'), 20, y);
-            y += 10;
+            doc.text('RESULTATS FINALS', 20, 134);
+            doc.text('PUNTUACIÓ TOTAL: ' + (avaluacio.ple + avaluacio.identitat + avaluacio.cv + avaluacio.qualitat) + '/16', 20, 144);
+            doc.text('EQUIVALÈNCIA: ' + avaluacio.notaFinal + '/10', 20, 151);
             
-            doc.text('BLOC 3: CV DIGITAL', 20, y);
+            let nivellGlobal = parseFloat(avaluacio.notaFinal) >= 8 ? 'Excel·lent' : 
+                              parseFloat(avaluacio.notaFinal) >= 6 ? 'Assolit' : 'En procés';
+            doc.text('NIVELL: ' + nivellGlobal, 20, 158);
+            
+            doc.text('FEEDBACK PERSONALITZAT', 20, 173);
+            let y = 183;
+            
+            doc.text('Punts forts:', 20, y);
             y += 7;
-            doc.text('LinkedIn: ' + (d.linkedin || '-'), 20, y);
+            let puntsLines = doc.splitTextToSize(avaluacio.puntsForts || 'No especificat', 170);
+            doc.text(puntsLines, 20, y);
+            y += puntsLines.length * 5 + 10;
+            
+            doc.text('Aspectes a millorar:', 20, y);
             y += 7;
-            doc.text('CV digital: ' + (d.cv_digital || '-'), 20, y);
+            let milloresLines = doc.splitTextToSize(avaluacio.aspectesMillora || 'No especificat', 170);
+            doc.text(milloresLines, 20, y);
+            y += milloresLines.length * 5 + 10;
+            
+            doc.text('Recomanació professional:', 20, y);
             y += 7;
-            if (d.cv_descripcio) {
-                doc.text('Descripció CV: ' + d.cv_descripcio, 20, y);
-                y += 7;
+            let recomanacioLines = doc.splitTextToSize('• ' + (avaluacio.recomanacio || 'No especificada'), 170);
+            doc.text(recomanacioLines, 20, y);
+            y += recomanacioLines.length * 5 + 10;
+            
+            doc.text('VALORACIÓ QUALITATIVA GLOBAL:', 20, y);
+            y += 7;
+            let valoracioLines = doc.splitTextToSize(avaluacio.valoracioGlobal || 'No especificada', 170);
+            doc.text(valoracioLines, 20, y);
+            
+            doc.save(`RA5_${alumne.nom.replace(/\s+/g, '_')}.pdf`);
+        }
+
+        window.generarPdfIndividual = generarPdfIndividual;
+
+        document.getElementById('generarPdfIndividualBtn').addEventListener('click', function() {
+            let index = document.getElementById('selectorAlumne').value;
+            if (index === '') {
+                alert('Selecciona un alumne');
+                return;
             }
-            doc.save(`RA5_informe_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.pdf`);
+            generarPdfIndividual(parseInt(index));
         });
 
-        // ===========================================
-        // JSON (conservat de l'original) - ARA FUNCIONA
-        // ===========================================
-        document.getElementById('jsonBtn').addEventListener('click', function() {
-            let d = window._estudiantData;
-            if (!d) { 
-                alert('Primer has de fer clic a "Preparar per enviar"');
-                return; 
-            }
-            
-            try {
-                let jsonCont = document.getElementById('jsonContainer');
-                let jsonStr = JSON.stringify(d, null, 2);
-                
-                // Mostrar el JSON a la pantalla
-                if (jsonCont) {
-                    jsonCont.style.display = 'block';
-                    jsonCont.textContent = jsonStr;
-                }
-                
-                // Crear i descarregar el fitxer
-                const blob = new Blob([jsonStr], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `RA5_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.json`;
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                
-                // Netejar
+        document.getElementById('pdfTotsBtn').addEventListener('click', function() {
+            if (alumnes.length === 0) return;
+            for (let i = 0; i < alumnes.length; i++) {
                 setTimeout(() => {
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                alert('✅ Fitxer JSON desat a DESCÀRREGUES');
-                
-            } catch (error) {
-                console.error('Error:', error);
-                alert('❌ Error en exportar el JSON');
+                    generarPdfIndividual(i);
+                }, i * 500);
             }
         });
 
-        // ===========================================
-        // Copiar JSON al portapapers
-        // ===========================================
-        document.getElementById('copyJsonBtn').addEventListener('click', function() {
-            let d = window._estudiantData;
-            if (!d) { alert('Primer prepara les dades'); return; }
+        document.getElementById('excelBtn').addEventListener('click', function() {
+            if (alumnes.length === 0) {
+                alert('Primer carrega els JSON');
+                return;
+            }
             
-            let jsonStr = JSON.stringify(d, null, 2);
-            navigator.clipboard.writeText(jsonStr).then(() => {
-                let status = document.getElementById('copyStatus');
-                status.style.display = 'block';
-                setTimeout(() => status.style.display = 'none', 2000);
-            }).catch(() => {
-                alert('❌ No s\'ha pogut copiar');
+            let dades = [['Nom', 'Grup', 'PLE', 'Identitat', 'CV', 'Qualitat', 'Nota final']];
+            
+            alumnes.forEach(a => {
+                let index = alumnes.indexOf(a);
+                let av = alumnesAvaluats[index] || { ple: 'pendent', identitat: 'pendent', cv: 'pendent', qualitat: 'pendent', notaFinal: 'pendent' };
+                
+                dades.push([
+                    a.nom,
+                    a.grup,
+                    av.ple,
+                    av.identitat,
+                    av.cv,
+                    av.qualitat,
+                    av.notaFinal
+                ]);
             });
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(dades);
+            XLSX.utils.book_append_sheet(wb, ws, 'RA5_Resultats');
+            XLSX.writeFile(wb, 'RA5_notes_grup.xlsx');
+        });
+
+        document.getElementById('carregarJsonBtn').addEventListener('click', function() {
+            const files = document.getElementById('jsonFiles').files;
+            if (files.length === 0) {
+                alert('Selecciona almenys un fitxer');
+                return;
+            }
+            
+            alumnes = [];
+            alumnesAvaluats = {};
+            let pendents = files.length;
+            let errors = [];
+            
+            document.getElementById('statusMessage').style.display = 'block';
+            document.getElementById('statusMessage').innerHTML = 'Processant ' + pendents + ' fitxers...';
+            document.getElementById('statusMessage').style.background = '#fff3cd';
+            
+            for (let i = 0; i < files.length; i++) {
+                processarJSON(files[i], function(error) {
+                    if (error) errors.push(error);
+                    
+                    pendents--;
+                    if (pendents === 0) {
+                        if (errors.length > 0) {
+                            document.getElementById('statusMessage').innerHTML = '❌ Errors: ' + errors.join('<br>');
+                            document.getElementById('statusMessage').style.background = '#f8d7da';
+                        } else {
+                            document.getElementById('statusMessage').innerHTML = '✅ Processats ' + files.length + ' fitxers';
+                            document.getElementById('statusMessage').style.background = '#d4edda';
+                        }
+                        actualitzarTaula();
+                    }
+                });
+            }
+        });
+
+        document.getElementById('netejarBtn').addEventListener('click', function() {
+            alumnes = [];
+            alumnesAvaluats = {};
+            document.getElementById('taulaContainer').style.display = 'none';
+            document.getElementById('jsonFiles').value = '';
+            document.getElementById('statusMessage').style.display = 'none';
+            document.getElementById('selectorAlumne').innerHTML = '<option value="">-- Selecciona un alumne --</option>';
+            document.getElementById('panelRespostes').style.display = 'none';
         });
     </script>
 </body>
