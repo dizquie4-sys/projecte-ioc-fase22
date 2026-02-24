@@ -25,11 +25,15 @@
             border-radius: 30px;
             box-shadow: 0 20px 40px rgba(209,34,43,0.2);
             overflow: hidden;
+            position: relative;
         }
         .header {
             background: #D1222B;
             padding: 25px 35px;
             color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .header h1 {
             font-size: 2.2rem;
@@ -39,6 +43,33 @@
             font-size: 1.2rem;
             opacity: 0.9;
         }
+        
+        /* ===== NOU BOTÓ PER TORNAR A LA PORTADA ===== */
+        .btn-tornar-portada {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            z-index: 1001;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-tornar-portada:hover {
+            background: #D1222B;
+            color: white;
+            transform: scale(1.05);
+        }
+        
         .content {
             padding: 40px 50px;
         }
@@ -48,11 +79,6 @@
             border-left: 8px solid #FFC72C;
             padding-left: 18px;
             margin: 40px 0 20px;
-        }
-        .subsection-title {
-            font-size: 1.4rem;
-            color: #D1222B;
-            margin: 30px 0 15px;
         }
         .info-box {
             background: #f8fafc;
@@ -182,6 +208,15 @@
         .rubrica-visual .nivell-2 { background: #fff3cd; }
         .rubrica-visual .nivell-3 { background: #d4edda; }
         .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
+        
+        /* Estil per als botons d'alumne i professor (en línia) */
+        .buttons-parell {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
     </style>
 </head>
 <body>
@@ -191,8 +226,12 @@
     </button>
 
     <div class="container">
-        <!-- CAPÇALERA -->
+        <!-- CAPÇALERA AMB TÍTOL -->
         <div class="header">
+            <!-- NOU: BOTÓ PER TORNAR A LA PORTADA 1_presentacio.html -->
+            <a href="../../1_presentacio.html" class="btn-tornar-portada" title="Tornar a la portada del projecte" aria-label="Tornar a la portada del projecte">
+                🏠
+            </a>
             <h1>📘 RA1 · Coneix el teu sector</h1>
             <div class="subtitol">Fitxa de l'activitat · 2 hores</div>
         </div>
@@ -302,16 +341,22 @@
                 </table>
             </div>
 
-            <!-- ENLLAÇ A L'HTML COMPLET DE L'ALUMNE (SENSE TEXT ADDICIONAL) -->
-            <div style="text-align: center; margin: 40px 0 20px;">
-                <a href="#" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">
-                    🔍 Veure activitat completa per a alumnes
+            <!-- BOTONS D'ALUMNE I PROFESSOR (CORREGITS) -->
+            <div class="buttons-parell">
+                <!-- Botó per a l'alumne (ARA CORRECTE) -->
+                <a href="../alumnes/ra1-alumne.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">
+                    👤 Veure activitat completa per a alumnes
+                </a>
+                
+                <!-- NOU: Botó per al professor -->
+                <a href="../professor/ra1-professor.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px; background: #6c757d; border-color: #6c757d;">
+                    👨‍🏫 Corrector per al professor
                 </a>
             </div>
 
-            <!-- NAVEGACIÓ (AMB BOTÓ CENTRAL A DESENVOLUPAMENT) -->
+            <!-- NAVEGACIÓ -->
             <div class="nav-footer">
-                <!-- Botó esquerre: activitat anterior (no n'hi ha) -->
+                <!-- Botó esquerre: RA anterior (no n'hi ha) -->
                 <div></div>
                 
                 <!-- Botó central: Tornar a Desenvolupament curricular -->
