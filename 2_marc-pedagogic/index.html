@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marc pedagògic · Projecte IOC</title>
     <style>
-        /* ===== ESTILS COMPARTITS ===== */
+        /* ===== RESET I ESTILS GENERALS ===== */
         * {
             margin: 0;
             padding: 0;
@@ -25,11 +25,15 @@
             border-radius: 30px;
             box-shadow: 0 20px 40px rgba(209,34,43,0.2);
             overflow: hidden;
+            position: relative;
         }
         .header {
             background: #D1222B;
             padding: 25px 35px;
             color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .header h1 {
             font-size: 2.2rem;
@@ -39,6 +43,33 @@
             font-size: 1.2rem;
             opacity: 0.9;
         }
+        
+        /* ===== BOTÓ PER TORNAR A LA PORTADA ===== */
+        .btn-tornar-portada {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            z-index: 1001;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-tornar-portada:hover {
+            background: #D1222B;
+            color: white;
+            transform: scale(1.05);
+        }
+        
         .content {
             padding: 40px 50px;
         }
@@ -85,6 +116,9 @@
             background: #D1222B;
             color: white;
         }
+        .btn-primary:hover {
+            background: #b01e25;
+        }
         .btn-flotant {
             position: fixed;
             bottom: 30px;
@@ -122,18 +156,15 @@
             color: #FFC72C;
             text-decoration: none;
         }
+        .footer a:hover {
+            text-decoration: underline;
+        }
         .nav-footer {
             display: flex;
             justify-content: space-between;
             margin-top: 40px;
             padding-top: 20px;
             border-top: 2px dashed #FFC72C;
-        }
-        .enllac-intern {
-            background: #f0f7ff;
-            padding: 5px 10px;
-            border-radius: 20px;
-            margin: 0 5px;
         }
         table {
             width: 100%;
@@ -149,6 +180,40 @@
             border: 1px solid #ffd9d9;
             padding: 8px;
         }
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .btn-tornar-portada {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+                top: 15px;
+                left: 15px;
+            }
+            .content { padding: 30px; }
+        }
     </style>
 </head>
 <body>
@@ -158,8 +223,11 @@
     </button>
 
     <div class="container">
-        <!-- CAPÇALERA -->
+        <!-- CAPÇALERA (ARA AMB BOTÓ DE RETORN) -->
         <div class="header">
+            <a href="../1_presentacio.html" class="btn-tornar-portada" title="Tornar a la portada del projecte" aria-label="Tornar a la portada del projecte">
+                🏠
+            </a>
             <h1>📚 Marc pedagògic</h1>
             <div class="subtitol">Fonaments institucionals i teòrics del projecte</div>
         </div>
@@ -170,11 +238,11 @@
             <div class="info-box" style="background: #fff3cd;">
                 <p style="font-weight: 700; margin-bottom: 10px;">📌 En aquesta pàgina:</p>
                 <ul style="margin-left: 25px;">
-                    <li><a href="#model-ioc" class="enllac-intern">1. El model d'educació a distància de l'IOC</a></li>
-                    <li><a href="#fonaments" class="enllac-intern">2. Fonaments pedagògics</a></li>
-                    <li><a href="#avaluacio" class="enllac-intern">3. L'avaluació dels aprenentatges</a></li>
-                    <li><a href="#inclusio" class="enllac-intern">4. L'atenció educativa i la inclusió digital</a></li>
-                    <li><a href="#tecnologies" class="enllac-intern">5. L'ús de les tecnologies digitals i la IA</a></li>
+                    <li><a href="#model-ioc">1. El model d'educació a distància de l'IOC</a></li>
+                    <li><a href="#fonaments">2. Fonaments pedagògics</a></li>
+                    <li><a href="#avaluacio">3. L'avaluació dels aprenentatges</a></li>
+                    <li><a href="#inclusio">4. L'atenció educativa i la inclusió digital</a></li>
+                    <li><a href="#tecnologies">5. L'ús de les tecnologies digitals i la IA</a></li>
                 </ul>
             </div>
 
@@ -297,7 +365,7 @@
             <h3 class="subsection-title">Intel·ligència Artificial</h3>
             <div class="info-box">
                 <p>La PGA 2025-2026 estableix com a objectiu estratègic: "Impulsar la innovació tecnopedagògica integrant la intel·ligència artificial".</p>
-                <p><strong>Campanya VERIFICA.TE:</strong> Mètode per al pensament crític digital:</p>
+                <p><strong>Campanya <a href="https://dizquie4-sys.github.io/CURSO-CDD/mini-campanya%20digital.html" target="_blank">VERIFICA.TE</a>:</strong> Mètode per al pensament crític digital:</p>
                 <p style="background:#fff3cd; padding:10px; border-radius:5px;">
                     <strong>V</strong>erifica · <strong>E</strong>scepticisme · <strong>R</strong>astreja · <strong>I</strong>dentifica · <strong>F</strong>onts · <strong>I</strong>nterpreta · <strong>C</strong>ontrasta · <strong>A</strong>plica
                 </p>
@@ -310,7 +378,7 @@
             </div>
         </div>
 
-        <!-- PEU -->
+        <!-- PEU DE PÀGINA -->
         <div class="footer">
             Diego Izquierdo Perán · FOL · IOC · 
             <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
@@ -318,7 +386,7 @@
     </div>
 
     <script>
-        // TORNAR A DALT
+        // BOTÓ TORNAR A DALT
         document.getElementById('tornarDaltBtn').addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
