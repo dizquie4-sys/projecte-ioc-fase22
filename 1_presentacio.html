@@ -26,11 +26,15 @@
             box-shadow: 0 20px 40px rgba(209,34,43,0.2);
             overflow: hidden;
         }
+
+        /* ===== CAPÇALERA (ARA FIXA) ===== */
         .header {
             background: #D1222B;
             padding: 40px 50px;
             color: white;
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .header h1 {
             font-size: 2.8rem;
@@ -51,6 +55,8 @@
             margin-top: 20px;
             font-style: italic;
         }
+
+        /* ===== ICONA ACCESSIBILITAT ===== */
         .accessibility-icon {
             position: absolute;
             top: 30px;
@@ -66,9 +72,38 @@
             color: white;
             border: 3px solid white;
         }
+
+        /* ===== NOU BOTÓ DE RETROCÉS (FLETXA) ===== */
+        .btn-tornar {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-tornar:hover {
+            background: #D1222B;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* ===== CONTINGUT PRINCIPAL ===== */
         .content {
             padding: 50px;
         }
+
+        /* ===== TARGETES D'ACCÉS ===== */
         .targetes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -109,6 +144,8 @@
             font-size: 2.5rem;
             margin-bottom: 15px;
         }
+
+        /* ===== BOTONS ===== */
         .btn {
             background: white;
             border: 2px solid #D1222B;
@@ -164,6 +201,8 @@
             margin: -1px;
             overflow: hidden;
         }
+
+        /* ===== PEU DE PÀGINA ===== */
         .footer {
             background: #1e293b;
             color: white;
@@ -178,32 +217,57 @@
         .footer a:hover {
             text-decoration: underline;
         }
+
+        /* ===== ACCESSIBILITAT I RESPONSIVE ===== */
         @media (max-width: 768px) {
             .header h1 { font-size: 2rem; }
             .header .subtitol { font-size: 1.2rem; }
             .content { padding: 30px; }
             .targetes-grid { grid-template-columns: 1fr; }
+            .btn-tornar {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                top: 20px;
+                left: 20px;
+            }
+            .accessibility-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                top: 20px;
+                right: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- BOTÓ FLOTANT TORNAR A DALT (JA EXISTENT) -->
     <button class="btn-flotant" id="tornarDaltBtn" title="Tornar a dalt" aria-label="Tornar a dalt">
         ⬆️ <span class="sr-only">Tornar a dalt</span>
     </button>
 
     <div class="container">
+        <!-- CAPÇALERA (ARA AMB BOTÓ DE RETROCÉS) -->
         <div class="header">
+            <!-- NOU: BOTÓ PER TORNAR A LA PORTADA 0_index.html -->
+            <a href="0_index.html" class="btn-tornar" title="Tornar a la portada de la convocatòria" aria-label="Tornar a la portada de la convocatòria">
+                ⬅️
+            </a>
             <div class="accessibility-icon" aria-label="Compleix criteris WCAG 2.1">♿</div>
             <h1>⚡ Projecte Didàctic · IPO I</h1>
             <div class="subtitol">Identitat digital, anàlisi crítica i prevenció: un fil conductor per a l'ocupabilitat en el sector elèctric</div>
             <div class="autor">Diego Izquierdo Perán · Febrer 2026</div>
         </div>
 
+        <!-- CONTINGUT PRINCIPAL -->
         <div class="content">
+            <!-- CITA INSPIRADORA -->
             <div style="text-align: center; font-style: italic; color: #4b5563; margin-bottom: 40px; font-size: 1.2rem;">
                 “L'educació no és omplir un poal, sinó encendre un foc.” — William Butler Yeats
             </div>
 
+            <!-- DESCRIPCIÓ BREU -->
             <div style="background: #f0f7ff; border-radius: 20px; padding: 30px; margin-bottom: 40px; border-left: 8px solid #D1222B;">
                 <p style="font-size: 1.2rem; margin-bottom: 15px;">
                     Aquest projecte presenta una proposta didàctica per al mòdul d'Itinerari Personal per a l'Ocupabilitat I (IPO I) del CFGM d'Instal·lacions Elèctriques i Automàtiques a l'Institut Obert de Catalunya (IOC).
@@ -213,6 +277,7 @@
                 </p>
             </div>
 
+            <!-- TARGETES D'ACCÉS A LES SECCIONS -->
             <h2 style="font-size: 2rem; color: #D1222B; margin-bottom: 20px; border-left: 8px solid #FFC72C; padding-left: 20px;">
                 📂 Accés al projecte
             </h2>
@@ -245,6 +310,7 @@
                 </a>
             </div>
 
+            <!-- ACCÉS RÀPID A LES ACTIVITATS -->
             <div style="margin-top: 50px;">
                 <h2 style="font-size: 1.8rem; color: #D1222B; margin-bottom: 20px;">🧩 Exemplificació d'activitats (RA1-RA5)</h2>
                 <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
@@ -257,6 +323,7 @@
             </div>
         </div>
 
+        <!-- PEU DE PÀGINA -->
         <div class="footer">
             Diego Izquierdo Perán · FOL · IOC · 
             <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
@@ -264,6 +331,7 @@
     </div>
 
     <script>
+        // BOTÓ TORNAR A DALT
         document.getElementById('tornarDaltBtn').addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
