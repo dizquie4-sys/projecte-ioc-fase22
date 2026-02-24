@@ -25,11 +25,17 @@
             border-radius: 30px;
             box-shadow: 0 20px 40px rgba(209,34,43,0.2);
             overflow: hidden;
+            position: relative;
         }
+
+        /* ===== CAPÇALERA (ARA FIXA) ===== */
         .header {
             background: #D1222B;
             padding: 25px 35px;
             color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .header h1 {
             font-size: 2.2rem;
@@ -39,9 +45,39 @@
             font-size: 1.2rem;
             opacity: 0.9;
         }
+
+        /* ===== BOTÓ PER TORNAR A LA PORTADA ===== */
+        .btn-tornar-portada {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            z-index: 1001;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-tornar-portada:hover {
+            background: #D1222B;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* ===== CONTINGUT PRINCIPAL ===== */
         .content {
             padding: 40px 50px;
         }
+
+        /* ===== TÍTOLS DE SECCIÓ ===== */
         .section-title {
             font-size: 1.8rem;
             color: #D1222B;
@@ -54,6 +90,8 @@
             color: #D1222B;
             margin: 30px 0 15px;
         }
+
+        /* ===== CAIXES D'INFORMACIÓ ===== */
         .info-box {
             background: #f8fafc;
             border-radius: 15px;
@@ -61,6 +99,8 @@
             margin: 20px 0;
             border-left: 5px solid #D1222B;
         }
+
+        /* ===== BOTONS ===== */
         .btn {
             background: white;
             border: 2px solid #D1222B;
@@ -85,6 +125,11 @@
             background: #D1222B;
             color: white;
         }
+        .btn-primary:hover {
+            background: #b01e25;
+        }
+
+        /* ===== BOTÓ FLOTANT TORNAR A DALT ===== */
         .btn-flotant {
             position: fixed;
             bottom: 30px;
@@ -112,6 +157,8 @@
             margin: -1px;
             overflow: hidden;
         }
+
+        /* ===== PEU DE PÀGINA ===== */
         .footer {
             background: #1e293b;
             color: white;
@@ -122,6 +169,11 @@
             color: #FFC72C;
             text-decoration: none;
         }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== NAVEGACIÓ ENTRE PÀGINES ===== */
         .nav-footer {
             display: flex;
             justify-content: space-between;
@@ -129,12 +181,8 @@
             padding-top: 20px;
             border-top: 2px dashed #FFC72C;
         }
-        .enllac-intern {
-            background: #f0f7ff;
-            padding: 5px 10px;
-            border-radius: 20px;
-            margin: 0 5px;
-        }
+
+        /* ===== TAULES ===== */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -149,6 +197,19 @@
             border: 1px solid #ffd9d9;
             padding: 8px;
         }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .btn-tornar-portada {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+                top: 15px;
+                left: 15px;
+            }
+            .content { padding: 30px; }
+        }
     </style>
 </head>
 <body>
@@ -158,22 +219,25 @@
     </button>
 
     <div class="container">
-        <!-- CAPÇALERA -->
+        <!-- CAPÇALERA (ARA AMB BOTÓ DE RETORN) -->
         <div class="header">
+            <a href="../1_presentacio.html" class="btn-tornar-portada" title="Tornar a la portada del projecte" aria-label="Tornar a la portada del projecte">
+                🏠
+            </a>
             <h1>⚙️ Desenvolupament curricular</h1>
             <div class="subtitol">Contextualització, activitats i ponderació</div>
         </div>
 
         <!-- CONTINGUT -->
         <div class="content">
-            <!-- ÍNDEX INTERN -->
+            <!-- ÍNDEX INTERN (OPCIONAL, PERÒ EL DEIXEM) -->
             <div class="info-box" style="background: #fff3cd;">
                 <p style="font-weight: 700; margin-bottom: 10px;">📌 En aquesta pàgina:</p>
                 <ul style="margin-left: 25px;">
-                    <li><a href="#context" class="enllac-intern">6. Contextualització: el CFGM d'Instal·lacions Elèctriques</a></li>
-                    <li><a href="#activitats" class="enllac-intern">7. Desenvolupament dels continguts d'IPO I (RA1-RA5)</a></li>
-                    <li><a href="#ponderacio" class="enllac-intern">8. Ponderació i qualificació de les activitats</a></li>
-                    <li><a href="#coherencia" class="enllac-intern">9. Coherència amb el marc institucional</a></li>
+                    <li><a href="#context">6. Contextualització</a></li>
+                    <li><a href="#activitats">7. Desenvolupament dels continguts (RA1-RA5)</a></li>
+                    <li><a href="#ponderacio">8. Ponderació i qualificació</a></li>
+                    <li><a href="#coherencia">9. Coherència institucional</a></li>
                 </ul>
             </div>
 
@@ -213,6 +277,7 @@
                 <tr><td>RA5</td><td>PLE i identitat digital</td><td>11 h</td><td>10%</td></tr>
             </table>
 
+            <!-- ACTIVITAT RA1 -->
             <h3 class="subsection-title">7.2. Activitat RA1: "Coneix el teu sector"</h3>
             <div class="info-box">
                 <p><strong>Durada:</strong> 2 hores · Individual</p>
@@ -221,6 +286,7 @@
                 <p><a href="activitats/activitat-ra1.html" class="btn btn-primary">Veure fitxa completa</a></p>
             </div>
 
+            <!-- ACTIVITAT RA2 -->
             <h3 class="subsection-title">7.3. Activitat RA2: "Investigació d'accidents + Avaluació de riscos"</h3>
             <div class="info-box">
                 <p><strong>Durada:</strong> 8 hores · Individual + col·laboratiu</p>
@@ -229,6 +295,7 @@
                 <p><a href="activitats/activitat-ra2.html" class="btn btn-primary">Veure fitxa completa</a></p>
             </div>
 
+            <!-- ACTIVITAT RA3 -->
             <h3 class="subsection-title">7.4. Activitat RA3: "De l'oferta al conveni"</h3>
             <div class="info-box">
                 <p><strong>Durada:</strong> 4 hores · Individual + col·laboratiu</p>
@@ -237,6 +304,7 @@
                 <p><a href="activitats/activitat-ra3.html" class="btn btn-primary">Veure fitxa completa</a></p>
             </div>
 
+            <!-- ACTIVITAT RA4 -->
             <h3 class="subsection-title">7.5. Activitat RA4: "El meu perfil professional"</h3>
             <div class="info-box">
                 <p><strong>Durada:</strong> 3 hores · Individual</p>
@@ -245,6 +313,7 @@
                 <p><a href="activitats/activitat-ra4.html" class="btn btn-primary">Veure fitxa completa</a></p>
             </div>
 
+            <!-- ACTIVITAT RA5 -->
             <h3 class="subsection-title">7.6. Activitat RA5: "La meva identitat digital professional"</h3>
             <div class="info-box">
                 <p><strong>Durada:</strong> 4 hores · Individual + coavaluació</p>
@@ -295,14 +364,14 @@
                 <tr><td>Intel·ligència Artificial (PGA 25-26)</td><td>Campanya VERIFICA.TE; activitat de contrast IA vs legislació</td></tr>
             </table>
 
-            <!-- NAVEGACIÓ ENTRE PÀGINES -->
+            <!-- NAVEGACIÓ ENTRE PÀGINES (NOVA) -->
             <div class="nav-footer">
                 <a href="../2_marc-pedagogic/index.html" class="btn">⬅️ Anterior: Marc pedagògic</a>
                 <a href="../4_conclusions.html" class="btn btn-primary">Següent: Conclusions ➡️</a>
             </div>
         </div>
 
-        <!-- PEU -->
+        <!-- PEU DE PÀGINA -->
         <div class="footer">
             Diego Izquierdo Perán · FOL · IOC · 
             <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
@@ -310,7 +379,7 @@
     </div>
 
     <script>
-        // TORNAR A DALT
+        // BOTÓ TORNAR A DALT
         document.getElementById('tornarDaltBtn').addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
