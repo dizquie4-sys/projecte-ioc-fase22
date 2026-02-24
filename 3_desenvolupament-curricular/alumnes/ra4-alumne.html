@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA4 · El meu perfil professional · DAFO + Full de ruta</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* ESTILS COMPLETS (exactament igual que l'original) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(209,34,43,0.15);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        .header .accessibility-icon {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            border: 2px solid white;
+        }
+        .content {
+            padding: 30px 35px;
+        }
+        .badge-groc {
+            background: #FFC72C;
+            color: #1e293b;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 2px solid #D1222B;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 30px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .section-title .help-btn {
+            background: #FFC72C;
+            color: #D1222B;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .section-title .help-btn:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .info-box {
+            background: #fff1f0;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #D1222B;
+        }
+        .info-box h3 {
+            color: #D1222B;
+            margin-bottom: 10px;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: #b01e25;
+            border-color: #b01e25;
+        }
+        .btn-danger {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-close {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-close:hover {
+            background: #5a6268;
+        }
+        .btn-up {
+            background: #FFC72C;
+            color: #D1222B;
+            border: none;
+        }
+        .btn-up:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffd9d9;
+            border-radius: 12px;
+            margin: 8px 0 15px;
+            font-size: 1rem;
+        }
+        textarea:focus, input:focus, select:focus {
+            outline: 3px solid #FFC72C;
+            border-color: #D1222B;
+        }
+        .required::after {
+            content: " *";
+            color: #D1222B;
+            font-weight: bold;
+        }
+        .scale-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .scale-item {
+            flex: 1;
+            min-width: 180px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scale-item:hover, .scale-item:focus {
+            background: #fff1f0;
+            border-color: #D1222B;
+            outline: none;
+        }
+        .scale-item.selected {
+            background: #fff1f0;
+            border-color: #D1222B;
+            box-shadow: 0 0 0 3px rgba(209,34,43,0.2);
+        }
+        .level-icon {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .level-1 { background: #e74c3c; }
+        .level-2 { background: #f39c12; }
+        .level-3 { background: #2ecc71; }
+        .level-4 { background: #D1222B; }
+        .results-area {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid #D1222B;
+            display: none;
+        }
+        .score-badge {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .json-container {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 10px 0;
+        }
+        .footer {
+            background: #f1f5f9;
+            padding: 20px;
+            text-align: center;
+        }
+        hr {
+            border: 2px dashed #FFC72C;
+            margin: 30px 0;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+        .autoavaluacio-container, .test-container {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+            display: none;
+        }
+        .quiz-item, .test-pregunta {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+        .quiz-question, .test-pregunta p {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .quiz-options, .test-opcions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .quiz-options label, .test-opcions label {
+            flex: 1;
+            min-width: 100px;
+            text-align: center;
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #ced4da;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-options label:hover, .test-opcions label:hover {
+            background: #FFC72C;
+            border-color: #D1222B;
+        }
+        .quiz-options input[type="radio"], .test-opcions input[type="radio"] {
+            display: none;
+        }
+        .quiz-options input[type="radio"]:checked + label, .test-opcions input[type="radio"]:checked + label {
+            background: #D1222B;
+            color: white;
+            border-color: #D1222B;
+        }
+        .feedback-quiz, .test-resultat {
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            background: #fff3cd;
+        }
+        .test-grafica {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .test-barra {
+            text-align: center;
+        }
+        .barra {
+            width: 60px;
+            height: 200px;
+            background: #e9ecef;
+            border-radius: 10px;
+            position: relative;
+            margin: 10px auto;
+        }
+        .barra-omplerta {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #D1222B;
+            border-radius: 10px;
+            transition: height 0.3s;
+        }
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+            text-decoration: none;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        .rubrica-visual {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .rubrica-visual table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubrica-visual th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        .rubrica-visual td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        .rubrica-visual .nivell-1 { background: #f8d7da; }
+        .rubrica-visual .nivell-2 { background: #fff3cd; }
+        .rubrica-visual .nivell-3 { background: #d4edda; }
+        .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
+        
+        .examen-container {
+            background: #f0f7ff;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 3px solid #D1222B;
+            display: none;
+        }
+        .examen-pregunta {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #FFC72C;
+        }
+        .examen-pregunta p {
+            margin-bottom: 10px;
+        }
+        .examen-opcions {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .examen-opcions label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .examen-opcions input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+        .examen-feedback {
+            margin-top: 8px;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .examen-correcte {
+            background: #d4edda;
+            color: #155724;
+        }
+        .examen-incorrecte {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .examen-resultat {
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        .examen-superat {
+            background: #d4edda;
+            color: #155724;
+        }
+        .examen-no-superat {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* ESTILS PER ALS MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 3px solid #D1222B;
+            position: relative;
+        }
+        .close-modal {
+            color: #D1222B;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: sticky;
+            top: 0;
+            background: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid #D1222B;
+        }
+        .close-modal:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .modal h2 {
+            color: #D1222B;
+            margin-bottom: 20px;
+        }
+        .modal h3 {
+            color: #D1222B;
+            margin: 20px 0 10px;
+        }
+        .modal ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        .modal li {
+            margin-bottom: 5px;
+        }
+
+        /* ESTILS PER ALS BLOCS DESPLEGABLES */
+        .bloc-container {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+            display: none;
+        }
+        .bloc-title {
+            color: #D1222B;
+            margin-bottom: 15px;
+        }
+        
+        /* MODAL D'EXPLICACIÓ JSON */
+        .modal-explicacio {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-explicacio-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            border: 3px solid #D1222B;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-explicacio-tancar {
+            color: #D1222B;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid #D1222B;
+        }
+        .modal-explicacio-tancar:hover {
+            background: #D1222B;
+            color: white;
+        }
+        
+        /* BOTÓ FLOTANT ACCESSIBLE */
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            min-width: 60px;
+            min-height: 60px;
+            line-height: 1;
+        }
+        .btn-flotant:hover,
+        .btn-flotant:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+            outline-offset: 2px;
+            transform: scale(1.05);
+        }
+        .btn-flotant:focus-visible {
+            outline: 3px solid #FFC72C;
+            box-shadow: 0 0 0 5px rgba(209,34,43,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT ACCESSIBLE PER TORNAR A DALT -->
+    <button 
+        class="btn-flotant" 
+        id="tornarDaltBtn" 
+        title="Tornar a l'inici de la pàgina"
+        aria-label="Tornar a dalt"
+        role="button"
+        tabindex="0">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
+
+    <!-- MODAL D'EXPLICACIÓ DEL JSON -->
+    <div id="modalExplicacio" class="modal-explicacio">
+        <div class="modal-explicacio-content">
+            <span class="modal-explicacio-tancar">&times;</span>
+            <h2 style="color:#D1222B; margin-bottom:20px;">📤 Com enviar el teu treball</h2>
+            
+            <div style="margin:20px 0; padding:15px; background:#f0f7ff; border-radius:10px; border-left:5px solid #D1222B;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📁 Què és un fitxer JSON?</strong></p>
+                <p>És un format que conté TOTES les teves respostes en un sol fitxer. El professor el podrà llegir fàcilment.</p>
+            </div>
+            
+            <div style="margin:20px 0; padding:15px; background:#fff3cd; border-radius:10px; border-left:5px solid #FFC72C;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📥 Com el guardes?</strong></p>
+                <ol style="margin-left:20px;">
+                    <li>Omple totes les preguntes</li>
+                    <li>Prem el botó <strong>"Preparar per enviar"</strong></li>
+                    <li>Prem <strong>"📊 Exportar JSON"</strong></li>
+                    <li>El fitxer es desarà a la carpeta <strong>Descàrregues</strong></li>
+                </ol>
+            </div>
+            
+            <div style="margin:20px 0; padding:15px; background:#d4edda; border-radius:10px; border-left:5px solid #28a745;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📤 Com l'envies al professor?</strong></p>
+                <ul style="margin-left:20px;">
+                    <li><strong>Moodle:</strong> Puja'l com a tasca</li>
+                    <li><strong>Correu:</strong> Adjunta'l a un missatge</li>
+                    <li><strong>Drive:</strong> Comparteix l'enllaç</li>
+                </ul>
+            </div>
+            
+            <div style="text-align:center; margin-top:25px;">
+                <button class="btn btn-primary" id="tancarModalBtn">Entès</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1 id="main-title">⚡ RA4 · El meu perfil professional · DAFO + Full de ruta</h1>
+                <p>FOL – IPO I · CFGM Instal·lacions Elèctriques</p>
+            </div>
+            <div class="accessibility-icon" role="img" aria-label="Presentació accessible" title="Aquest contingut compleix criteris d'accessibilitat WCAG 2.1">
+                ♿
+            </div>
+        </div>
+        <div class="content">
+            <!-- Botons de la capçalera -->
+            <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-bottom: 20px;">
+                <button class="btn btn-primary" id="pdfInstruccionsBtn">
+                    📥 PDF Instruccions completes
+                </button>
+                <button class="btn btn-primary" id="modalPortafolisBtn">
+                    📋 Instruccions del portafolis
+                </button>
+            </div>
+
+            <!-- MODAL INSTRUCCIONS PORTAFOLIS -->
+            <div id="modalPortafolis" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>📋 INSTRUCCIONS DEL PORTAFOLIS DIGITAL PROFESSIONAL</h2>
+                    
+                    <h3>Què és el portafolis?</h3>
+                    <p>El portafolis digital és una recopilació de les teves evidències d'aprenentatge al llarg del mòdul. Ha de mostrar la teva evolució i les teves competències professionals.</p>
+                    
+                    <h3>Contingut obligatori:</h3>
+                    <ul>
+                        <li><strong>RA1 (Coneix el teu sector):</strong> Informe d'anàlisi ocupacional</li>
+                        <li><strong>RA2 (Investigació d'accidents):</strong> Informe d'investigació + Avaluació de riscos</li>
+                        <li><strong>RA3 (De l'oferta al conveni):</strong> Taula de contrast + conclusions grupals</li>
+                        <li><strong>RA4 (El meu perfil professional):</strong> DAFO + Full de ruta</li>
+                        <li><strong>RA5 (Identitat digital):</strong> PLE + Reflexió identitat digital + CV digital</li>
+                        <li><strong>Reflexió global:</strong> Connexions entre els RA i aprenentatges</li>
+                    </ul>
+                    
+                    <h3>Criteris d'avaluació del portafolis:</h3>
+                    <ul>
+                        <li><strong>Completesa (30%):</strong> Hi són totes les evidències?</li>
+                        <li><strong>Reflexió (30%):</strong> Qualitat de la reflexió global i connexions</li>
+                        <li><strong>Organització (20%):</strong> Estructura clara i professional</li>
+                        <li><strong>Accessibilitat (20%):</strong> El portafolis és usable per a tothom?</li>
+                    </ul>
+                    
+                    <h3>Dates clau:</h3>
+                    <ul>
+                        <li><strong>Lliurament final:</strong> [Data a determinar]</li>
+                        <li><strong>Revisió intermèdia:</strong> [Data a determinar]</li>
+                    </ul>
+                    
+                    <p style="margin-top:20px; font-style:italic;">Aquestes instruccions estan subjectes a possibles modificacions. Consulta sempre l'aula virtual per a la versió actualitzada.</p>
+                </div>
+            </div>
+
+            <!-- MODAL D'AJUDA PER AL DAFO -->
+            <div id="modalAjudaDAFO" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="tancarModalAjudaDAFO()">&times;</span>
+                    <h2>❓ Com fer un DAFO personal</h2>
+                    
+                    <h3>🔴 Debilitats (internes, a millorar)</h3>
+                    <p>Allò que se't dona pitjor, mancances de formació, habilitats tècniques deficients...</p>
+                    <p><em>Exemple: "M'costa treballar en equip", "No tinc experiència en domòtica"</em></p>
+                    
+                    <h3>🟢 Fortaleses (internes, positives)</h3>
+                    <p>Allò que se't dona bé, experiència, habilitats, actituds positives...</p>
+                    <p><em>Exemple: "Sóc molt ordenat", "Tinc carnet d'instal·lador", "Bona mà amb els clients"</em></p>
+                    
+                    <h3>🔵 Oportunitats (externes, aprofitar)</h3>
+                    <p>Factors externs que et poden beneficiar: noves lleis, sectors emergents, subvencions...</p>
+                    <p><em>Exemple: "Augment de la demanda d'energies renovables", "Subvencions per a formació"</em></p>
+                    
+                    <h3>🟡 Amenaces (externes, a vigilar)</h3>
+                    <p>Factors externs que et poden perjudicar: competència, crisi, canvis legals...</p>
+                    <p><em>Exemple: "Competència creixent", "Nous requisits legals"</em></p>
+                    
+                    <div style="text-align:center; margin-top:20px;">
+                        <button class="btn btn-primary" onclick="tancarModalAjudaDAFO()">Entès</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL D'AJUDA PER AL FULL DE RUTA -->
+            <div id="modalAjudaFullRuta" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="tancarModalAjudaFullRuta()">&times;</span>
+                    <h2>❓ Com elaborar el teu full de ruta</h2>
+                    <p>A partir del teu DAFO, defineix <strong>3 objectius concrets</strong> per als propers 1-2 anys.</p>
+                    
+                    <h3>📌 Per a cada objectiu, has d'incloure:</h3>
+                    <ul>
+                        <li><strong>Objectiu:</strong> Què vols aconseguir? (específic i mesurable)</li>
+                        <li><strong>Accions:</strong> Què faràs per aconseguir-ho?</li>
+                        <li><strong>Termini:</strong> Quan ho assoliràs?</li>
+                        <li><strong>Recursos:</strong> Què necessites? (temps, diners, formació...)</li>
+                    </ul>
+                    
+                    <h3>💡 Exemple</h3>
+                    <p><strong>Objectiu:</strong> Millorar en domòtica<br>
+                    <strong>Accions:</strong> Curs KNX (40h), pràctiques, projecte propi<br>
+                    <strong>Termini:</strong> 6 mesos<br>
+                    <strong>Recursos:</strong> 300€, 2 hores setmanals</p>
+                    
+                    <p>Pots presentar el full de ruta com: <strong>infografia, document escrit, taula, presentació digital...</strong></p>
+                    
+                    <div style="text-align:center; margin-top:20px;">
+                        <button class="btn btn-primary" onclick="tancarModalAjudaFullRuta()">Entès</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Distintiu groc -->
+            <div class="badge-groc">📌 Activitat · 3 hores</div>
+
+            <!-- =========================================== -->
+            <!-- 1. OBJECTIUS I JUSTIFICACIÓ + RÚBRICA -->
+            <!-- =========================================== -->
+            <h2 class="section-title" id="objectius">🔍 Objectius i justificació</h2>
+            <p>Aquesta activitat té com a objectiu que l'alumnat prengui consciència del seu propi potencial professional, identificant fortaleses, febleses, oportunitats i amenaces (anàlisi DAFO) i elabori un full de ruta personalitzat per a la millora de l'ocupabilitat. Dona resposta als criteris d'avaluació 4.1, 4.6, 4.10 i 4.11 del RA4.</p>
+
+            <!-- RÚBRICA VISIBLE (PER A L'ALUMNAT) -->
+            <div class="rubrica-visual">
+                <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ (per a la teva orientació)</h3>
+                <p>Aquesta rúbrica mostra els criteris amb què es valorarà la teva activitat. Els nivells van de 1 (No assolit) a 4 (Excel·lent).</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criteri</th>
+                            <th>Pes</th>
+                            <th>1 - No assolit</th>
+                            <th>2 - En procés</th>
+                            <th>3 - Assolit</th>
+                            <th>4 - Excel·lent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Autodiagnosi (DAFO)</strong></td>
+                            <td>40%</td>
+                            <td class="nivell-1">No identifica o errors greus</td>
+                            <td class="nivell-2">Identifica 2-3 elements</td>
+                            <td class="nivell-3">Identifica els 4 amb anàlisi bàsica</td>
+                            <td class="nivell-4">Anàlisi completa i ben fonamentada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Full de ruta</strong></td>
+                            <td>30%</td>
+                            <td class="nivell-1">Objectius poc clars o irreals</td>
+                            <td class="nivell-2">Objectius bàsics sense planificació</td>
+                            <td class="nivell-3">3 objectius amb accions i terminis</td>
+                            <td class="nivell-4">Objectius amb accions, terminis i recursos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reflexió</strong></td>
+                            <td>20%</td>
+                            <td class="nivell-1">No connecta DAFO amb full de ruta</td>
+                            <td class="nivell-2">Connexió superficial</td>
+                            <td class="nivell-3">Connexió clara</td>
+                            <td class="nivell-4">Reflexió profunda i visió de futur</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qualitat formal</strong></td>
+                            <td>10%</td>
+                            <td class="nivell-1">Incomplet o inintel·ligible</td>
+                            <td class="nivell-2">Confús o errors significatius</td>
+                            <td class="nivell-3">Clar i organitzat</td>
+                            <td class="nivell-4">Professional, ben estructurat</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:10px; font-style:italic;">Aquesta rúbrica és orientativa. El professor la utilitzarà per a la qualificació final.</p>
+            </div>
+
+            <!-- ENLLAÇOS D'INTERÈS (ACTUALITZATS) -->
+            <div class="info-links">
+                <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
+                <div>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u4-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: Orientació professional (IOC)</a>
+                    <a href="https://europass.europa.eu/es/create-europass-cv" target="_blank" class="enllac-normativa">Crear CV Europass</a>
+                    <a href="https://serveiocupacio.gencat.cat/ca/inici/" target="_blank" class="enllac-normativa">SOC - Servei d'Ocupació</a>
+                </div>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- METODOLOGIA I DESENVOLUPAMENT (AMB ELS 3 BLOCS) -->
+            <!-- =========================================== -->
+            <h2 class="section-title" id="metodologia">🧭 Metodologia i desenvolupament</h2>
+            
+            <div class="info-box">
+                <h3>📝 Fase 1 · Autodiagnosi (1,5 hores)</h3>
+                <p><strong>Objectiu:</strong> Prendre consciència del teu potencial professional mitjançant:</p>
+                <ol>
+                    <li><strong>Test d'interessos professionals</strong> (el trobaràs a continuació).</li>
+                    <li><strong>Identificació de fites professionals prèvies</strong> (formació, experiència, cursos).</li>
+                    <li><strong>Elaboració d'una matriu DAFO personal</strong> centrada en el perfil d'instal·lador electricista/mantenidor.</li>
+                </ol>
+                <p><em>Consulta el <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u4-pdfindex.pdf#page=15" target="_blank">llibre digital (pàg. 15-20)</a> per a més informació sobre autodiagnosi.</em></p>
+            </div>
+
+            <div class="info-box">
+                <h3>🎯 Fase 2 · Planificació (1,5 hores)</h3>
+                <p>A partir del DAFO, hauràs de:</p>
+                <ol>
+                    <li>Formular <strong>3 objectius professionals concrets</strong> a assolir en 1-2 anys.</li>
+                    <li>Definir <strong>accions específiques</strong> per a cada objectiu (formació, certificacions, etc.).</li>
+                    <li>Establir un <strong>cronograma senzill</strong> i els <strong>recursos necessaris</strong>.</li>
+                    <li>Redactar un <strong>full de ruta</strong> en format lliure (infografia, document escrit, presentació digital).</li>
+                </ol>
+                <p><em>Consulta el <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u4-pdfindex.pdf#page=25" target="_blank">llibre digital (pàg. 25-30)</a> per a exemples de fulls de ruta.</em></p>
+            </div>
+
+            <!-- FASE 3: Producte i evidència -->
+            <div class="info-box" style="background: #e6f2ff; border-left-color: #D1222B;">
+                <h3 style="color:#D1222B;">📦 Fase 3 · Producte i evidència d'aprenentatge</h3>
+                <p>En finalitzar l'activitat, hauràs de generar:</p>
+                <ul>
+                    <li><strong>Document individual: DAFO + full de ruta (PDF o infografia).</strong> S'incorpora al portafolis.</li>
+                </ul>
+                <p style="margin-top:10px;">✅ Aquest document serà l'evidència principal d'aprenentatge.</p>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- BOTONS DELS BLOCS (DESPLEGABLES) -->
+            <!-- =========================================== -->
+            <div style="text-align:center; margin:20px 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" id="toggleBlocDafoBtn" aria-expanded="false">
+                    📊 Anàlisi DAFO
+                </button>
+                <button class="btn btn-primary" id="toggleBlocRutaBtn" aria-expanded="false">
+                    🎯 Full de ruta professional
+                </button>
+                <button class="btn btn-primary" id="toggleBlocReflexioBtn" aria-expanded="false">
+                    🧠 Reflexió final
+                </button>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- BLOC DAFO -->
+            <!-- =========================================== -->
+            <div class="bloc-container" id="blocDafoContainer" aria-hidden="true">
+                <h3 class="bloc-title">📊 Anàlisi DAFO</h3>
+                <p>Omple els quatre quadrants del DAFO a partir de les reflexions del test i les teves fites prèvies.</p>
+                
+                <label class="required" for="debilitats">🔴 Debilitats (què has de millorar?)</label>
+                <textarea id="debilitats" rows="3" placeholder="Ex: Manca d'experiència en domòtica, poca formació en anglès tècnic..."></textarea>
+                
+                <label class="required" for="amenaces">🟡 Amenaces (factors externs negatius)</label>
+                <textarea id="amenaces" rows="3" placeholder="Ex: Competència creixent, crisi econòmica, nous requisits legals..."></textarea>
+                
+                <label class="required" for="fortaleses">🟢 Fortaleses (què se't dona bé?)</label>
+                <textarea id="fortaleses" rows="3" placeholder="Ex: Carnet d'instal·lador, experiència en manteniment, habilitats manuals..."></textarea>
+                
+                <label class="required" for="oportunitats">🔵 Oportunitats (factors externs positius)</label>
+                <textarea id="oportunitats" rows="3" placeholder="Ex: Augment de la demanda d'energies renovables, subvencions per a formació..."></textarea>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- BLOC FULL DE RUTA -->
+            <!-- =========================================== -->
+            <div class="bloc-container" id="blocRutaContainer" aria-hidden="true">
+                <h3 class="bloc-title">🎯 Full de ruta professional</h3>
+                <p>Defineix 3 objectius concrets per als propers 1-2 anys a partir del teu DAFO. Tots els camps són obligatoris.</p>
+
+                <!-- Objectiu 1 -->
+                <div style="background: #e6f2ff; border-radius: 15px; padding: 15px; margin: 15px 0;">
+                    <h4>🎯 Objectiu 1</h4>
+                    <label class="required" for="objectiu1">Objectiu:</label>
+                    <input type="text" id="objectiu1" placeholder="Ex: Millorar en domòtica">
+                    
+                    <label class="required" for="accions1">Accions:</label>
+                    <textarea id="accions1" rows="2" placeholder="Curs KNX (40h), pràctiques en empresa, projecte propi"></textarea>
+                    
+                    <label class="required" for="termini1">Termini:</label>
+                    <input type="text" id="termini1" placeholder="Ex: 6 mesos">
+                    
+                    <label class="required" for="recursos1">Recursos necessaris:</label>
+                    <input type="text" id="recursos1" placeholder="Ex: 300€, 2 hores setmanals">
+                </div>
+
+                <!-- Objectiu 2 -->
+                <div style="background: #e6f2ff; border-radius: 15px; padding: 15px; margin: 15px 0;">
+                    <h4>🎯 Objectiu 2</h4>
+                    <label class="required" for="objectiu2">Objectiu:</label>
+                    <input type="text" id="objectiu2" placeholder="Ex: Aconseguir feina estable">
+                    
+                    <label class="required" for="accions2">Accions:</label>
+                    <textarea id="accions2" rows="2" placeholder="Actualitzar CV, LinkedIn, 10 ofertes/setmana, preparar entrevistes"></textarea>
+                    
+                    <label class="required" for="termini2">Termini:</label>
+                    <input type="text" id="termini2" placeholder="Ex: 3 mesos">
+                    
+                    <label class="required" for="recursos2">Recursos necessaris:</label>
+                    <input type="text" id="recursos2" placeholder="Ex: Ordinador, connexió a internet">
+                </div>
+
+                <!-- Objectiu 3 -->
+                <div style="background: #e6f2ff; border-radius: 15px; padding: 15px; margin: 15px 0;">
+                    <h4>🎯 Objectiu 3</h4>
+                    <label class="required" for="objectiu3">Objectiu:</label>
+                    <input type="text" id="objectiu3" placeholder="Ex: Obtenir carnet de carretons elevadors">
+                    
+                    <label class="required" for="accions3">Accions:</label>
+                    <textarea id="accions3" rows="2" placeholder="Curs online (20h), examen presencial"></textarea>
+                    
+                    <label class="required" for="termini3">Termini:</label>
+                    <input type="text" id="termini3" placeholder="Ex: 2 mesos">
+                    
+                    <label class="required" for="recursos3">Recursos necessaris:</label>
+                    <input type="text" id="recursos3" placeholder="Ex: 150€">
+                </div>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- BLOC REFLEXIÓ FINAL -->
+            <!-- =========================================== -->
+            <div class="bloc-container" id="blocReflexioContainer" aria-hidden="true">
+                <h3 class="bloc-title">🧠 Reflexió final</h3>
+                <label class="required" for="reflexio">Explica com es relaciona el teu DAFO amb els objectius del full de ruta.</label>
+                <textarea id="reflexio" rows="4" placeholder="A partir del meu DAFO, he definit aquests objectius perquè..."></textarea>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- TEST D'INTERESSOS PROFESSIONALS (COM AUTOAVALUACIÓ) -->
+            <!-- =========================================== -->
+            <div style="text-align:center; margin:20px 0;">
+                <button class="btn btn-primary" id="toggleTestBtn" aria-expanded="false">
+                    📊 Test d'interessos professionals
+                </button>
+            </div>
+
+            <div class="test-container" id="testContainer" aria-hidden="true">
+                <h3 style="color:#D1222B;">Test d'interessos professionals</h3>
+                <p>Respon cada pregunta segons el teu grau d'interès. En acabar, prem "Veure resultats" per obtenir el teu perfil.</p>
+
+                <!-- Bloc A: Interès per tasques tècniques -->
+                <h4 style="color:#D1222B; margin:20px 0 10px;">Bloc A: Interès per tasques tècniques</h4>
+                
+                <div class="test-pregunta">
+                    <p>1. M'agrada instal·lar i reparar equips elèctrics.</p>
+                    <div class="test-opcions">
+                        <input type="radio" name="test1" id="test1_1" value="1"><label for="test1_1">Molt baix</label>
+                        <input type="radio" name="test1" id="test1_2" value="2"><label for="test1_2">Baix</label>
+                        <input type="radio" name="test1" id="test1_3" value="3"><label for="test1_3">Neutral</label>
+                        <input type="radio" name="test1" id="test1_4" value="4"><label for="test1_4">Alt</label>
+                        <input type="radio" name="test1" id="test1_5" value="5"><label for="test1_5">Molt alt</label>
+                    </div>
+                </div>
+
+                <div class="test-pregunta">
+                    <p>2. Em motiva aprendre a utilitzar nova maquinària i eines.</p>
+                    <div class="test-opcions">
+                        <input type="radio" name="test2" id="test2_1" value="1"><label for="test2_1">Molt baix</label>
+                        <input type="radio" name="test2" id="test2_2" value="2"><label for="test2_2">Baix</label>
+                        <input type="radio" name="test2" id="test2_3" value="3"><label for="test2_3">Neutral</label>
+                        <input type="radio" name="test2" id="test2_4" value="4"><label for="test2_4">Alt</label>
+                        <input type="radio" name="test2" id="test2_5" value="5"><label for="test2_5">Molt alt</label>
+                    </div>
+                </div>
+
+                <div class="test-pregunta">
+                    <p>3. Em sento còmode resolent problemes tècnics complexos.</p>
+                    <div class="test-opcions">
+                        <input type="radio" name="test3" id="test3_1" value="1"><label for="test3_1">Molt baix</label>
+                        <input type="radio" name="test3" id="test3_2" value="2"><label for="test3_2">Baix</label>
+                        <input type="radio" name="test3" id="test3_3" value="3"><label for="test3_3">Neutral</label>
+                        <input type="radio" name="test3" id="test3_4" value="4"><label for="test3_4">Alt</label>
+                        <input type="radio" name="test3" id="test3_5" value="5"><label for="test3_5">Molt alt</label>
+                    </div>
+                </div>
+
+                <!-- Bloc B: Interès per treball en equip i comunicació -->
+                <h4 style="color:#D1222B; margin:30px 0 10px;">Bloc B: Interès per treball en equip i comunicació</h4>
+
+                <div class="test-pregunta">
+                    <p>4. M'agrada treballar en equip i coordinar-me amb altres professionals.</p>
+                    <div class="test-opcions">
+                        <input type="radio" name="test4" id="test4_1" value="1"><label for="test4_1">Molt baix</label>
+                        <input type="radio" name="test4" id="test4_2" value="2"><label for="test4_2">Baix</label>
+                        <input type="radio" name="test4" id="test4_3" value="3"><label for="test4_3">Neutral</label>
+                        <input type="radio" name="test4" id="test4_4" value="4"><label for="test4_4">Alt</label>
+                        <input type="radio" name="test4" id="test4_5" value="5"><label for="test4_5">Molt alt</label>
+                    </div>
+                </div>
+
+                <div class="test-pregunta">
+                    <p>5. Em comunico fàcilment amb clients i companys.</p>
+                    <div class="test-opcions">
+                        <input type="radio" name="test5" id="test5_1" value="1"><label for="test5_1">Molt baix</label>
+                        <input type="radio" name="test5" id="test5_2" value="2"><label for="test5_2">Baix</label>
+                        <input type="radio" name="test5" id="test5_3" value="3"><label for="test5_3">Neutral</label>
+                        <input type="radio" name="test5" id="test5_4" value="4"><label for="test5_4">Alt</label>
+                        <input type="radio" name="test5" id="test5_5" value="5"><label for="test5_5">Molt alt</label>
+                    </div>
+                </div>
+
+                <div class="test-pregunta">
+                    <p>6. M'interessa assumir responsabilitats de coordinació o lideratge.</p>
+                    <div class="test-opcions">
+                        <input type="radio" name="test6" id="test6_1" value="1"><label for="test6_1">Molt baix</label>
+                        <input type="radio" name="test6" id="test6_2" value="2"><label for="test6_2">Baix</label>
+                        <input type="radio" name="test6" id="test6_3" value="3"><label for="test6_3">Neutral</label>
+                        <input type="radio" name="test6" id="test6_4" value="4"><label for="test6_4">Alt</label>
+                        <input type="radio" name="test6" id="test6_5" value="5"><label for="test6_5">Molt alt</label>
+                    </div>
+                </div>
+
+                <!-- Bloc C: Interès per formació i innovació -->
+                <h4 style="color:#D1222B; margin:30px 0 10px;">Bloc C: Interès per formació i innovació</h4>
+
+                <div class="test-pregunta">
+                    <p>7. M'agrada mantenir-me actualitzat en noves tecnologies del sector.</p>
+                    <div class="test-opcions">
+                        <input type="radio" name="test7" id="test7_1" value="1"><label for="test7_1">Molt baix</label>
+                        <input type="radio" name="test7" id="test7_2" value="2"><label for="test7_2">Baix</label>
+                        <input type="radio" name="test7" id="test7_3" value="3"><label for="test7_3">Neutral</label>
+                        <input type="radio" name="test7" id="test7_4" value="4"><label for="test7_4">Alt</label>
+                        <input type="radio" name="test7" id="test7_5" value="5"><label for="test7_5">Molt alt</label>
+                    </div>
+                </div>
+
+                <div class="test-pregunta">
+                    <p>8. Estic disposat a realitzar cursos de formació complementària.</p>
+                    <div class="test-opcions">
+                        <input type="radio" name="test8" id="test8_1" value="1"><label for="test8_1">Molt baix</label>
+                        <input type="radio" name="test8" id="test8_2" value="2"><label for="test8_2">Baix</label>
+                        <input type="radio" name="test8" id="test8_3" value="3"><label for="test8_3">Neutral</label>
+                        <input type="radio" name="test8" id="test8_4" value="4"><label for="test8_4">Alt</label>
+                        <input type="radio" name="test8" id="test8_5" value="5"><label for="test8_5">Molt alt</label>
+                    </div>
+                </div>
+
+                <div class="test-pregunta">
+                    <p>9. M'interessa obtenir certificacions professionals (carnets, acreditacions).</p>
+                    <div class="test-opcions">
+                        <input type="radio" name="test9" id="test9_1" value="1"><label for="test9_1">Molt baix</label>
+                        <input type="radio" name="test9" id="test9_2" value="2"><label for="test9_2">Baix</label>
+                        <input type="radio" name="test9" id="test9_3" value="3"><label for="test9_3">Neutral</label>
+                        <input type="radio" name="test9" id="test9_4" value="4"><label for="test9_4">Alt</label>
+                        <input type="radio" name="test9" id="test9_5" value="5"><label for="test9_5">Molt alt</label>
+                    </div>
+                </div>
+
+                <div class="test-pregunta">
+                    <p>10. Em veig capaç d'emprendre o innovar en el meu àmbit professional.</p>
+                    <div class="test-opcions">
+                        <input type="radio" name="test10" id="test10_1" value="1"><label for="test10_1">Molt baix</label>
+                        <input type="radio" name="test10" id="test10_2" value="2"><label for="test10_2">Baix</label>
+                        <input type="radio" name="test10" id="test10_3" value="3"><label for="test10_3">Neutral</label>
+                        <input type="radio" name="test10" id="test10_4" value="4"><label for="test10_4">Alt</label>
+                        <input type="radio" name="test10" id="test10_5" value="5"><label for="test10_5">Molt alt</label>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; margin:20px 0;">
+                    <button class="btn btn-primary" id="calcularTestBtn">✅ Veure resultats</button>
+                    <button class="btn btn-outline" id="reiniciarTestBtn">↻ Reiniciar test</button>
+                    <button class="btn btn-close" id="closeTestBtn">✖ Tancar</button>
+                </div>
+
+                <!-- Àrea de resultats del test -->
+                <div id="testResultat" class="test-resultat">
+                    <h4 style="color:#D1222B;">📈 El teu perfil d'interessos professionals</h4>
+                    
+                    <div class="test-grafica">
+                        <div class="test-barra">
+                            <div class="barra">
+                                <div id="barraA" class="barra-omplerta" style="height:0%;"></div>
+                            </div>
+                            <p><strong>Bloc A</strong></p>
+                            <p id="puntuacioA">Tècnic</p>
+                        </div>
+                        <div class="test-barra">
+                            <div class="barra">
+                                <div id="barraB" class="barra-omplerta" style="height:0%;"></div>
+                            </div>
+                            <p><strong>Bloc B</strong></p>
+                            <p id="puntuacioB">Equip</p>
+                        </div>
+                        <div class="test-barra">
+                            <div class="barra">
+                                <div id="barraC" class="barra-omplerta" style="height:0%;"></div>
+                            </div>
+                            <p><strong>Bloc C</strong></p>
+                            <p id="puntuacioC">Innovació</p>
+                        </div>
+                    </div>
+
+                    <div id="interpretacioTest" style="margin-top:20px; padding:15px; background:white; border-radius:10px;">
+                        <p><strong>Interpretació:</strong></p>
+                        <p id="textInterpretacio">Completa el test per veure els resultats.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- DADES DE L'ESTUDIANT -->
+            <!-- =========================================== -->
+            <h2 class="section-title">📋 Dades de l'estudiant</h2>
+            <label class="required" for="nom">Nom i cognoms</label>
+            <input type="text" id="nom" placeholder="Ex: Maria Garcia" aria-required="true">
+            
+            <label class="required" for="grup">Grup</label>
+            <input type="text" id="grup" placeholder="Ex: Grup A" aria-required="true">
+            
+            <label for="enllac">Enllaç al document (infografia, Drive, etc.) - opcional</label>
+            <input type="url" id="enllac" placeholder="https://...">
+
+            <!-- =========================================== -->
+            <!-- FITES PROFESSIONALS PRÈVIES -->
+            <!-- =========================================== -->
+            <h2 class="section-title">🏆 Fites professionals prèvies</h2>
+            <div class="info-box" style="background:#fff3cd;">
+                <label class="required" for="formacio">Formació reglada (CFGM, cursos, etc.)</label>
+                <textarea id="formacio" rows="2" placeholder="Ex: CFGM Instal·lacions Elèctriques (2022), Curs de PRL (2023)..."></textarea>
+                
+                <label class="required" for="experiencia">Experiència laboral rellevant</label>
+                <textarea id="experiencia" rows="2" placeholder="Ex: 1 any en pràctiques, 6 mesos en empresa d'automatismes..."></textarea>
+                
+                <label class="required" for="cursos">Altres cursos o certificacions</label>
+                <textarea id="cursos" rows="2" placeholder="Ex: Carnet de carretons, curs de domòtica..."></textarea>
+            </div>
+
+            <!-- Botons d'autoavaluació (les de sempre) -->
+            <div style="text-align:center; margin:20px 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" id="toggleAutoavaluacioBtn" aria-expanded="false">
+                    📝 Autoavaluació prèvia (10 preguntes)
+                </button>
+                <button class="btn btn-primary" id="toggleExamenBtn" aria-expanded="false">
+                    📝 AUTOAVALUACIÓ PER A L'EXAMEN FINAL (20 preguntes)
+                </button>
+            </div>
+
+            <!-- AUTOAVALUACIÓ 10 PREGUNTES -->
+            <div class="autoavaluacio-container" id="autoavaluacioContainer" aria-hidden="true">
+                <h3 style="color:#D1222B;">Autoavaluació (10 preguntes)</h3>
+                <p>Respon aquestes 10 preguntes per comprovar els teus coneixements sobre orientació professional.</p>
+
+                <div class="quiz-item">
+                    <div class="quiz-question">1. Què és un DAFO personal?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quizA1" value="a"> Una eina per analitzar fortaleses, debilitats, oportunitats i amenaces</label>
+                        <label><input type="radio" name="quizA1" value="b"> Un currículum europeu</label>
+                        <label><input type="radio" name="quizA1" value="c"> Un test d'orientació professional</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">2. Què són les fortaleses en un DAFO?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quizA2" value="a"> Factors externs positius</label>
+                        <label><input type="radio" name="quizA2" value="b"> Aspectes interns a millorar</label>
+                        <label><input type="radio" name="quizA2" value="c"> Aspectes interns positius</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">3. I les amenaces?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quizA3" value="a"> Factors externs negatius</label>
+                        <label><input type="radio" name="quizA3" value="b"> Factors interns negatius</label>
+                        <label><input type="radio" name="quizA3" value="c"> Oportunitats de futur</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">4. Què és un full de ruta professional?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quizA4" value="a"> Un document que recull objectius, accions, terminis i recursos</label>
+                        <label><input type="radio" name="quizA4" value="b"> Un currículum vitae</label>
+                        <label><input type="radio" name="quizA4" value="c"> Una carta de presentació</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">5. Quants objectius es recomanen al full de ruta?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quizA5" value="a"> 1-2</label>
+                        <label><input type="radio" name="quizA5" value="b"> 3-5</label>
+                        <label><input type="radio" name="quizA5" value="c"> 6-10</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">6. Quin termini és adequat per als objectius?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quizA6" value="a"> 1-2 anys</label>
+                        <label><input type="radio" name="quizA6" value="b"> 5-10 anys</label>
+                        <label><input type="radio" name="quizA6" value="c"> 1 mes</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">7. Què és Europass?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quizA7" value="a"> Un portal d'ocupació</label>
+                        <label><input type="radio" name="quizA7" value="b"> Un currículum europeu estandarditzat</label>
+                        <label><input type="radio" name="quizA7" value="c"> Un sindicat</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">8. Què és el SOC?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quizA8" value="a"> Servei d'Ocupació de Catalunya</label>
+                        <label><input type="radio" name="quizA8" value="b"> Sindicat Obrer Català</label>
+                        <label><input type="radio" name="quizA8" value="c"> Sistema d'Orientació Professional</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">9. Una oportunitat en el DAFO pot ser...</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quizA9" value="a"> L'augment de la demanda d'energies renovables</label>
+                        <label><input type="radio" name="quizA9" value="b"> La manca d'experiència</label>
+                        <label><input type="radio" name="quizA9" value="c"> La competència</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">10. Què has de fer amb el DAFO i el full de ruta?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quizA10" value="a"> Guardar-los a l'ordinador</label>
+                        <label><input type="radio" name="quizA10" value="b"> Penjar-los a Moodle i incorporar-los al portafolis</label>
+                        <label><input type="radio" name="quizA10" value="c"> Enviar-los per correu al professor</label>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; margin-bottom:20px;">
+                    <button class="btn btn-primary" id="checkQuizABtn">✅ Comprova respostes</button>
+                    <button class="btn btn-outline" id="resetQuizABtn">↻ Tornar a començar</button>
+                    <button class="btn btn-close" id="closeQuizABtn">✖ Tancar</button>
+                </div>
+                <div id="quizAFeedback" class="feedback-quiz"></div>
+            </div>
+
+            <!-- AUTOAVALUACIÓ 20 PREGUNTES -->
+            <div class="examen-container" id="examenContainer" aria-hidden="true">
+                <h2 style="color:#D1222B; margin-bottom:20px;">📝 AUTOAVALUACIÓ PER A L'EXAMEN FINAL (20 preguntes)</h2>
+                <p style="margin-bottom:20px;">Aquestes preguntes són representatives del que trobaràs a l'examen final. 
+                Has d'obtenir un mínim del <strong>70% (14/20)</strong> per considerar que has assolit els continguts.</p>
+
+                <div id="examen-preguntes"></div>
+
+                <div style="text-align:center; margin:20px 0;">
+                    <button class="btn btn-primary" id="comprovarExamenBtn">✅ Comprova respostes</button>
+                    <button class="btn btn-secondary" id="reiniciarExamenBtn">↻ Reiniciar examen</button>
+                    <button class="btn btn-close" id="closeExamenBtn">✖ Tancar</button>
+                </div>
+
+                <div id="examen-resultat" class="examen-resultat"></div>
+                <div id="examen-feedback-global" style="margin-top:15px;"></div>
+            </div>
+
+            <!-- Botons d'acció finals -->
+            <div class="buttons">
+                <button class="btn btn-danger" id="resetBtn">🗑️ Esborrar tot</button>
+                <button class="btn btn-primary" id="submitBtn">✅ Preparar per enviar</button>
+            </div>
+
+            <!-- Àrea de resultats -->
+            <div class="results-area" id="resultsArea">
+                <h2 style="color:#D1222B;">📈 Dades per al professor</h2>
+                <p>Prem "Exporta JSON" per generar un fitxer amb les teves respostes.</p>
+                <div class="buttons">
+                    <button class="btn btn-primary" id="pdfBtn">📥 Descarregar PDF (per a Moodle)</button>
+                    <button class="btn btn-success" id="jsonBtn">📊 Exportar JSON</button>
+                    <button class="btn btn-primary" id="copyJsonBtn">📋 Copiar JSON al portapapers</button>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button class="btn btn-secondary" id="explicacioJsonBtn">❓ Com enviar (explicació)</button>
+                </div>
+                <div id="jsonContainer" class="json-container" style="display:none;"></div>
+                <div id="copyStatus" style="display:none; background:#d4edda; padding:10px; border-radius:10px; margin-top:10px;">✅ JSON copiat!</div>
+            </div>
+
+            <!-- Recordatori final millorat -->
+            <div style="background: #e6f2ff; border-radius: 20px; padding: 20px; margin: 30px 0; border-left: 5px solid #D1222B;">
+                <span style="font-size:1.3rem; font-weight:bold;">📁 LLIURAMENT DE L'ACTIVITAT</span>
+                
+                <p style="margin-top:15px;">Abans de tancar aquesta pàgina, assegura't que has completat els següents passos:</p>
+                
+                <div style="background: white; border-radius: 15px; padding: 20px; margin: 15px 0; border: 2px solid #D1222B;">
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">1</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📥 DESA EL TEU TREBALL (OPCIONAL)</strong>
+                            <p style="margin-top:5px;">Totes les respostes es guarden automàticament al teu navegador. Pots tancar i tornar-hi més tard sense perdre res.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">2</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📤 EXPORTA EL FITXER JSON</strong>
+                            <p style="margin-top:5px;">Prem el botó <strong>"📊 Exportar JSON"</strong> (a la secció de resultats). Es generarà un fitxer amb les teves respostes que es desarà a la carpeta <strong>DESCARREGUES</strong>.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">3</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📎 PENJA A MOODLE</strong>
+                            <p style="margin-top:5px;">Puja a Moodle els següents documents:</p>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li><strong>📁 Fitxer JSON</strong> (obligatori - conté totes les respostes)</li>
+                                <li><strong>📊 DAFO + Full de ruta</strong> (PDF o infografia)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">4</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📁 INCORPORA AL PORTAFOLIS</strong>
+                            <p style="margin-top:5px;">Guarda una còpia de tots els documents al teu <strong>portafolis digital professional</strong>.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div style="background: #FFC72C; border-radius: 15px; padding: 15px; margin-top: 15px; border: 2px solid #D1222B; text-align: center;">
+                    <p style="font-weight:bold; color:#D1222B; font-size: 1.1rem;">⚠️ IMPORTANT: El fitxer JSON és l'única evidència que conté TOTES les teves respostes.</p>
+                    <p style="margin-top:5px;">Sense aquest fitxer, el professor no podrà avaluar correctament la teva activitat.</p>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="footer">Diego Izquierdo · FOL · IOC · Contingut accessible ♿</div>
+    </div>
+
+    <script>
+        // ===========================================
+        // FUNCIONS DELS MODALS
+        // ===========================================
+        var modalPortafolis = document.getElementById('modalPortafolis');
+        var btnPortafolis = document.getElementById('modalPortafolisBtn');
+        var spanPortafolis = document.getElementsByClassName('close-modal')[0];
+        
+        btnPortafolis.onclick = function() {
+            modalPortafolis.style.display = 'block';
+        }
+        
+        spanPortafolis.onclick = function() {
+            modalPortafolis.style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modalPortafolis) {
+                modalPortafolis.style.display = 'none';
+            }
+            if (event.target == document.getElementById('modalAjudaDAFO')) {
+                document.getElementById('modalAjudaDAFO').style.display = 'none';
+            }
+            if (event.target == document.getElementById('modalAjudaFullRuta')) {
+                document.getElementById('modalAjudaFullRuta').style.display = 'none';
+            }
+        }
+
+        function mostrarAjudaDAFO() {
+            document.getElementById('modalAjudaDAFO').style.display = 'block';
+        }
+        function tancarModalAjudaDAFO() {
+            document.getElementById('modalAjudaDAFO').style.display = 'none';
+        }
+        function mostrarAjudaFullRuta() {
+            document.getElementById('modalAjudaFullRuta').style.display = 'block';
+        }
+        function tancarModalAjudaFullRuta() {
+            document.getElementById('modalAjudaFullRuta').style.display = 'none';
+        }
+
+        window.mostrarAjudaDAFO = mostrarAjudaDAFO;
+        window.tancarModalAjudaDAFO = tancarModalAjudaDAFO;
+        window.mostrarAjudaFullRuta = mostrarAjudaFullRuta;
+        window.tancarModalAjudaFullRuta = tancarModalAjudaFullRuta;
+
+        // ===========================================
+        // GUARDAT AUTOMÀTIC AMB LOCALSTORAGE (PREFIX ra4_)
+        // ===========================================
+        const PREFIX = 'ra4_';
+        
+        function carregarDadesGuardades() {
+            document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+                let valorGuardat = localStorage.getItem(PREFIX + camp.id);
+                if (valorGuardat) camp.value = valorGuardat;
+            });
+            
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                let nom = radio.name;
+                let valorGuardat = localStorage.getItem(PREFIX + nom);
+                if (valorGuardat === radio.value) radio.checked = true;
+            });
+        }
+        
+        function guardarCamp(camp) {
+            localStorage.setItem(PREFIX + camp.id, camp.value);
+        }
+        
+        function guardarRadio(name, value) {
+            localStorage.setItem(PREFIX + name, value);
+        }
+        
+        // Carregar en iniciar
+        window.addEventListener('load', carregarDadesGuardades);
+        
+        // Guardar en cada canvi
+        document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+            camp.addEventListener('input', function() { guardarCamp(this); });
+        });
+        
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                guardarRadio(this.name, this.value);
+            });
+        });
+
+        // ===========================================
+        // MODAL D'EXPLICACIÓ JSON
+        // ===========================================
+        function obrirModalExplicacio() {
+            document.getElementById('modalExplicacio').style.display = 'block';
+        }
+        
+        document.getElementById('explicacioJsonBtn')?.addEventListener('click', obrirModalExplicacio);
+        
+        document.querySelector('.modal-explicacio-tancar').addEventListener('click', function() {
+            document.getElementById('modalExplicacio').style.display = 'none';
+        });
+        
+        document.getElementById('tancarModalBtn').addEventListener('click', function() {
+            document.getElementById('modalExplicacio').style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(event) {
+            let modal = document.getElementById('modalExplicacio');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // ===========================================
+        // BOTÓ FLOTANT TORNAR A DALT
+        // ===========================================
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // ===========================================
+        // PDF D'INSTRUCCIONS AMPLIAT (amb totes les preguntes)
+        // ===========================================
+        document.getElementById('pdfInstruccionsBtn').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(20);
+            doc.setTextColor(209,34,43);
+            doc.text('RA4 · El meu perfil professional', 20, 20);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0,0,0);
+            doc.text('DESCRIPCIÓ', 20, 35);
+            doc.setFontSize(10);
+            doc.text('Activitat de 3 hores per elaborar un DAFO i un full de ruta professional', 20, 45);
+            
+            doc.setFontSize(12);
+            doc.text('OBJECTIUS', 20, 60);
+            doc.setFontSize(10);
+            doc.text('• Identificar fortaleses, debilitats, oportunitats i amenaces', 25, 70);
+            doc.text('• Definir 3 objectius professionals concrets', 25, 77);
+            doc.text('• Planificar accions, terminis i recursos', 25, 84);
+            
+            doc.setFontSize(12);
+            doc.text('METODOLOGIA', 20, 99);
+            doc.setFontSize(10);
+            doc.text('Fase 1 (1,5h): Autodiagnosi (test interessos + fites + DAFO)', 25, 109);
+            doc.text('Fase 2 (1,5h): Full de ruta (3 objectius)', 25, 116);
+            doc.text('Fase 3: Lliurament a Moodle + portafolis', 25, 123);
+            
+            // PREGUNTES DE L'ACTIVITAT (NOU)
+            doc.setFontSize(12);
+            doc.text('PREGUNTES DE L\'ACTIVITAT', 20, 143);
+            doc.setFontSize(10);
+            
+            let y = 153;
+            const preguntes = [
+                'FITES PROFESSIONALS PRÈVIES:',
+                '• Formació reglada (CFGM, cursos...)',
+                '• Experiència laboral rellevant',
+                '• Altres cursos o certificacions',
+                '',
+                'DAFO PERSONAL:',
+                '• Debilitats (què has de millorar?)',
+                '• Amenaces (factors externs negatius)',
+                '• Fortaleses (què se\'t dona bé?)',
+                '• Oportunitats (factors externs positius)',
+                '',
+                'FULL DE RUTA (3 objectius):',
+                '• Objectiu 1, Accions, Termini, Recursos',
+                '• Objectiu 2, Accions, Termini, Recursos',
+                '• Objectiu 3, Accions, Termini, Recursos',
+                '',
+                'REFLEXIÓ FINAL:',
+                '• Connexió entre DAFO i full de ruta'
+            ];
+            
+            preguntes.forEach(p => {
+                if (p === '') {
+                    y += 3;
+                } else {
+                    doc.text(p, 25, y);
+                    y += 6;
+                }
+            });
+            
+            // Rúbrica
+            doc.addPage();
+            doc.setFontSize(12);
+            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 20);
+            
+            doc.setFontSize(8);
+            doc.text('Criteri', 20, 30);
+            doc.text('Excel·lent (4)', 50, 30);
+            doc.text('Assolit (3)', 85, 30);
+            doc.text('En procés (2)', 120, 30);
+            doc.text('No assolit (1)', 155, 30);
+            doc.text('Pes', 185, 30);
+            
+            doc.line(20, 32, 195, 32);
+            
+            // Criteri 1
+            doc.text('C1: Autodiagnosi', 20, 42);
+            doc.text('Anàlisi completa', 50, 42);
+            doc.text('4 elements', 50, 47);
+            doc.text('4 elements', 85, 42);
+            doc.text('anàlisi bàsica', 85, 47);
+            doc.text('2-3 elements', 120, 42);
+            doc.text('sense anàlisi', 120, 47);
+            doc.text('No identifica', 155, 42);
+            doc.text('errors', 155, 47);
+            doc.text('40%', 185, 45);
+            
+            // Criteri 2
+            doc.text('C2: Full ruta', 20, 57);
+            doc.text('Objectius +', 50, 57);
+            doc.text('acc+term+rec', 50, 62);
+            doc.text('3 objectius', 85, 57);
+            doc.text('acc+termini', 85, 62);
+            doc.text('Objectius', 120, 57);
+            doc.text('bàsics', 120, 62);
+            doc.text('Poc clars', 155, 57);
+            doc.text('irreals', 155, 62);
+            doc.text('30%', 185, 60);
+            
+            // Criteri 3
+            doc.text('C3: Reflexió', 20, 72);
+            doc.text('Profunda', 50, 72);
+            doc.text('visió futur', 50, 77);
+            doc.text('Connexió', 85, 72);
+            doc.text('clara', 85, 77);
+            doc.text('Superficial', 120, 72);
+            doc.text('No connecta', 155, 72);
+            doc.text('No connecta', 155, 77);
+            doc.text('20%', 185, 75);
+            
+            // Criteri 4
+            doc.text('C4: Qualitat', 20, 87);
+            doc.text('Professional', 50, 87);
+            doc.text('estructurat', 50, 92);
+            doc.text('Clar i', 85, 87);
+            doc.text('organitzat', 85, 92);
+            doc.text('Confús', 120, 87);
+            doc.text('millorable', 120, 92);
+            doc.text('Incomplet', 155, 87);
+            doc.text('inintel·ligible', 155, 92);
+            doc.text('10%', 185, 90);
+            
+            doc.save('RA4_instruccions_completes.pdf');
+        });
+
+        // ===========================================
+        // Toggle Blocs (DAFO, Ruta, Reflexió)
+        // ===========================================
+        document.getElementById('toggleBlocDafoBtn').addEventListener('click', function() {
+            let container = document.getElementById('blocDafoContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('toggleBlocRutaBtn').addEventListener('click', function() {
+            let container = document.getElementById('blocRutaContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('toggleBlocReflexioBtn').addEventListener('click', function() {
+            let container = document.getElementById('blocReflexioContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        // ===========================================
+        // Toggle test
+        // ===========================================
+        document.getElementById('toggleTestBtn').addEventListener('click', function() {
+            let container = document.getElementById('testContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('closeTestBtn').addEventListener('click', function() {
+            document.getElementById('testContainer').style.display = 'none';
+            document.getElementById('toggleTestBtn').setAttribute('aria-expanded', 'false');
+        });
+
+        // ===========================================
+        // TEST D'INTERESSOS PROFESSIONALS
+        // ===========================================
+        document.getElementById('calcularTestBtn').addEventListener('click', function() {
+            let blocA = 0;
+            let blocB = 0;
+            let blocC = 0;
+            let totalA = 0;
+            let totalB = 0;
+            let totalC = 0;
+
+            // Bloc A (preguntes 1-3)
+            for (let i = 1; i <= 3; i++) {
+                let seleccio = document.querySelector(`input[name="test${i}"]:checked`);
+                if (seleccio) {
+                    blocA += parseInt(seleccio.value);
+                    totalA++;
+                }
+            }
+
+            // Bloc B (preguntes 4-6)
+            for (let i = 4; i <= 6; i++) {
+                let seleccio = document.querySelector(`input[name="test${i}"]:checked`);
+                if (seleccio) {
+                    blocB += parseInt(seleccio.value);
+                    totalB++;
+                }
+            }
+
+            // Bloc C (preguntes 7-10)
+            for (let i = 7; i <= 10; i++) {
+                let seleccio = document.querySelector(`input[name="test${i}"]:checked`);
+                if (seleccio) {
+                    blocC += parseInt(seleccio.value);
+                    totalC++;
+                }
+            }
+
+            if (totalA === 0 || totalB === 0 || totalC === 0) {
+                alert('Has de respondre totes les preguntes per veure els resultats.');
+                return;
+            }
+
+            let mitjanaA = (blocA / totalA).toFixed(1);
+            let mitjanaB = (blocB / totalB).toFixed(1);
+            let mitjanaC = (blocC / totalC).toFixed(1);
+
+            // Actualitzar barres (màxim 5 punts = 100%)
+            document.getElementById('barraA').style.height = (mitjanaA * 20) + '%';
+            document.getElementById('barraB').style.height = (mitjanaB * 20) + '%';
+            document.getElementById('barraC').style.height = (mitjanaC * 20) + '%';
+
+            document.getElementById('puntuacioA').innerHTML = `${mitjanaA}/5`;
+            document.getElementById('puntuacioB').innerHTML = `${mitjanaB}/5`;
+            document.getElementById('puntuacioC').innerHTML = `${mitjanaC}/5`;
+
+            // Interpretació
+            let interpretacio = "El teu perfil destaca per: ";
+            let perfils = [];
+            if (mitjanaA >= 4) perfils.push("un alt interès tècnic");
+            else if (mitjanaA >= 3) perfils.push("un interès tècnic moderat");
+            
+            if (mitjanaB >= 4) perfils.push("una forta orientació al treball en equip");
+            else if (mitjanaB >= 3) perfils.push("una orientació moderada al treball en equip");
+            
+            if (mitjanaC >= 4) perfils.push("una gran motivació per la formació i innovació");
+            else if (mitjanaC >= 3) perfils.push("una motivació moderada per la formació");
+
+            if (perfils.length > 0) {
+                interpretacio += perfils.join(', ') + '.';
+            } else {
+                interpretacio = "Tens un perfil equilibrat. Revisa les teves respostos per veure quines àrees et motiven més.";
+            }
+
+            document.getElementById('textInterpretacio').innerHTML = interpretacio;
+            document.getElementById('testResultat').style.display = 'block';
+        });
+
+        document.getElementById('reiniciarTestBtn').addEventListener('click', function() {
+            for (let i = 1; i <= 10; i++) {
+                let radios = document.querySelectorAll(`input[name="test${i}"]`);
+                radios.forEach(r => r.checked = false);
+            }
+            document.getElementById('testResultat').style.display = 'none';
+        });
+
+        // ===========================================
+        // Toggle autoavaluació 10 preguntes
+        // ===========================================
+        document.getElementById('toggleAutoavaluacioBtn').addEventListener('click', function() {
+            let container = document.getElementById('autoavaluacioContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('toggleExamenBtn').addEventListener('click', function() {
+            let container = document.getElementById('examenContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('closeQuizABtn').addEventListener('click', function() {
+            document.getElementById('autoavaluacioContainer').style.display = 'none';
+            document.getElementById('toggleAutoavaluacioBtn').setAttribute('aria-expanded', 'false');
+        });
+
+        document.getElementById('closeExamenBtn').addEventListener('click', function() {
+            document.getElementById('examenContainer').style.display = 'none';
+            document.getElementById('toggleExamenBtn').setAttribute('aria-expanded', 'false');
+        });
+
+        // ===========================================
+        // Comprova autoavaluació 10 preguntes
+        // ===========================================
+        document.getElementById('checkQuizABtn').addEventListener('click', function() {
+            let correctes = 0;
+            
+            if (document.querySelector('input[name="quizA1"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="quizA2"]:checked')?.value === 'c') correctes++;
+            if (document.querySelector('input[name="quizA3"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="quizA4"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="quizA5"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quizA6"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="quizA7"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quizA8"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="quizA9"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="quizA10"]:checked')?.value === 'b') correctes++;
+
+            let feedback = document.getElementById('quizAFeedback');
+            feedback.style.display = 'block';
+            
+            if (correctes === 10) {
+                feedback.innerHTML = '✅ Excel·lent! Has respost correctament totes les preguntes.';
+                feedback.style.background = '#d4edda';
+                feedback.style.color = '#155724';
+            } else if (correctes >= 7) {
+                feedback.innerHTML = `✅ Has obtingut ${correctes}/10. Molt bé! Revisa els errors.`;
+                feedback.style.background = '#fff3cd';
+                feedback.style.color = '#856404';
+            } else {
+                feedback.innerHTML = `❌ Has obtingut ${correctes}/10. Torna a llegir l'activitat.`;
+                feedback.style.background = '#f8d7da';
+                feedback.style.color = '#721c24';
+            }
+        });
+
+        // Reiniciar autoavaluació
+        document.getElementById('resetQuizABtn').addEventListener('click', function() {
+            for(let i = 1; i <= 10; i++) {
+                let radios = document.querySelectorAll(`input[name="quizA${i}"]`);
+                radios.forEach(r => r.checked = false);
+            }
+            document.getElementById('quizAFeedback').style.display = 'none';
+        });
+
+        // ===========================================
+        // EXAMEN DE 20 PREGUNTES
+        // ===========================================
+        const preguntesExamen = [
+            { pregunta: "1. El DAFO és una eina d'anàlisi personal i professional.", tipus: "vf", correcta: "v", explicacio: "Vertader. Serveix per analitzar la teva situació actual." },
+            { pregunta: "2. Què significa la D en DAFO?", tipus: "mc", opcions: ["a) Debilitats", "b) Decisions", "c) Dificultats"], correcta: "a", explicacio: "Debilitats (factors interns negatius)." },
+            { pregunta: "3. Les oportunitats són factors externs positius.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "4. Què és un full de ruta professional?", tipus: "mc", opcions: ["a) Un currículum", "b) Un pla d'acció amb objectius", "c) Una carta de presentació"], correcta: "b", explicacio: "És un pla que recull objectius, accions, terminis i recursos." },
+            { pregunta: "5. Es recomana definir entre 3 i 5 objectius.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "6. Quin termini és adequat per als objectius?", tipus: "mc", opcions: ["a) 1 mes", "b) 1-2 anys", "c) 10 anys"], correcta: "b", explicacio: "1-2 anys és un horitzó realista." },
+            { pregunta: "7. Les fortaleses són factors interns positius.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "8. Què és Europass?", tipus: "mc", opcions: ["a) Una borsa de treball", "b) Un currículum europeu", "c) Un sindicat"], correcta: "b", explicacio: "És un model de CV estandarditzat a Europa." },
+            { pregunta: "9. El SOC és el Servei d'Ocupació de Catalunya.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "10. Què són les amenaces en un DAFO?", tipus: "mc", opcions: ["a) Factors interns negatius", "b) Factors externs negatius", "c) Oportunitats"], correcta: "b", explicacio: "Amenaces = factors externs negatius." },
+            { pregunta: "11. La formació reglada inclou els CFGM.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "12. Què és un objectiu SMART?", tipus: "mc", opcions: ["a) Específic, mesurable, assolible, rellevant, temporal", "b) Senzill, motivador, actiu, ràpid, total", "c) Social, màxim, actiu, real, tècnic"], correcta: "a", explicacio: "SMART són les sigles en anglès." },
+            { pregunta: "13. Un objectiu professional ha de ser vague i general.", tipus: "vf", correcta: "f", explicacio: "Fals. Ha de ser concret i específic." },
+            { pregunta: "14. Què és una certificació professional?", tipus: "mc", opcions: ["a) Un títol acadèmic", "b) Un reconeixement oficial de competències", "c) Un curs qualsevol"], correcta: "b", explicacio: "Acredita oficialment que tens unes competències." },
+            { pregunta: "15. El carnet de carretons elevadors és una certificació.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "16. Què és la formació complementària?", tipus: "mc", opcions: ["a) La que amplia la formació bàsica", "b) La obligatòria", "c) La que substitueix el CFGM"], correcta: "a", explicacio: "Cursos que complementen la teva formació principal." },
+            { pregunta: "17. La competència és una amenaça en el DAFO.", tipus: "vf", correcta: "v", explicacio: "Vertader, és un factor extern negatiu." },
+            { pregunta: "18. Què és LinkedIn?", tipus: "mc", opcions: ["a) Una xarxa social professional", "b) Un portal d'ocupació", "c) Un sindicat"], correcta: "a", explicacio: "És una xarxa social professional." },
+            { pregunta: "19. El full de ruta no ha d'incloure recursos.", tipus: "vf", correcta: "f", explicacio: "Fals. Els recursos (temps, diners) són importants." },
+            { pregunta: "20. On has de penjar el DAFO i el full de ruta?", tipus: "mc", opcions: ["a) A l'ordinador", "b) A Moodle i al portafolis", "c) Enviar per correu"], correcta: "b", explicacio: "S'han de penjar a Moodle i incorporar al portafolis." }
+        ];
+
+        function generarPreguntesExamen() {
+            let html = '';
+            preguntesExamen.forEach((p, index) => {
+                html += `<div class="examen-pregunta">`;
+                html += `<p><strong>${p.pregunta}</strong></p>`;
+                
+                if (p.tipus === 'vf') {
+                    html += `<div class="examen-opcions">`;
+                    html += `<label><input type="radio" name="examen-${index}" value="v"> Vertader</label>`;
+                    html += `<label><input type="radio" name="examen-${index}" value="f"> Fals</label>`;
+                    html += `</div>`;
+                } else {
+                    html += `<div class="examen-opcions">`;
+                    p.opcions.forEach((opt, optIndex) => {
+                        let valor = String.fromCharCode(97 + optIndex);
+                        html += `<label><input type="radio" name="examen-${index}" value="${valor}"> ${opt}</label>`;
+                    });
+                    html += `</div>`;
+                }
+                html += `<div id="feedback-${index}" class="examen-feedback"></div>`;
+                html += `</div>`;
+            });
+            document.getElementById('examen-preguntes').innerHTML = html;
+        }
+
+        function comprovarExamen() {
+            let correctes = 0;
+            let total = preguntesExamen.length;
+            
+            preguntesExamen.forEach((p, index) => {
+                let seleccio = document.querySelector(`input[name="examen-${index}"]:checked`);
+                let feedbackDiv = document.getElementById(`feedback-${index}`);
+                
+                if (seleccio) {
+                    if (seleccio.value === p.correcta) {
+                        correctes++;
+                        feedbackDiv.innerHTML = `✅ Correcte! ${p.explicacio || ''}`;
+                        feedbackDiv.className = 'examen-feedback examen-correcte';
+                    } else {
+                        let correctaText = p.correcta === 'v' ? 'Vertader' : p.correcta === 'f' ? 'Fals' : p.opcions[{'a':0,'b':1,'c':2}[p.correcta]];
+                        feedbackDiv.innerHTML = `❌ Incorrecte. La resposta correcta és: ${correctaText}. ${p.explicacio || ''}`;
+                        feedbackDiv.className = 'examen-feedback examen-incorrecte';
+                    }
+                    feedbackDiv.style.display = 'block';
+                } else {
+                    feedbackDiv.innerHTML = '❌ Sense respondre.';
+                    feedbackDiv.className = 'examen-feedback examen-incorrecte';
+                    feedbackDiv.style.display = 'block';
+                }
+            });
+            
+            let percentatge = (correctes / total * 100).toFixed(1);
+            let resultatDiv = document.getElementById('examen-resultat');
+            let feedbackGlobal = document.getElementById('examen-feedback-global');
+            
+            resultatDiv.innerHTML = `Resultat: ${correctes}/${total} (${percentatge}%)`;
+            
+            if (correctes >= 14) {
+                resultatDiv.classList.add('examen-superat');
+                resultatDiv.classList.remove('examen-no-superat');
+                feedbackGlobal.innerHTML = '<p style="color:#155724;">✅ SUPERAT! Estàs preparat per a l\'examen final.</p>';
+            } else {
+                resultatDiv.classList.add('examen-no-superat');
+                resultatDiv.classList.remove('examen-superat');
+                feedbackGlobal.innerHTML = '<p style="color:#721c24;">❌ NO SUPERAT. Revisa els continguts i torna-ho a intentar.</p>';
+            }
+        }
+
+        function reiniciarExamen() {
+            preguntesExamen.forEach((_, index) => {
+                let radios = document.querySelectorAll(`input[name="examen-${index}"]`);
+                radios.forEach(r => r.checked = false);
+                let feedbackDiv = document.getElementById(`feedback-${index}`);
+                feedbackDiv.style.display = 'none';
+            });
+            document.getElementById('examen-resultat').innerHTML = '';
+            document.getElementById('examen-feedback-global').innerHTML = '';
+        }
+
+        generarPreguntesExamen();
+        document.getElementById('comprovarExamenBtn').addEventListener('click', comprovarExamen);
+        document.getElementById('reiniciarExamenBtn').addEventListener('click', reiniciarExamen);
+
+        // ===========================================
+        // BOTÓ RESET MILLORAT (esborra localStorage)
+        // ===========================================
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('⚠️ Això esborrarà TOTES les respostes i les dades guardades. Estàs segur?')) {
+                
+                document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+                    camp.value = '';
+                });
+                
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    let clau = localStorage.key(i);
+                    if (clau.startsWith(PREFIX)) {
+                        localStorage.removeItem(clau);
+                    }
+                }
+                
+                document.getElementById('resultsArea').style.display = 'none';
+                
+                alert('✅ Totes les respostes s\'han esborrat correctament.');
+            }
+        });
+
+        // ===========================================
+        // SUBMIT (Preparar per enviar)
+        // ===========================================
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            let requiredIds = ['nom', 'grup', 'formacio', 'experiencia', 'cursos', 'debilitats', 'amenaces', 'fortaleses', 'oportunitats', 'objectiu1', 'accions1', 'termini1', 'recursos1', 'objectiu2', 'accions2', 'termini2', 'recursos2', 'objectiu3', 'accions3', 'termini3', 'recursos3', 'reflexio'];
+            let valid = true;
+            requiredIds.forEach(id => {
+                let field = document.getElementById(id);
+                if (field && !field.value.trim()) {
+                    field.style.borderColor = '#D1222B';
+                    valid = false;
+                } else if (field) {
+                    field.style.borderColor = '#ffd9d9';
+                }
+            });
+
+            if (!valid) { alert('Omple tots els camps obligatoris (*)'); return; }
+
+            // Recollir resultats del test
+            let test1 = document.querySelector('input[name="test1"]:checked')?.value || '';
+            let test2 = document.querySelector('input[name="test2"]:checked')?.value || '';
+            let test3 = document.querySelector('input[name="test3"]:checked')?.value || '';
+            let test4 = document.querySelector('input[name="test4"]:checked')?.value || '';
+            let test5 = document.querySelector('input[name="test5"]:checked')?.value || '';
+            let test6 = document.querySelector('input[name="test6"]:checked')?.value || '';
+            let test7 = document.querySelector('input[name="test7"]:checked')?.value || '';
+            let test8 = document.querySelector('input[name="test8"]:checked')?.value || '';
+            let test9 = document.querySelector('input[name="test9"]:checked')?.value || '';
+            let test10 = document.querySelector('input[name="test10"]:checked')?.value || '';
+
+            window._estudiantData = {
+                nom: document.getElementById('nom').value,
+                grup: document.getElementById('grup').value,
+                enllac: document.getElementById('enllac')?.value || '',
+                // Test interessos
+                test1, test2, test3, test4, test5, test6, test7, test8, test9, test10,
+                // Fites
+                formacio: document.getElementById('formacio').value,
+                experiencia: document.getElementById('experiencia').value,
+                cursos: document.getElementById('cursos').value,
+                // DAFO
+                debilitats: document.getElementById('debilitats').value,
+                amenaces: document.getElementById('amenaces').value,
+                fortaleses: document.getElementById('fortaleses').value,
+                oportunitats: document.getElementById('oportunitats').value,
+                // Full de ruta
+                objectiu1: document.getElementById('objectiu1').value,
+                accions1: document.getElementById('accions1').value,
+                termini1: document.getElementById('termini1').value,
+                recursos1: document.getElementById('recursos1').value,
+                objectiu2: document.getElementById('objectiu2').value,
+                accions2: document.getElementById('accions2').value,
+                termini2: document.getElementById('termini2').value,
+                recursos2: document.getElementById('recursos2').value,
+                objectiu3: document.getElementById('objectiu3').value,
+                accions3: document.getElementById('accions3').value,
+                termini3: document.getElementById('termini3').value,
+                recursos3: document.getElementById('recursos3').value,
+                reflexio: document.getElementById('reflexio').value,
+                data: new Date().toISOString()
+            };
+
+            document.getElementById('resultsArea').style.display = 'block';
+            
+            // Mostrar modal de recordatori després de preparar
+            setTimeout(() => {
+                document.getElementById('modalExplicacio').style.display = 'block';
+            }, 500);
+        });
+
+        // ===========================================
+        // PDF (DESCARREGAR PDF PER A MOODLE)
+        // ===========================================
+        document.getElementById('pdfBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { alert('Primer prepara les dades'); return; }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(16);
+            doc.setTextColor(209,34,43);
+            doc.text('INFORME D\'ACTIVITAT - RA4', 20, 20);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(0,0,0);
+            doc.text('Estudiant: ' + (d.nom || ''), 20, 30);
+            doc.text('Grup: ' + (d.grup || ''), 20, 37);
+            doc.text('Data: ' + new Date().toLocaleDateString('ca-ES'), 20, 44);
+            
+            let y = 54;
+            
+            doc.text('FITES PROFESSIONALS', 20, y);
+            y += 7;
+            doc.text('Formació: ' + (d.formacio || '-'), 20, y);
+            y += 7;
+            doc.text('Experiència: ' + (d.experiencia || '-'), 20, y);
+            y += 7;
+            doc.text('Cursos: ' + (d.cursos || '-'), 20, y);
+            y += 10;
+            
+            doc.text('DAFO PERSONAL', 20, y);
+            y += 7;
+            doc.text('Debilitats: ' + (d.debilitats || '-'), 20, y);
+            y += 7;
+            doc.text('Amenaces: ' + (d.amenaces || '-'), 20, y);
+            y += 7;
+            doc.text('Fortaleses: ' + (d.fortaleses || '-'), 20, y);
+            y += 7;
+            doc.text('Oportunitats: ' + (d.oportunitats || '-'), 20, y);
+            y += 10;
+            
+            doc.text('FULL DE RUTA', 20, y);
+            y += 7;
+            doc.text('Objectiu 1: ' + (d.objectiu1 || '-'), 20, y);
+            y += 7;
+            doc.text('Accions 1: ' + (d.accions1 || '-'), 20, y);
+            y += 7;
+            doc.text('Termini 1: ' + (d.termini1 || '-'), 20, y);
+            y += 7;
+            doc.text('Recursos 1: ' + (d.recursos1 || '-'), 20, y);
+            y += 10;
+            doc.text('Objectiu 2: ' + (d.objectiu2 || '-'), 20, y);
+            y += 7;
+            doc.text('Accions 2: ' + (d.accions2 || '-'), 20, y);
+            y += 7;
+            doc.text('Termini 2: ' + (d.termini2 || '-'), 20, y);
+            y += 7;
+            doc.text('Recursos 2: ' + (d.recursos2 || '-'), 20, y);
+            y += 10;
+            doc.text('Objectiu 3: ' + (d.objectiu3 || '-'), 20, y);
+            y += 7;
+            doc.text('Accions 3: ' + (d.accions3 || '-'), 20, y);
+            y += 7;
+            doc.text('Termini 3: ' + (d.termini3 || '-'), 20, y);
+            y += 7;
+            doc.text('Recursos 3: ' + (d.recursos3 || '-'), 20, y);
+            y += 10;
+            
+            doc.text('REFLEXIÓ FINAL', 20, y);
+            y += 7;
+            let reflexioLines = doc.splitTextToSize(d.reflexio || '-', 170);
+            doc.text(reflexioLines, 20, y);
+            
+            doc.save(`RA4_informe_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.pdf`);
+        });
+
+        // ===========================================
+        // JSON (EXPORTAR)
+        // ===========================================
+        document.getElementById('jsonBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { 
+                alert('Primer has de fer clic a "Preparar per enviar"');
+                return; 
+            }
+            
+            try {
+                let jsonCont = document.getElementById('jsonContainer');
+                let jsonStr = JSON.stringify(d, null, 2);
+                
+                // Mostrar el JSON a la pantalla
+                if (jsonCont) {
+                    jsonCont.style.display = 'block';
+                    jsonCont.textContent = jsonStr;
+                }
+                
+                // Crear i descarregar el fitxer
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `RA4_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.json`;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                
+                // Netejar
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                alert('✅ Fitxer JSON desat a DESCÀRREGUES');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error en exportar el JSON');
+            }
+        });
+
+        // ===========================================
+        // Copiar JSON al portapapers
+        // ===========================================
+        document.getElementById('copyJsonBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { alert('Primer prepara les dades'); return; }
+            
+            let jsonStr = JSON.stringify(d, null, 2);
+            navigator.clipboard.writeText(jsonStr).then(() => {
+                let status = document.getElementById('copyStatus');
+                status.style.display = 'block';
+                setTimeout(() => status.style.display = 'none', 2000);
+            }).catch(() => {
+                alert('❌ No s\'ha pogut copiar');
+            });
+        });
+    </script>
+</body>
+</html>

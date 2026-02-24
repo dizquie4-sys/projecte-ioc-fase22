@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concurs de mèrits · IOC · Diego Izquierdo</title>
+    <style>
+        /* ===== RESET I ESTILS GENERALS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(209,34,43,0.2);
+            overflow: hidden;
+            border: 2px solid #D1222B;
+        }
+
+        /* ===== CAPÇALERA ===== */
+        .header {
+            background: #D1222B;
+            padding: 30px 40px;
+            color: white;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .header .data {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            border-top: 2px solid #FFC72C;
+            border-bottom: 2px solid #FFC72C;
+            padding: 10px 0;
+            display: inline-block;
+        }
+
+        /* ===== CONTINGUT PRINCIPAL ===== */
+        .content {
+            padding: 40px 50px;
+            background: white;
+        }
+
+        /* ===== ESCUT GENERALITAT ===== */
+        .escut {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 3rem;
+            color: #D1222B;
+        }
+
+        /* ===== CAIXA DESTACADA ===== */
+        .destacat {
+            background: #f0f7ff;
+            border-left: 8px solid #D1222B;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        .destacat h3 {
+            color: #D1222B;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        .destacat .titol-projecte {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e293b;
+            font-style: italic;
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #FFC72C;
+        }
+
+        /* ===== ENLLAÇ A LA RESOLUCIÓ ===== */
+        .enllac-oficial {
+            background: #f8f9fa;
+            border: 2px dashed #D1222B;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .enllac-oficial a {
+            color: #D1222B;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enllac-oficial a:hover {
+            text-decoration: underline;
+            color: #b01e25;
+        }
+
+        /* ===== TAULA DE DADES (ACTUALITZADA) ===== */
+        .dades {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 15px;
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        .dades-label {
+            font-weight: 700;
+            color: #D1222B;
+            text-align: right;
+            padding-right: 10px;
+        }
+        .dades-value {
+            color: #1e293b;
+        }
+
+        /* ===== BOTONS ===== */
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            text-decoration: none;
+            margin: 10px;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+            transform: scale(1.05);
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #b01e25;
+        }
+        .btn-gran {
+            font-size: 1.5rem;
+            padding: 20px 40px;
+        }
+
+        /* ===== PEU ===== */
+        .footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        .footer a {
+            color: #FFC72C;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== ACCESSIBILITAT ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+        }
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        .btn-flotant:hover {
+            background: #D1222B;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 25px; }
+            .dades { grid-template-columns: 1fr; }
+            .dades-label { text-align: left; }
+            .header h2 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT TORNAR A DALT -->
+    <button class="btn-flotant" id="tornarDaltBtn" title="Tornar a dalt" aria-label="Tornar a dalt">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
+
+    <div class="container">
+        <!-- CAPÇALERA -->
+        <div class="header">
+            <div class="escut" aria-hidden="true">⚙️🏛️</div>
+            <h1>Generalitat de Catalunya</h1>
+            <h2>Departament d'Educació i Formació Professional</h2>
+            <div class="data">Institut Obert de Catalunya (IOC)</div>
+        </div>
+
+        <!-- CONTINGUT PRINCIPAL -->
+        <div class="content">
+            <!-- TÍTOL CONVOCATÒRIA -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <span class="badge-groc" style="background: #FFC72C; padding: 8px 20px; border-radius: 40px; font-weight: 700; display: inline-block; border: 2px solid #D1222B;">
+                    CONCURS DE MÈRITS · RESOLUCIÓ EDF/135/2026
+                </span>
+            </div>
+
+            <!-- CAIXA DESTACADA AMB EL PROJECTE -->
+            <div class="destacat">
+                <h3>📌 Projecte de desenvolupament dels continguts del lloc</h3>
+                <div class="titol-projecte">
+                    "Identitat digital, anàlisi crítica i prevenció: <br>
+                    un fil conductor per a l'ocupabilitat en el sector elèctric"
+                </div>
+            </div>
+
+            <!-- ENLLAÇ A LA RESOLUCIÓ OFICIAL -->
+            <div class="enllac-oficial">
+                <a href="https://dogc.gencat.cat/ca/document-del-dogc/?documentId=1035145" target="_blank" rel="noopener noreferrer">
+                    📄 Veure Resolució EDF/135/2026 al DOGC
+                </a>
+            </div>
+
+            <!-- TAULA DE DADES (SENSE PLACES NI FASE) -->
+            <div class="dades">
+                <div class="dades-label">Especialitat:</div>
+                <div class="dades-value">505 – Formació i Orientació Laboral</div>
+
+                <div class="dades-label">Data convocatòria:</div>
+                <div class="dades-value">26 de gener de 2026 (DOGC núm. 9590)</div>
+
+                <div class="dades-label">Autor del projecte:</div>
+                <div class="dades-value">Diego Izquierdo Perán</div>
+            </div>
+
+            <!-- REQUISITS DE PARTICIPACIÓ -->
+            <div style="background: #fff3cd; border-radius: 15px; padding: 20px; margin: 30px 0; border-left: 8px solid #FFC72C;">
+                <p style="font-weight: 700; margin-bottom: 10px;">✅ Requisits de participació acreditats:</p>
+                <ul style="margin-left: 25px;">
+                    <li>Funcionari de carrera del cos de professors d'ensenyament secundari (especialitat 505)</li>
+                    <li>Més de 5 anys d'exercici de la docència presencial</li>
+                    <li>Més de 3 anys en l'especialitat 505</li>
+                    <li>Perfil professional de competència digital docent (CDD B2).</li>
+                </ul>
+            </div>
+
+            <!-- BOTÓ PER COMENÇAR LA PRESENTACIÓ -->
+            <div style="text-align: center; margin: 40px 0 20px;">
+                <a href="1_presentacio.html" class="btn btn-primary btn-gran">
+                    🚀 COMENÇAR PRESENTACIÓ DEL PROJECTE
+                </a>
+                <p style="margin-top: 15px; color: #6c757d; font-size: 0.9rem;">
+                    ⚡ Accediu a la presentació completa del projecte didàctic
+                </p>
+            </div>
+        </div>
+
+        <!-- PEU DE PÀGINA -->
+        <div class="footer">
+            Diego Izquierdo Perán · FOL · IOC · 
+            <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
+        </div>
+    </div>
+
+    <script>
+        // BOTÓ TORNAR A DALT
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // INFO ACCESSIBILITAT
+        document.getElementById('accesibilitatInfo').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Aquest lloc compleix les pautes d\'accessibilitat WCAG 2.1 (nivell AA).');
+        });
+    </script>
+</body>
+</html>

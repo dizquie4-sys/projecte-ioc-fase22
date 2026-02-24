@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA2 · Investigació d'accidents + Avaluació de riscos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* ESTILS COMPLETS (exactament igual que l'original) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(209,34,43,0.15);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        .header .accessibility-icon {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            border: 2px solid white;
+        }
+        .content {
+            padding: 30px 35px;
+        }
+        .badge-groc {
+            background: #FFC72C;
+            color: #1e293b;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 2px solid #D1222B;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 30px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .section-title .help-btn {
+            background: #FFC72C;
+            color: #D1222B;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .section-title .help-btn:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .info-box {
+            background: #fff1f0;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #D1222B;
+        }
+        .info-box h3 {
+            color: #D1222B;
+            margin-bottom: 10px;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: #b01e25;
+            border-color: #b01e25;
+        }
+        .btn-danger {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-close {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-close:hover {
+            background: #5a6268;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffd9d9;
+            border-radius: 12px;
+            margin: 8px 0 15px;
+            font-size: 1rem;
+        }
+        textarea:focus, input:focus, select:focus {
+            outline: 3px solid #FFC72C;
+            border-color: #D1222B;
+        }
+        .required::after {
+            content: " *";
+            color: #D1222B;
+            font-weight: bold;
+        }
+        .scale-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .scale-item {
+            flex: 1;
+            min-width: 180px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scale-item:hover, .scale-item:focus {
+            background: #fff1f0;
+            border-color: #D1222B;
+            outline: none;
+        }
+        .scale-item.selected {
+            background: #fff1f0;
+            border-color: #D1222B;
+            box-shadow: 0 0 0 3px rgba(209,34,43,0.2);
+        }
+        .level-icon {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .level-1 { background: #e74c3c; }
+        .level-2 { background: #f39c12; }
+        .level-3 { background: #2ecc71; }
+        .level-4 { background: #D1222B; }
+        .results-area {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid #D1222B;
+            display: none;
+        }
+        .score-badge {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .json-container {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 10px 0;
+        }
+        .footer {
+            background: #f1f5f9;
+            padding: 20px;
+            text-align: center;
+        }
+        hr {
+            border: 2px dashed #FFC72C;
+            margin: 30px 0;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+        .autoavaluacio-container {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+            display: none;
+        }
+        .quiz-item {
+            margin-bottom: 20px;
+        }
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .quiz-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .quiz-options label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .quiz-options input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+        .feedback-quiz {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+        }
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+            text-decoration: none;
+        }
+        .enllac-ntp {
+            display: inline-block;
+            background: #e9ecef;
+            border: 1px solid #6c757d;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #495057;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-ntp:hover {
+            background: #D1222B;
+            color: white;
+            border-color: #D1222B;
+            text-decoration: none;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        .plantilla-link {
+            display: inline-block;
+            background: #d4edda;
+            border: 1px solid #28a745;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #155724;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .plantilla-link:hover {
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+        }
+        .pla-simplificat {
+            background: #fff3cd;
+            border: 1px solid #856404;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .model-visual {
+            background: white;
+            border: 2px solid #D1222B;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        .rubrica-visual {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .rubrica-visual table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubrica-visual th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        .rubrica-visual td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        .rubrica-visual .nivell-1 { background: #f8d7da; }
+        .rubrica-visual .nivell-2 { background: #fff3cd; }
+        .rubrica-visual .nivell-3 { background: #d4edda; }
+        .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
+        
+        .examen-container {
+            background: #f0f7ff;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 3px solid #D1222B;
+            display: none;
+        }
+        .examen-pregunta {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #FFC72C;
+        }
+        .examen-pregunta p {
+            margin-bottom: 10px;
+        }
+        .examen-opcions {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .examen-opcions label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .examen-opcions input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+        .examen-feedback {
+            margin-top: 8px;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .examen-correcte {
+            background: #d4edda;
+            color: #155724;
+        }
+        .examen-incorrecte {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .examen-resultat {
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        .examen-superat {
+            background: #d4edda;
+            color: #155724;
+        }
+        .examen-no-superat {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* ESTILS PER ALS MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 3px solid #D1222B;
+            position: relative;
+        }
+        .close-modal {
+            color: #D1222B;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: sticky;
+            top: 0;
+            background: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid #D1222B;
+        }
+        .close-modal:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .modal h2 {
+            color: #D1222B;
+            margin-bottom: 20px;
+        }
+        .modal h3 {
+            color: #D1222B;
+            margin: 20px 0 10px;
+        }
+        .modal ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        .modal li {
+            margin-bottom: 5px;
+        }
+
+        /* ESTILS PER ALS BLOCS DESPLEGABLES */
+        .bloc-container {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+            display: none;
+        }
+        .bloc-title {
+            color: #D1222B;
+            margin-bottom: 15px;
+        }
+        
+        /* MODAL D'EXPLICACIÓ JSON */
+        .modal-explicacio {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-explicacio-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            border: 3px solid #D1222B;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-explicacio-tancar {
+            color: #D1222B;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid #D1222B;
+        }
+        .modal-explicacio-tancar:hover {
+            background: #D1222B;
+            color: white;
+        }
+        
+        /* BOTÓ FLOTANT ACCESSIBLE */
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            min-width: 60px;
+            min-height: 60px;
+            line-height: 1;
+        }
+        .btn-flotant:hover,
+        .btn-flotant:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+            outline-offset: 2px;
+            transform: scale(1.05);
+        }
+        .btn-flotant:focus-visible {
+            outline: 3px solid #FFC72C;
+            box-shadow: 0 0 0 5px rgba(209,34,43,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT ACCESSIBLE PER TORNAR A DALT -->
+    <button 
+        class="btn-flotant" 
+        id="tornarDaltBtn" 
+        title="Tornar a l'inici de la pàgina"
+        aria-label="Tornar a dalt"
+        role="button"
+        tabindex="0">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
+
+    <!-- MODAL D'EXPLICACIÓ DEL JSON -->
+    <div id="modalExplicacio" class="modal-explicacio">
+        <div class="modal-explicacio-content">
+            <span class="modal-explicacio-tancar">&times;</span>
+            <h2 style="color:#D1222B; margin-bottom:20px;">📤 Com enviar el teu treball</h2>
+            
+            <div style="margin:20px 0; padding:15px; background:#f0f7ff; border-radius:10px; border-left:5px solid #D1222B;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📁 Què és un fitxer JSON?</strong></p>
+                <p>És un format que conté TOTES les teves respostes en un sol fitxer. El professor el podrà llegir fàcilment.</p>
+            </div>
+            
+            <div style="margin:20px 0; padding:15px; background:#fff3cd; border-radius:10px; border-left:5px solid #FFC72C;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📥 Com el guardes?</strong></p>
+                <ol style="margin-left:20px;">
+                    <li>Omple totes les preguntes</li>
+                    <li>Prem el botó <strong>"Preparar per enviar"</strong></li>
+                    <li>Prem <strong>"📊 Exportar JSON"</strong></li>
+                    <li>El fitxer es desarà a la carpeta <strong>Descàrregues</strong></li>
+                </ol>
+            </div>
+            
+            <div style="margin:20px 0; padding:15px; background:#d4edda; border-radius:10px; border-left:5px solid #28a745;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📤 Com l'envies al professor?</strong></p>
+                <ul style="margin-left:20px;">
+                    <li><strong>Moodle:</strong> Puja'l com a tasca</li>
+                    <li><strong>Correu:</strong> Adjunta'l a un missatge</li>
+                    <li><strong>Drive:</strong> Comparteix l'enllaç</li>
+                </ul>
+            </div>
+            
+            <div style="text-align:center; margin-top:25px;">
+                <button class="btn btn-primary" id="tancarModalBtn">Entès</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1 id="main-title">⚡ RA2 · Investigació d'accidents + Avaluació de riscos</h1>
+                <p>FOL – IPO I · CFGM Instal·lacions Elèctriques</p>
+            </div>
+            <div class="accessibility-icon" role="img" aria-label="Presentació accessible" title="Aquest contingut compleix criteris d'accessibilitat WCAG 2.1">
+                ♿
+            </div>
+        </div>
+        <div class="content">
+            <!-- Botons de la capçalera -->
+            <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-bottom: 20px;">
+                <button class="btn btn-primary" id="pdfInstruccionsBtn">
+                    📥 PDF Instruccions completes
+                </button>
+                <button class="btn btn-primary" id="modalPortafolisBtn">
+                    📋 Instruccions del portafolis
+                </button>
+            </div>
+
+            <!-- MODAL INSTRUCCIONS PORTAFOLIS -->
+            <div id="modalPortafolis" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>📋 INSTRUCCIONS DEL PORTAFOLIS DIGITAL PROFESSIONAL</h2>
+                    
+                    <h3>Què és el portafolis?</h3>
+                    <p>El portafolis digital és una recopilació de les teves evidències d'aprenentatge al llarg del mòdul. Ha de mostrar la teva evolució i les teves competències professionals.</p>
+                    
+                    <h3>Contingut obligatori:</h3>
+                    <ul>
+                        <li><strong>RA1 (Coneix el teu sector):</strong> Informe d'anàlisi ocupacional</li>
+                        <li><strong>RA2 (Investigació d'accidents):</strong> Informe d'investigació + Avaluació de riscos</li>
+                        <li><strong>RA3 (De l'oferta al conveni):</strong> Taula de contrast + conclusions grupals</li>
+                        <li><strong>RA4 (El meu perfil professional):</strong> DAFO + Full de ruta</li>
+                        <li><strong>RA5 (Identitat digital):</strong> PLE + Reflexió identitat digital + CV digital</li>
+                        <li><strong>Reflexió global:</strong> Connexions entre els RA i aprenentatges</li>
+                    </ul>
+                    
+                    <h3>Criteris d'avaluació del portafolis:</h3>
+                    <ul>
+                        <li><strong>Completesa (30%):</strong> Hi són totes les evidències?</li>
+                        <li><strong>Reflexió (30%):</strong> Qualitat de la reflexió global i connexions</li>
+                        <li><strong>Organització (20%):</strong> Estructura clara i professional</li>
+                        <li><strong>Accessibilitat (20%):</strong> El portafolis és usable per a tothom?</li>
+                    </ul>
+                    
+                    <h3>Dates clau:</h3>
+                    <ul>
+                        <li><strong>Lliurament final:</strong> [Data a determinar]</li>
+                        <li><strong>Revisió intermèdia:</strong> [Data a determinar]</li>
+                    </ul>
+                    
+                    <p style="margin-top:20px; font-style:italic;">Aquestes instruccions estan subjectes a possibles modificacions. Consulta sempre l'aula virtual per a la versió actualitzada.</p>
+                </div>
+            </div>
+
+            <!-- Distintiu groc -->
+            <div class="badge-groc">📌 Activitat · 8 hores</div>
+
+            <!-- OBJECTIUS I JUSTIFICACIÓ -->
+            <h2 class="section-title" id="objectius">🔍 Objectius i justificació</h2>
+            <p>Aquesta activitat té com a objectiu que l'alumnat apliqui la metodologia d'investigació d'accidents i avaluació de riscos en contexts reals del sector elèctric. Dona resposta als criteris d'avaluació 2.3, 2.4, 2.5 i 2.7 del RA2.</p>
+
+            <!-- RÚBRICA VISIBLE (PER A L'ALUMNAT) -->
+            <div class="rubrica-visual">
+                <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ (per a la teva orientació)</h3>
+                <p>Aquesta rúbrica mostra els criteris amb què es valorarà la teva activitat. Els nivells van de 1 (No assolit) a 4 (Excel·lent).</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criteri</th>
+                            <th>Pes</th>
+                            <th>1 - No assolit</th>
+                            <th>2 - En procés</th>
+                            <th>3 - Assolit</th>
+                            <th>4 - Excel·lent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Investigació accident</strong></td>
+                            <td>30%</td>
+                            <td class="nivell-1">Incompleta, no identifica causes</td>
+                            <td class="nivell-2">Bàsica, identifica causes principals</td>
+                            <td class="nivell-3">Detallada amb anàlisi causal completa</td>
+                            <td class="nivell-4">Excel·lent amb anàlisi causal profund</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Aplicació normativa</strong></td>
+                            <td>30%</td>
+                            <td class="nivell-1">No identifica articles vulnerats</td>
+                            <td class="nivell-2">Cites genèriques sense concretar</td>
+                            <td class="nivell-3">Articles correctes identificats</td>
+                            <td class="nivell-4">Relaciona amb jurisprudència i normativa</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Avaluació riscos</strong></td>
+                            <td>20%</td>
+                            <td class="nivell-1">No identifica riscos o errors greus</td>
+                            <td class="nivell-2">Identifica riscos principals sense prioritzar</td>
+                            <td class="nivell-3">Identifica i classifica correctament</td>
+                            <td class="nivell-4">Classificació excel·lent amb mesures associades</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qualitat documents</strong></td>
+                            <td>10%</td>
+                            <td class="nivell-1">Desestructurat, incomplet, errors greus</td>
+                            <td class="nivell-2">Funcional però millorable</td>
+                            <td class="nivell-3">Clar i ben organitzat</td>
+                            <td class="nivell-4">Professional, reflexiu, amb aportacions personals</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:10px; font-style:italic;">Aquesta rúbrica és orientativa. El professor la utilitzarà per a la qualificació final.</p>
+            </div>
+
+            <!-- ENLLAÇOS D'INTERÈS -->
+            <div class="info-links">
+                <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
+                <div>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: Tècnic bàsic en PRL (IOC)</a>
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-1995-24292" target="_blank" class="enllac-normativa">Llei 31/1995 (LPRL)</a>
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2002-18099" target="_blank" class="enllac-normativa">REBT (RD 842/2002)</a>
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-15820" target="_blank" class="enllac-normativa">RITE (RD 1027/2007)</a>
+                </div>
+                <div style="margin-top:10px;">
+                    <p><strong>⚠️ Informació tècnica sobre riscos (NTP - INSST):</strong></p>
+                    <a href="https://www.insst.es/documentacion/colecciones-tecnicas/ntp-notas-tecnicas-de-prevencion/11-serie-ntp-numeros-366-a-400-ano-1996/ntp-391-herramientas-manuales-i-condiciones-generales-de-seguridad" target="_blank" class="enllac-ntp">Riscos mecànics (NTP 391)</a>
+                    <a href="https://www.insst.es/normativa/seguridad-en-el-trabajo/trabajo-con-riesgo-electrico/listado-de-ntp" target="_blank" class="enllac-ntp">Riscos elèctrics (llistat NTP)</a>
+                    <a href="https://www.insst.es/documentacion/colecciones-tecnicas/ntp-notas-tecnicas-de-prevencion/11-serie-ntp-numeros-366-a-400-ano-1996/ntp-387-evaluacion-de-las-condiciones-de-trabajo-metodo-del-analisis-ergonomico-del-puesto-de-trabajo" target="_blank" class="enllac-ntp">Riscos ergonòmics (NTP 387)</a>
+                    <a href="https://www.insst.es/documentacion/material-tecnico/preguntas-tecnicas-frecuentes-gestion-prl/riesgos-ergonomicos/factores-ambientales" target="_blank" class="enllac-ntp">Riscos ambientals (INSST)</a>
+                    <a href="https://www.insst.es/documentacion/colecciones-tecnicas/ntp-notas-tecnicas-de-prevencion/9-serie-ntp-numeros-296-a-330-ano-1994/ntp-322-valoracion-del-riesgo-de-estres-termico-indice-wbgt" target="_blank" class="enllac-ntp">Riscos tèrmics (NTP 322)</a>
+                </div>
+            </div>
+
+            <!-- METODOLOGIA I DESENVOLUPAMENT -->
+            <h2 class="section-title" id="metodologia">🧭 Metodologia i desenvolupament</h2>
+            
+            <!-- FASE 1 -->
+            <div class="info-box">
+                <h3>🔌 Fase 1 · Investigació d'un accident elèctric simulat (4 hores)</h3>
+                <p><strong>Cas pràctic:</strong> "Un treballador d'una empresa instal·ladora pateix una descàrrega elèctrica mentre realitza tasques de manteniment en un quadre de comandament sense verificar prèviament l'absència de tensió. L'accident provoca cremades de primer grau i baixa laboral de 15 dies."</p>
+                <p><strong>Tasques (consulta el <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=23" target="_blank">llibre digital (pàg. 23-27)</a> per a danys a la salut, i <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=31" target="_blank">pàg. 31-35</a> per a drets i deures):</strong></p>
+                <ol>
+                    <li>Identificar els incompliments de l'empresa i del treballador.</li>
+                    <li>Determinar els articles de la <a href="https://www.boe.es/buscar/act.php?id=BOE-A-1995-24292" target="_blank">LPRL</a>, del <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2002-18099" target="_blank">REBT</a> i, si escau, del <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-15820" target="_blank">RITE</a> vulnerats.</li>
+                    <li>Proposar un pla d'intervenció que inclogui mesures tècniques (bloqueig, senyalització, verificació d'absència de tensió) i formatives.</li>
+                    <li><strong>Redactar un informe d'investigació seguint el model normalitzat.</strong></li>
+                </ol>
+
+                <!-- MODEL D'INFORME -->
+                <div class="model-visual">
+                    <p><strong>📄 Model normalitzat d'informe d'investigació d'accidents (INSST):</strong></p>
+                    <p>Descarrega la plantilla oficial de l'INSST:</p>
+                    <a href="https://www.insst.es/documents/94886/455702/prl_pyme_27.pdf/71fc2181-43cb-48cb-810f-5469fedbd4a5" target="_blank" class="plantilla-link">📥 Descarregar model INSST</a>
+                    
+                    <p style="margin-top:15px;"><strong>Exemple visual de l'informe:</strong></p>
+                    <div style="background:#f9f9f9; padding:10px; border-radius:5px;">
+                        <p><strong>INFORME D'INVESTIGACIÓ D'ACCIDENT</strong></p>
+                        <p><strong>Empresa:</strong> Instal·lacions Elèctriques SL<br>
+                        <strong>Data accident:</strong> 15/02/2026<br>
+                        <strong>Lloc:</strong> Quadre de comandament zona B<br>
+                        <strong>Treballador afectat:</strong> J.G. (electricista, 38 anys)<br>
+                        <strong>Descripció:</strong> En realitzar tasques de manteniment sense verificar absència de tensió...<br>
+                        <strong>Causes immediates:</strong> No bloqueig, no verificació<br>
+                        <strong>Causes bàsiques:</strong> Manca de procediment, formació insuficient<br>
+                        <strong>Mesures correctores:</strong> Implementar protocol de 5 regles d'or, formació específica</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FASE 2 -->
+            <div class="info-box">
+                <h3>⚙️ Fase 2 · Avaluació de riscos en un taller d'instal·lacions elèctriques i tèrmiques (4 hores)</h3>
+                <p><strong>Plànol i descripció del taller (consulta <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=40" target="_blank">llibre digital (pàg. 40-43)</a> per a participació i recursos preventius):</strong></p>
+                <div style="background: #f0f7ff; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                    <p><strong>Taller "Electro-Serveis"</strong> - Superfície 120m². Distribució:</p>
+                    <ul>
+                        <li>Zona A (40m²): Muntatge de quadres elèctrics. Presència de cables, eines manuals, bancs de treball.</li>
+                        <li>Zona B (30m²): Proves i simulació. Equips de mesura, fonts d'alimentació.</li>
+                        <li>Zona C (30m²): Manteniment de sistemes tèrmics. Escales, eines elèctriques.</li>
+                        <li>Zona D (20m²): Emmagatzematge de materials.</li>
+                    </ul>
+                    <p><em>Descripció: Empresa amb 8 treballadors, dedicada al muntatge i manteniment d'instal·lacions elèctriques, automatismes i sistemes tèrmics.</em></p>
+                </div>
+
+                <p><strong>Tasques (identifica riscos consultant les NTP de l'INSST):</strong></p>
+                <ol>
+                    <li><strong>Identificar els riscos presents en cada àrea:</strong> 
+                        <a href="https://www.insst.es/documentacion/colecciones-tecnicas/ntp-notas-tecnicas-de-prevencion/11-serie-ntp-numeros-366-a-400-ano-1996/ntp-391-herramientas-manuales-i-condiciones-generales-de-seguridad" target="_blank" class="enllac-ntp">mecànics (NTP 391)</a>, 
+                        <a href="https://www.insst.es/normativa/seguridad-en-el-trabajo/trabajo-con-riesgo-electrico/listado-de-ntp" target="_blank" class="enllac-ntp">elèctrics (llistat NTP)</a>, 
+                        <a href="https://www.insst.es/documentacion/colecciones-tecnicas/ntp-notas-tecnicas-de-prevencion/11-serie-ntp-numeros-366-a-400-ano-1996/ntp-387-evaluacion-de-las-condiciones-de-trabajo-metodo-del-analisis-ergonomico-del-puesto-de-trabajo" target="_blank" class="enllac-ntp">ergonòmics (NTP 387)</a>, 
+                        <a href="https://www.insst.es/documentacion/material-tecnico/preguntas-tecnicas-frecuentes-gestion-prl/riesgos-ergonomicos/factores-ambientales" target="_blank" class="enllac-ntp">ambientals (INSST)</a>, 
+                        <a href="https://www.insst.es/documentacion/colecciones-tecnicas/ntp-notas-tecnicas-de-prevencion/9-serie-ntp-numeros-296-a-330-ano-1994/ntp-322-valoracion-del-riesgo-de-estres-termico-indice-wbgt" target="_blank" class="enllac-ntp">tèrmics (NTP 322)</a>.
+                    </li>
+                    <li>Classificar els riscos per ordre de prioritat.</li>
+                    <li>Proposar mesures preventives i protectores concretes, especificant la normativa d'aplicació (LPRL, REBT, RITE).</li>
+                    <li><strong>Emplenar un model simplificat d'avaluació de riscos.</strong></li>
+                </ol>
+
+                <!-- MODEL SIMPLIFICAT D'AVALUACIÓ -->
+                <div class="pla-simplificat">
+                    <p><strong>📋 Model simplificat d'avaluació de riscos (INSST - NTP 330):</strong></p>
+                    <a href="https://www.insst.es/documentacion/colecciones-tecnicas/ntp-notas-tecnicas-de-prevencion/9-serie-ntp-numeros-296-a-330-ano-1994/ntp-330-sistema-simplificado-de-evaluacion-de-riesgos-de-accidente-1993" target="_blank" class="plantilla-link">📥 Descarregar model simplificat INSST</a>
+                    
+                    <p style="margin-top:15px;"><strong>Exemple visual de la taula d'avaluació:</strong></p>
+                    <table style="width:100%; border-collapse: collapse; background:white; border:1px solid #ddd;">
+                        <tr style="background:#D1222B; color:white;">
+                            <th style="padding:8px;">Àrea</th>
+                            <th style="padding:8px;">Risc identificat</th>
+                            <th style="padding:8px;">Probabilitat (1-3)</th>
+                            <th style="padding:8px;">Severitat (1-3)</th>
+                            <th style="padding:8px;">Valoració</th>
+                            <th style="padding:8px;">Mesures preventives</th>
+                        </tr>
+                        <tr>
+                            <td>Zona A</td>
+                            <td>Contacte elèctric</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>6 (Important)</td>
+                            <td>Verificació absència tensió, EPI</td>
+                        </tr>
+                        <tr>
+                            <td>Zona C</td>
+                            <td>Caiguda d'altura</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>6 (Important)</td>
+                            <td>Baranes, ús d'arnès</td>
+                        </tr>
+                        <tr>
+                            <td>Zona A</td>
+                            <td>Sobreesforços</td>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>6 (Important)</td>
+                            <td>Formació, eines auxiliars</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FASE 3: Producte i evidència -->
+            <div class="info-box" style="background: #e6f2ff; border-left-color: #D1222B;">
+                <h3 style="color:#D1222B;">📦 Fase 3 · Producte i evidència d'aprenentatge</h3>
+                <p>En finalitzar l'activitat, hauràs de generar:</p>
+                <ul>
+                    <li><strong>Informe d'investigació d'accident (PDF).</strong> S'incorpora al portafolis.</li>
+                    <li><strong>Avaluació de riscos del taller simulat (PDF o plantilla emplenada).</strong> S'incorpora al portafolis.</li>
+                </ul>
+                <p style="margin-top:10px;">✅ Aquests documents seran les evidències principals d'aprenentatge.</p>
+            </div>
+
+            <hr>
+
+            <!-- FORMULARI PER A L'ESTUDIANT -->
+            <h2 class="section-title">📋 Dades de l'estudiant</h2>
+            <label class="required" for="nom">Nom i cognoms</label>
+            <input type="text" id="nom" placeholder="Ex: Maria Garcia" aria-required="true">
+            
+            <label class="required" for="grup">Grup</label>
+            <input type="text" id="grup" placeholder="Ex: Grup A" aria-required="true">
+            
+            <label class="required" for="enllac">Enllaç als documents de l'activitat (Drive, GitHub...)</label>
+            <input type="url" id="enllac" placeholder="https://..." aria-required="true">
+            
+            <label for="autovaloracio">Autovaloració de l'activitat (dificultat, utilitat...)</label>
+            <select id="autovaloracio">
+                <option value="">-- Selecciona --</option>
+                <option value="1">1 - Molt difícil</option>
+                <option value="2">2 - Una mica difícil</option>
+                <option value="3">3 - Neutral</option>
+                <option value="4">4 - Fàcil</option>
+                <option value="5">5 - Molt fàcil i útil</option>
+            </select>
+
+            <!-- BOTÓ DEL BLOC DESPLEGABLE -->
+            <div style="text-align:center; margin:20px 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" id="toggleBlocInformeBtn" aria-expanded="false">
+                    🧠 Informe final de l'estudiant
+                </button>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- BLOC INFORME FINAL -->
+            <!-- =========================================== -->
+            <div class="bloc-container" id="blocInformeContainer" aria-hidden="true">
+                <h3 class="bloc-title">🧠 Informe final de l'estudiant</h3>
+                <p>Respon a les següents preguntes. Les respostes s'inclouran a l'informe final.</p>
+                
+                <label class="required" for="pregunta1">1. Quins incompliments de l'empresa i del treballador has identificat? (consulta <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=23" target="_blank">llibre pàg. 23-27</a>)</label>
+                <textarea id="pregunta1" required aria-required="true" rows="3"></textarea>
+                
+                <label class="required" for="pregunta2">2. Quins articles de la LPRL, REBT i RITE s'han vulnerat? (consulta <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=31" target="_blank">llibre pàg. 31-35</a>)</label>
+                <textarea id="pregunta2" required aria-required="true" rows="3"></textarea>
+                
+                <label class="required" for="pregunta3">3. Quin pla d'intervenció proposes (mesures tècniques i formatives)?</label>
+                <textarea id="pregunta3" required aria-required="true" rows="3"></textarea>
+                
+                <label class="required" for="pregunta4">4. Quins riscos has identificat al taller? Classifica'ls per prioritat. (consulta NTP de l'INSST)</label>
+                <textarea id="pregunta4" required aria-required="true" rows="3"></textarea>
+                
+                <label class="required" for="pregunta5">5. Quines mesures preventives i protectores proposes per a cada risc? (consulta <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=40" target="_blank">llibre pàg. 40-43</a>)</label>
+                <textarea id="pregunta5" required aria-required="true" rows="3"></textarea>
+                
+                <!-- NOVA PREGUNTA 6 -->
+                <label class="required" for="aprenentatge">6. Explica què has après en aquesta activitat (coneixements, habilitats, dificultats superades...)</label>
+                <textarea id="aprenentatge" required aria-required="true" rows="4"></textarea>
+            </div>
+
+            <!-- Botons d'autoavaluació (les de sempre) -->
+            <div style="text-align:center; margin:20px 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" id="toggleAutoavaluacioBtn" aria-expanded="false">
+                    📝 Autoavaluació prèvia (10 preguntes)
+                </button>
+                <button class="btn btn-primary" id="toggleExamenBtn" aria-expanded="false">
+                    📝 AUTOAVALUACIÓ PER A L'EXAMEN FINAL (20 preguntes)
+                </button>
+            </div>
+
+            <!-- AUTOAVALUACIÓ 10 PREGUNTES -->
+            <div class="autoavaluacio-container" id="autoavaluacioContainer" aria-hidden="true">
+                <h3 style="color:#D1222B;">Autoavaluació (10 preguntes)</h3>
+                <p>Respon aquestes 10 preguntes per comprovar els teus coneixements sobre prevenció de riscos laborals (basat en el <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf" target="_blank">llibre digital</a>).</p>
+
+                <div class="quiz-item">
+                    <div class="quiz-question">1. Quina llei és la norma marc en prevenció de riscos laborals? (<a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=31" target="_blank">pàg. 31</a>)</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz1" value="a"> Llei 31/1995 (LPRL)</label>
+                        <label><input type="radio" name="quiz1" value="b"> RD 842/2002 (REBT)</label>
+                        <label><input type="radio" name="quiz1" value="c"> RD 1027/2007 (RITE)</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">2. Què regula el REBT? (<a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=31" target="_blank">pàg. 31</a>)</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz2" value="a"> La prevenció de riscos laborals</label>
+                        <label><input type="radio" name="quiz2" value="b"> Les instal·lacions elèctriques de baixa tensió</label>
+                        <label><input type="radio" name="quiz2" value="c"> Les instal·lacions tèrmiques</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">3. Quin és l'objectiu principal d'una investigació d'accidents? (<a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=23" target="_blank">pàg. 23-27</a>)</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz3" value="a"> Trobar un culpable</label>
+                        <label><input type="radio" name="quiz3" value="b"> Identificar causes per evitar futurs accidents</label>
+                        <label><input type="radio" name="quiz3" value="c"> Complir un tràmit administratiu</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">4. Què és un risc laboral? (<a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=15" target="_blank">pàg. 15</a>)</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz4" value="a"> Un accident que ja ha passat</label>
+                        <label><input type="radio" name="quiz4" value="b"> La possibilitat que un treballador pateixi un dany</label>
+                        <label><input type="radio" name="quiz4" value="c"> Una malaltia professional</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">5. Quins són riscos específics del sector elèctric? (<a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=15" target="_blank">pàg. 15-17</a>)</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz5" value="a"> Riscos psicosocials</label>
+                        <label><input type="radio" name="quiz5" value="b"> Contactes elèctrics, treballs en altura, atrapaments</label>
+                        <label><input type="radio" name="quiz5" value="c"> Riscos biològics</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">6. Què s'ha de fer abans de treballar en un quadre elèctric? (<a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=17" target="_blank">pàg. 17-18</a>)</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz6" value="a"> Treballar amb tensió</label>
+                        <label><input type="radio" name="quiz6" value="b"> Verificar absència de tensió</label>
+                        <label><input type="radio" name="quiz6" value="c"> No cal fer res especial</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">7. Què és una mesura preventiva? (<a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=17" target="_blank">pàg. 17</a>)</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz7" value="a"> Actuació després d'un accident</label>
+                        <label><input type="radio" name="quiz7" value="b"> Acció per eliminar o reduir riscos</label>
+                        <label><input type="radio" name="quiz7" value="c"> Un equip de protecció individual</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">8. Quina norma regula les instal·lacions tèrmiques? (<a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=31" target="_blank">pàg. 31</a>)</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz8" value="a"> LPRL</label>
+                        <label><input type="radio" name="quiz8" value="b"> REBT</label>
+                        <label><input type="radio" name="quiz8" value="c"> RITE</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">9. Quina prioritat tenen les mesures de protecció? (<a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf#page=17" target="_blank">pàg. 17-18</a>)</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz9" value="a"> Protecció individual abans que col·lectiva</label>
+                        <label><input type="radio" name="quiz9" value="b"> Protecció col·lectiva abans que individual</label>
+                        <label><input type="radio" name="quiz9" value="c"> Són igual d'importants</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">10. Què has de fer amb els informes d'aquesta activitat? (pàg. final)</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz10" value="a"> Guardar-los a l'ordinador</label>
+                        <label><input type="radio" name="quiz10" value="b"> Penjar-los a Moodle i incorporar-los al portafolis</label>
+                        <label><input type="radio" name="quiz10" value="c"> Enviar-los per correu al professor</label>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; margin-bottom:20px;">
+                    <button class="btn btn-primary" id="checkQuizBtn">✅ Comprova respostes</button>
+                    <button class="btn btn-outline" id="resetQuizBtn">↻ Tornar a començar</button>
+                    <button class="btn btn-close" id="closeQuizBtn">✖ Tancar</button>
+                </div>
+                <div id="quizFeedback" class="feedback-quiz"></div>
+            </div>
+
+            <!-- AUTOAVALUACIÓ 20 PREGUNTES -->
+            <div class="examen-container" id="examenContainer" aria-hidden="true">
+                <h2 style="color:#D1222B; margin-bottom:20px;">📝 AUTOAVALUACIÓ PER A L'EXAMEN FINAL (20 preguntes)</h2>
+                <p style="margin-bottom:20px;">Aquestes preguntes són representatives del que trobaràs a l'examen final. 
+                Has d'obtenir un mínim del <strong>70% (14/20)</strong> per considerar que has assolit els continguts.</p>
+
+                <div id="examen-preguntes"></div>
+
+                <div style="text-align:center; margin:20px 0;">
+                    <button class="btn btn-primary" id="comprovarExamenBtn">✅ Comprova respostes</button>
+                    <button class="btn btn-secondary" id="reiniciarExamenBtn">↻ Reiniciar examen</button>
+                    <button class="btn btn-close" id="closeExamenBtn">✖ Tancar</button>
+                </div>
+
+                <div id="examen-resultat" class="examen-resultat"></div>
+                <div id="examen-feedback-global" style="margin-top:15px;"></div>
+            </div>
+
+            <!-- Botons d'acció finals -->
+            <div class="buttons">
+                <button class="btn btn-danger" id="resetBtn">🗑️ Esborrar tot</button>
+                <button class="btn btn-primary" id="submitBtn">✅ Preparar per enviar</button>
+            </div>
+
+            <!-- Àrea de resultats -->
+            <div class="results-area" id="resultsArea">
+                <h2 style="color:#D1222B;">📈 Dades per al professor</h2>
+                <p>Prem "Exporta JSON" per generar un fitxer amb les teves respostes.</p>
+                <div class="buttons">
+                    <button class="btn btn-primary" id="pdfBtn">📥 Descarregar PDF (per a Moodle)</button>
+                    <button class="btn btn-success" id="jsonBtn">📊 Exportar JSON</button>
+                    <button class="btn btn-primary" id="copyJsonBtn">📋 Copiar JSON al portapapers</button>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button class="btn btn-secondary" id="explicacioJsonBtn">❓ Com enviar (explicació)</button>
+                </div>
+                <div id="jsonContainer" class="json-container" style="display:none;"></div>
+                <div id="copyStatus" style="display:none; background:#d4edda; padding:10px; border-radius:10px; margin-top:10px;">✅ JSON copiat!</div>
+            </div>
+
+            <!-- Recordatori final millorat -->
+            <div style="background: #e6f2ff; border-radius: 20px; padding: 20px; margin: 30px 0; border-left: 5px solid #D1222B;">
+                <span style="font-size:1.3rem; font-weight:bold;">📁 LLIURAMENT DE L'ACTIVITAT</span>
+                
+                <p style="margin-top:15px;">Abans de tancar aquesta pàgina, assegura't que has completat els següents passos:</p>
+                
+                <div style="background: white; border-radius: 15px; padding: 20px; margin: 15px 0; border: 2px solid #D1222B;">
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">1</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📥 DESA EL TEU TREBALL (OPCIONAL)</strong>
+                            <p style="margin-top:5px;">Totes les respostes es guarden automàticament al teu navegador. Pots tancar i tornar-hi més tard sense perdre res.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">2</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📤 EXPORTA EL FITXER JSON</strong>
+                            <p style="margin-top:5px;">Prem el botó <strong>"📊 Exportar JSON"</strong> (a la secció de resultats). Es generarà un fitxer amb les teves respostes que es desarà a la carpeta <strong>DESCARREGUES</strong>.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">3</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📎 PENJA A MOODLE</strong>
+                            <p style="margin-top:5px;">Puja a Moodle els següents documents:</p>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li><strong>📁 Fitxer JSON</strong> (obligatori - conté totes les respostes)</li>
+                                <li><strong>📄 Informe d'investigació d'accident</strong> (PDF)</li>
+                                <li><strong>📊 Avaluació de riscos</strong> (PDF o plantilla)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">4</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📁 INCORPORA AL PORTAFOLIS</strong>
+                            <p style="margin-top:5px;">Guarda una còpia de tots els documents al teu <strong>portafolis digital professional</strong>.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div style="background: #FFC72C; border-radius: 15px; padding: 15px; margin-top: 15px; border: 2px solid #D1222B; text-align: center;">
+                    <p style="font-weight:bold; color:#D1222B; font-size: 1.1rem;">⚠️ IMPORTANT: El fitxer JSON és l'única evidència que conté TOTES les teves respostes.</p>
+                    <p style="margin-top:5px;">Sense aquest fitxer, el professor no podrà avaluar correctament la teva activitat.</p>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="footer">Diego Izquierdo · FOL · IOC · Contingut accessible ♿</div>
+    </div>
+
+    <script>
+        // ===========================================
+        // FUNCIONS DEL MODAL
+        // ===========================================
+        var modalPortafolis = document.getElementById('modalPortafolis');
+        var btnPortafolis = document.getElementById('modalPortafolisBtn');
+        var spanPortafolis = document.getElementsByClassName('close-modal')[0];
+        
+        btnPortafolis.onclick = function() {
+            modalPortafolis.style.display = 'block';
+        }
+        
+        spanPortafolis.onclick = function() {
+            modalPortafolis.style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modalPortafolis) {
+                modalPortafolis.style.display = 'none';
+            }
+        }
+
+        // ===========================================
+        // PDF d'instruccions amb rúbrica completa
+        // ===========================================
+        document.getElementById('pdfInstruccionsBtn').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Títol
+            doc.setFontSize(20);
+            doc.setTextColor(209,34,43);
+            doc.text('RA2 · Investigació d\'accidents + Avaluació de riscos', 20, 20);
+            
+            // Descripció
+            doc.setFontSize(12);
+            doc.setTextColor(0,0,0);
+            doc.text('DESCRIPCIÓ', 20, 35);
+            doc.setFontSize(10);
+            doc.text('Activitat de 8 hores per investigar accidents i avaluar riscos en el sector elèctric', 20, 45);
+            
+            // Objectius
+            doc.setFontSize(12);
+            doc.text('OBJECTIUS', 20, 60);
+            doc.setFontSize(10);
+            doc.text('• Investigar un accident elèctric simulat', 25, 70);
+            doc.text('• Identificar incompliments normatius', 25, 77);
+            doc.text('• Avaluar riscos en un taller', 25, 84);
+            
+            // Metodologia
+            doc.setFontSize(12);
+            doc.text('METODOLOGIA', 20, 99);
+            doc.setFontSize(10);
+            doc.text('Fase 1 (4h): Investigació d\'accident elèctric simulat', 25, 109);
+            doc.text('Fase 2 (4h): Avaluació de riscos en taller', 25, 116);
+            doc.text('Fase 3: Lliurament de documents a Moodle + portafolis', 25, 123);
+            
+            // PREGUNTES DE L'ACTIVITAT (NOU)
+            doc.setFontSize(12);
+            doc.text('PREGUNTES DE L\'ACTIVITAT', 20, 143);
+            doc.setFontSize(10);
+            
+            let y = 153;
+            const preguntes = [
+                'INFORME FINAL:',
+                '1. Quins incompliments de l\'empresa i del treballador has identificat?',
+                '2. Quins articles de la LPRL, REBT i RITE s\'han vulnerat?',
+                '3. Quin pla d\'intervenció proposes?',
+                '4. Quins riscos has identificat al taller? Classifica\'ls per prioritat.',
+                '5. Quines mesures preventives i protectores proposes per a cada risc?',
+                '6. Explica què has après en aquesta activitat.'
+            ];
+            
+            preguntes.forEach(p => {
+                if (p === '') {
+                    y += 3;
+                } else {
+                    doc.text(p, 25, y);
+                    y += 6;
+                }
+            });
+            
+            // Escala de valoració
+            doc.setFontSize(12);
+            doc.text('ESCALA DE VALORACIÓ (1–4)', 20, y+10);
+            doc.setFontSize(10);
+            doc.text('1 - No assolit', 25, y+20);
+            doc.text('2 - En la direcció adequada', 25, y+27);
+            doc.text('3 - Assolit', 25, y+34);
+            doc.text('4 - Excel·lent', 25, y+41);
+            
+            // RÚBRICA COMPLETA
+            doc.addPage();
+            doc.setFontSize(12);
+            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 20);
+            
+            doc.setFontSize(8);
+            doc.text('Criteri', 20, 30);
+            doc.text('Excel·lent (4)', 50, 30);
+            doc.text('Assolit (3)', 85, 30);
+            doc.text('En procés (2)', 120, 30);
+            doc.text('No assolit (1)', 155, 30);
+            doc.text('Pes', 185, 30);
+            
+            doc.line(20, 32, 195, 32);
+            
+            // Criteri 1 - Investigació
+            doc.text('C1: Investigació', 20, 42);
+            doc.text('Anàlisi causal', 50, 42);
+            doc.text('profunda', 50, 47);
+            doc.text('Detallada', 85, 42);
+            doc.text('completa', 85, 47);
+            doc.text('Bàsica,', 120, 42);
+            doc.text('causes', 120, 47);
+            doc.text('Incompleta,', 155, 42);
+            doc.text('sense causes', 155, 47);
+            doc.text('30%', 185, 45);
+            
+            // Criteri 2 - Normativa
+            doc.text('C2: Normativa', 20, 57);
+            doc.text('Relaciona amb', 50, 57);
+            doc.text('jurisprud.', 50, 62);
+            doc.text('Articles', 85, 57);
+            doc.text('correctes', 85, 62);
+            doc.text('Cites', 120, 57);
+            doc.text('genèriques', 120, 62);
+            doc.text('No', 155, 57);
+            doc.text('identifica', 155, 62);
+            doc.text('30%', 185, 60);
+            
+            doc.addPage();
+            doc.setFontSize(12);
+            doc.text('RÚBRICA D\'AVALUACIÓ (pàgina 2/2)', 20, 20);
+            
+            doc.setFontSize(8);
+            doc.text('Criteri', 20, 30);
+            doc.text('Excel·lent (4)', 50, 30);
+            doc.text('Assolit (3)', 85, 30);
+            doc.text('En procés (2)', 120, 30);
+            doc.text('No assolit (1)', 155, 30);
+            doc.text('Pes', 185, 30);
+            
+            doc.line(20, 32, 195, 32);
+            
+            // Criteri 3 - Riscos
+            doc.text('C3: Riscos', 20, 42);
+            doc.text('Classificació', 50, 42);
+            doc.text('excel·lent', 50, 47);
+            doc.text('Identifica i', 85, 42);
+            doc.text('classifica', 85, 47);
+            doc.text('Riscos', 120, 42);
+            doc.text('principals', 120, 47);
+            doc.text('Errors', 155, 42);
+            doc.text('greus', 155, 47);
+            doc.text('20%', 185, 45);
+            
+            // Criteri 4 - Qualitat
+            doc.text('C4: Qualitat', 20, 57);
+            doc.text('Professional,', 50, 57);
+            doc.text('reflexiu', 50, 62);
+            doc.text('Clar i', 85, 57);
+            doc.text('organitzat', 85, 62);
+            doc.text('Funcional,', 120, 57);
+            doc.text('millorable', 120, 62);
+            doc.text('Desestruct,', 155, 57);
+            doc.text('incomplet', 155, 62);
+            doc.text('10%', 185, 60);
+            
+            doc.save('RA2_instruccions_completes.pdf');
+        });
+
+        // ===========================================
+        // GUARDAT AUTOMÀTIC AMB LOCALSTORAGE (PREFIX ra2_)
+        // ===========================================
+        const PREFIX = 'ra2_';
+        
+        function carregarDadesGuardades() {
+            document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+                let valorGuardat = localStorage.getItem(PREFIX + camp.id);
+                if (valorGuardat) camp.value = valorGuardat;
+            });
+            
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                let nom = radio.name;
+                let valorGuardat = localStorage.getItem(PREFIX + nom);
+                if (valorGuardat === radio.value) radio.checked = true;
+            });
+        }
+        
+        function guardarCamp(camp) {
+            localStorage.setItem(PREFIX + camp.id, camp.value);
+        }
+        
+        function guardarRadio(name, value) {
+            localStorage.setItem(PREFIX + name, value);
+        }
+        
+        window.addEventListener('load', carregarDadesGuardades);
+        
+        document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+            camp.addEventListener('input', function() { guardarCamp(this); });
+        });
+        
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                guardarRadio(this.name, this.value);
+            });
+        });
+
+        // ===========================================
+        // MODAL D'EXPLICACIÓ JSON
+        // ===========================================
+        function obrirModalExplicacio() {
+            document.getElementById('modalExplicacio').style.display = 'block';
+        }
+        
+        document.getElementById('explicacioJsonBtn')?.addEventListener('click', obrirModalExplicacio);
+        
+        document.querySelector('.modal-explicacio-tancar').addEventListener('click', function() {
+            document.getElementById('modalExplicacio').style.display = 'none';
+        });
+        
+        document.getElementById('tancarModalBtn').addEventListener('click', function() {
+            document.getElementById('modalExplicacio').style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(event) {
+            let modal = document.getElementById('modalExplicacio');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // ===========================================
+        // BOTÓ FLOTANT TORNAR A DALT
+        // ===========================================
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // ===========================================
+        // Toggle Bloc Informe Final
+        // ===========================================
+        document.getElementById('toggleBlocInformeBtn').addEventListener('click', function() {
+            let container = document.getElementById('blocInformeContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        // ===========================================
+        // Toggle autoavaluació 10 preguntes
+        // ===========================================
+        document.getElementById('toggleAutoavaluacioBtn').addEventListener('click', function() {
+            let container = document.getElementById('autoavaluacioContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('toggleExamenBtn').addEventListener('click', function() {
+            let container = document.getElementById('examenContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('closeQuizBtn').addEventListener('click', function() {
+            document.getElementById('autoavaluacioContainer').style.display = 'none';
+            document.getElementById('toggleAutoavaluacioBtn').setAttribute('aria-expanded', 'false');
+        });
+
+        document.getElementById('closeExamenBtn').addEventListener('click', function() {
+            document.getElementById('examenContainer').style.display = 'none';
+            document.getElementById('toggleExamenBtn').setAttribute('aria-expanded', 'false');
+        });
+
+        // ===========================================
+        // Comprova autoavaluació 10 preguntes
+        // ===========================================
+        document.getElementById('checkQuizBtn').addEventListener('click', function() {
+            let correctes = 0;
+            
+            if (document.querySelector('input[name="quiz1"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="quiz2"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz3"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz4"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz5"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz6"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz7"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz8"]:checked')?.value === 'c') correctes++;
+            if (document.querySelector('input[name="quiz9"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz10"]:checked')?.value === 'b') correctes++;
+
+            let feedback = document.getElementById('quizFeedback');
+            feedback.style.display = 'block';
+            
+            if (correctes === 10) {
+                feedback.innerHTML = '✅ Excel·lent! Has respost correctament totes les preguntes.';
+                feedback.style.background = '#d4edda';
+                feedback.style.color = '#155724';
+            } else if (correctes >= 7) {
+                feedback.innerHTML = `✅ Has obtingut ${correctes}/10. Molt bé! Revisa els errors.`;
+                feedback.style.background = '#fff3cd';
+                feedback.style.color = '#856404';
+            } else {
+                feedback.innerHTML = `❌ Has obtingut ${correctes}/10. Torna a llegir l'activitat.`;
+                feedback.style.background = '#f8d7da';
+                feedback.style.color = '#721c24';
+            }
+        });
+
+        document.getElementById('resetQuizBtn').addEventListener('click', function() {
+            for(let i = 1; i <= 10; i++) {
+                let radios = document.querySelectorAll(`input[name="quiz${i}"]`);
+                radios.forEach(r => r.checked = false);
+            }
+            document.getElementById('quizFeedback').style.display = 'none';
+        });
+
+        // ===========================================
+        // EXAMEN DE 20 PREGUNTES
+        // ===========================================
+        const preguntesExamen = [
+            { pregunta: "1. Llei 31/1995 és la norma bàsica en prevenció de riscos laborals.", tipus: "vf", correcta: "v", explicacio: "Correcte. La Llei 31/1995 és la Llei de Prevenció de Riscos Laborals." },
+            { pregunta: "2. Quin article de la LPRL estableix el dret a la protecció?", tipus: "mc", opcions: ["a) Art. 14", "b) Art. 15", "c) Art. 16"], correcta: "a", explicacio: "L'article 14 de la LPRL estableix el dret a la protecció." },
+            { pregunta: "3. Què regula el REBT?", tipus: "mc", opcions: ["a) Instal·lacions elèctriques", "b) Instal·lacions tèrmiques", "c) Prevenció de riscos"], correcta: "a", explicacio: "El REBT regula les instal·lacions elèctriques." },
+            { pregunta: "4. Quina NTP tracta els riscos elèctrics?", tipus: "mc", opcions: ["a) NTP 399", "b) NTP 387", "c) NTP 322"], correcta: "a", explicacio: "La NTP 399 tracta riscos elèctrics." },
+            { pregunta: "5. En una investigació d'accidents, l'objectiu principal és trobar un culpable.", tipus: "vf", correcta: "f", explicacio: "Fals. L'objectiu és identificar causes per prevenir." },
+            { pregunta: "6. El període de prova pot ser de 6 mesos per a qualsevol treballador.", tipus: "vf", correcta: "f", explicacio: "Fals. El màxim és 2 mesos per a no titulats, 6 per a titulats." },
+            { pregunta: "7. Quina és la prioritat en mesures de protecció?", tipus: "mc", opcions: ["a) Individual abans que col·lectiva", "b) Col·lectiva abans que individual", "c) Són iguals"], correcta: "b", explicacio: "Primer mesures col·lectives, després individuals." },
+            { pregunta: "8. El RITE regula instal·lacions elèctriques.", tipus: "vf", correcta: "f", explicacio: "Fals. Regula instal·lacions tèrmiques." },
+            { pregunta: "9. Què és un risc laboral?", tipus: "mc", opcions: ["a) Accident ja passat", "b) Possibilitat de dany", "c) Malaltia professional"], correcta: "b", explicacio: "Risc és la possibilitat de dany." },
+            { pregunta: "10. Quina NTP tracta riscos ergonòmics?", tipus: "mc", opcions: ["a) NTP 387", "b) NTP 391", "c) NTP 322"], correcta: "a", explicacio: "La NTP 387 tracta riscos ergonòmics." },
+            { pregunta: "11. L'empresari ha de proporcionar els EPI de manera gratuïta.", tipus: "vf", correcta: "v", explicacio: "Vertader. És obligació de l'empresari." },
+            { pregunta: "12. Quin article de la LPRL parla dels principis de l'acció preventiva?", tipus: "mc", opcions: ["a) Art. 14", "b) Art. 15", "c) Art. 16"], correcta: "b", explicacio: "L'article 15 estableix els principis de l'acció preventiva." },
+            { pregunta: "13. El REBT és d'aplicació obligatòria en instal·lacions de baixa tensió.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "14. Què són les NTP?", tipus: "mc", opcions: ["a) Normes tècniques de prevenció", "b) Lleis", "c) Reglaments"], correcta: "a", explicacio: "Són Notes Tècniques de Prevenció de l'INSST." },
+            { pregunta: "15. Quina NTP tracta riscos tèrmics?", tipus: "mc", opcions: ["a) NTP 322", "b) NTP 387", "c) NTP 391"], correcta: "a", explicacio: "La NTP 322 tracta estrès tèrmic." },
+            { pregunta: "16. El treballador pot negar-se a utilitzar EPI si no li agraden.", tipus: "vf", correcta: "f", explicacio: "Fals. L'ús és obligatori." },
+            { pregunta: "17. Què regula el RITE?", tipus: "mc", opcions: ["a) Instal·lacions tèrmiques", "b) Instal·lacions elèctriques", "c) Prevenció de riscos"], correcta: "a", explicacio: "Regula instal·lacions tèrmiques." },
+            { pregunta: "18. La investigació d'accidents només es fa si hi ha lesions greus.", tipus: "vf", correcta: "f", explicacio: "Fals. S'investiguen tots." },
+            { pregunta: "19. Quin és el percentatge mínim per superar l'autoavaluació?", tipus: "mc", opcions: ["a) 50%", "b) 70%", "c) 90%"], correcta: "b", explicacio: "El mínim és 70%." },
+            { pregunta: "20. On has de penjar l'informe final de RA2?", tipus: "mc", opcions: ["a) A l'ordinador", "b) A Moodle i al portafolis", "c) Enviar per correu"], correcta: "b", explicacio: "S'ha de penjar a Moodle i incorporar al portafolis." }
+        ];
+
+        function generarPreguntesExamen() {
+            let html = '';
+            preguntesExamen.forEach((p, index) => {
+                html += `<div class="examen-pregunta">`;
+                html += `<p><strong>${p.pregunta}</strong></p>`;
+                
+                if (p.tipus === 'vf') {
+                    html += `<div class="examen-opcions">`;
+                    html += `<label><input type="radio" name="examen-${index}" value="v"> Vertader</label>`;
+                    html += `<label><input type="radio" name="examen-${index}" value="f"> Fals</label>`;
+                    html += `</div>`;
+                } else {
+                    html += `<div class="examen-opcions">`;
+                    p.opcions.forEach((opt, optIndex) => {
+                        let valor = String.fromCharCode(97 + optIndex);
+                        html += `<label><input type="radio" name="examen-${index}" value="${valor}"> ${opt}</label>`;
+                    });
+                    html += `</div>`;
+                }
+                html += `<div id="feedback-${index}" class="examen-feedback"></div>`;
+                html += `</div>`;
+            });
+            document.getElementById('examen-preguntes').innerHTML = html;
+        }
+
+        function comprovarExamen() {
+            let correctes = 0;
+            let total = preguntesExamen.length;
+            
+            preguntesExamen.forEach((p, index) => {
+                let seleccio = document.querySelector(`input[name="examen-${index}"]:checked`);
+                let feedbackDiv = document.getElementById(`feedback-${index}`);
+                
+                if (seleccio) {
+                    if (seleccio.value === p.correcta) {
+                        correctes++;
+                        feedbackDiv.innerHTML = `✅ Correcte! ${p.explicacio || ''}`;
+                        feedbackDiv.className = 'examen-feedback examen-correcte';
+                    } else {
+                        let correctaText = p.correcta === 'v' ? 'Vertader' : p.correcta === 'f' ? 'Fals' : p.opcions[{'a':0,'b':1,'c':2}[p.correcta]];
+                        feedbackDiv.innerHTML = `❌ Incorrecte. La resposta correcta és: ${correctaText}. ${p.explicacio || ''}`;
+                        feedbackDiv.className = 'examen-feedback examen-incorrecte';
+                    }
+                    feedbackDiv.style.display = 'block';
+                } else {
+                    feedbackDiv.innerHTML = '❌ Sense respondre.';
+                    feedbackDiv.className = 'examen-feedback examen-incorrecte';
+                    feedbackDiv.style.display = 'block';
+                }
+            });
+            
+            let percentatge = (correctes / total * 100).toFixed(1);
+            let resultatDiv = document.getElementById('examen-resultat');
+            let feedbackGlobal = document.getElementById('examen-feedback-global');
+            
+            resultatDiv.innerHTML = `Resultat: ${correctes}/${total} (${percentatge}%)`;
+            
+            if (correctes >= 14) {
+                resultatDiv.classList.add('examen-superat');
+                resultatDiv.classList.remove('examen-no-superat');
+                feedbackGlobal.innerHTML = '<p style="color:#155724;">✅ SUPERAT! Estàs preparat per a l\'examen final.</p>';
+            } else {
+                resultatDiv.classList.add('examen-no-superat');
+                resultatDiv.classList.remove('examen-superat');
+                feedbackGlobal.innerHTML = '<p style="color:#721c24;">❌ NO SUPERAT. Revisa els continguts i torna-ho a intentar.</p>';
+            }
+        }
+
+        function reiniciarExamen() {
+            preguntesExamen.forEach((_, index) => {
+                let radios = document.querySelectorAll(`input[name="examen-${index}"]`);
+                radios.forEach(r => r.checked = false);
+                let feedbackDiv = document.getElementById(`feedback-${index}`);
+                feedbackDiv.style.display = 'none';
+            });
+            document.getElementById('examen-resultat').innerHTML = '';
+            document.getElementById('examen-feedback-global').innerHTML = '';
+        }
+
+        generarPreguntesExamen();
+        document.getElementById('comprovarExamenBtn').addEventListener('click', comprovarExamen);
+        document.getElementById('reiniciarExamenBtn').addEventListener('click', reiniciarExamen);
+
+        // ===========================================
+        // BOTÓ RESET MILLORAT (esborra localStorage)
+        // ===========================================
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('⚠️ Això esborrarà TOTES les respostes i les dades guardades. Estàs segur?')) {
+                
+                document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+                    camp.value = '';
+                });
+                
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    let clau = localStorage.key(i);
+                    if (clau.startsWith(PREFIX)) {
+                        localStorage.removeItem(clau);
+                    }
+                }
+                
+                document.getElementById('resultsArea').style.display = 'none';
+                
+                alert('✅ Totes les respostes s\'han esborrat correctament.');
+            }
+        });
+
+        // ===========================================
+        // SUBMIT (Preparar per enviar)
+        // ===========================================
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            let requiredIds = ['nom', 'grup', 'pregunta1', 'pregunta2', 'pregunta3', 'pregunta4', 'pregunta5', 'aprenentatge'];
+            let valid = true;
+            requiredIds.forEach(id => {
+                let field = document.getElementById(id);
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#D1222B';
+                    valid = false;
+                } else {
+                    field.style.borderColor = '#ffd9d9';
+                }
+            });
+
+            if (!valid) { alert('Omple tots els camps obligatoris (*)'); return; }
+
+            window._estudiantData = {
+                nom: document.getElementById('nom').value,
+                grup: document.getElementById('grup').value,
+                enllac: document.getElementById('enllac').value,
+                autoval: document.getElementById('autovaloracio').value,
+                pregunta1: document.getElementById('pregunta1').value,
+                pregunta2: document.getElementById('pregunta2').value,
+                pregunta3: document.getElementById('pregunta3').value,
+                pregunta4: document.getElementById('pregunta4').value,
+                pregunta5: document.getElementById('pregunta5').value,
+                aprenentatge: document.getElementById('aprenentatge').value,
+                data: new Date().toISOString()
+            };
+
+            document.getElementById('resultsArea').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('modalExplicacio').style.display = 'block';
+            }, 500);
+        });
+
+        // ===========================================
+        // PDF (DESCARREGAR PDF PER A MOODLE)
+        // ===========================================
+        document.getElementById('pdfBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { alert('Primer prepara les dades'); return; }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(16);
+            doc.setTextColor(209,34,43);
+            doc.text('INFORME D\'ACTIVITAT - RA2', 20, 20);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(0,0,0);
+            doc.text('Estudiant: ' + (d.nom || ''), 20, 30);
+            doc.text('Grup: ' + (d.grup || ''), 20, 37);
+            doc.text('Data: ' + new Date().toLocaleDateString('ca-ES'), 20, 44);
+            
+            doc.text('RESPOSTES', 20, 54);
+            let y = 64;
+            
+            let respostes = [
+                '1. Incompliments: ' + (d.pregunta1 || '-'),
+                '2. Articles vulnerats: ' + (d.pregunta2 || '-'),
+                '3. Pla intervenció: ' + (d.pregunta3 || '-'),
+                '4. Riscos identificats: ' + (d.pregunta4 || '-'),
+                '5. Mesures proposades: ' + (d.pregunta5 || '-'),
+                '6. Aprenentatge: ' + (d.aprenentatge || '-')
+            ];
+            
+            respostes.forEach(r => {
+                let lines = doc.splitTextToSize(r, 170);
+                doc.text(lines, 20, y);
+                y += lines.length * 5 + 5;
+            });
+            
+            doc.save(`RA2_informe_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.pdf`);
+        });
+
+        // ===========================================
+        // JSON (EXPORTAR)
+        // ===========================================
+        document.getElementById('jsonBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { 
+                alert('Primer has de fer clic a "Preparar per enviar"');
+                return; 
+            }
+            
+            try {
+                let jsonCont = document.getElementById('jsonContainer');
+                let jsonStr = JSON.stringify(d, null, 2);
+                
+                if (jsonCont) {
+                    jsonCont.style.display = 'block';
+                    jsonCont.textContent = jsonStr;
+                }
+                
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `RA2_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.json`;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                alert('✅ Fitxer JSON desat a DESCÀRREGUES');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error en exportar el JSON');
+            }
+        });
+
+        document.getElementById('copyJsonBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { alert('Primer prepara les dades'); return; }
+            
+            let jsonStr = JSON.stringify(d, null, 2);
+            navigator.clipboard.writeText(jsonStr).then(() => {
+                let status = document.getElementById('copyStatus');
+                status.style.display = 'block';
+                setTimeout(() => status.style.display = 'none', 2000);
+            }).catch(() => {
+                alert('❌ No s\'ha pogut copiar');
+            });
+        });
+    </script>
+</body>
+</html>

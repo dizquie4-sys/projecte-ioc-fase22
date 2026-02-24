@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA2 · Professor · Avaluació automàtica</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <style>
+        /* ESTILS COMPLETS (exactament igual que els RA) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(209,34,43,0.15);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        .header .accessibility-icon {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            border: 2px solid white;
+        }
+        .content {
+            padding: 30px 35px;
+        }
+        .badge-groc {
+            background: #FFC72C;
+            color: #1e293b;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 2px solid #D1222B;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 30px 0 20px;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: #b01e25;
+            border-color: #b01e25;
+        }
+        .btn-danger {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+        .btn-excel {
+            background: #1e88e5;
+            color: white;
+            border: none;
+        }
+        .btn-pdf {
+            background: #dc3545;
+            color: white;
+            border: none;
+        }
+        .btn-dalt {
+            background: #FFC72C;
+            color: #D1222B;
+            border: none;
+            font-weight: bold;
+        }
+        .btn-dalt:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .import-area {
+            background: #f0f7ff;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #D1222B;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+        }
+        tr:hover {
+            background: #fff3cd;
+        }
+        .valoracio-box {
+            background: #e6f2ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #D1222B;
+        }
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffd9d9;
+            border-radius: 12px;
+            margin: 8px 0 15px;
+            font-size: 1rem;
+        }
+        textarea:focus, input:focus, select:focus {
+            outline: 3px solid #FFC72C;
+            border-color: #D1222B;
+        }
+        .footer {
+            background: #f1f5f9;
+            padding: 20px;
+            text-align: center;
+        }
+        hr {
+            border: 2px dashed #FFC72C;
+            margin: 30px 0;
+        }
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        .rubrica-visual {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .rubrica-visual table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubrica-visual th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        .rubrica-visual td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        
+        /* PANEL DE RESPOSTES DESPLEGABLE */
+        .panel-respostes {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 2px solid #D1222B;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        /* BOTÓ FLOTANT PER TORNAR A DALT */
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT PER TORNAR A DALT -->
+    <button class="btn btn-dalt btn-flotant" id="tornarDaltBtn" title="Tornar a dalt">
+        ⬆️ Dalt
+    </button>
+
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>⚡ RA2 · Professor · Avaluació automàtica</h1>
+                <p>Investigació d'accidents + Avaluació de riscos</p>
+            </div>
+            <div class="accessibility-icon">♿</div>
+        </div>
+        <div class="content">
+            <div class="badge-groc">📌 Corrector automàtic per al RA2</div>
+
+            <!-- ENLLAÇOS D'INTERÈS (conservats del RA2) -->
+            <div class="info-links">
+                <p><strong>📚 Enllaços d'interès per a la correcció:</strong></p>
+                <div>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u2-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: Tècnic bàsic en PRL (IOC)</a>
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-1995-24292" target="_blank" class="enllac-normativa">Llei 31/1995 (LPRL)</a>
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2002-18099" target="_blank" class="enllac-normativa">REBT (RD 842/2002)</a>
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-15820" target="_blank" class="enllac-normativa">RITE (RD 1027/2007)</a>
+                </div>
+                <div style="margin-top:10px;">
+                    <p><strong>⚠️ NTP - INSST:</strong></p>
+                    <a href="https://www.insst.es/documentacion/colecciones-tecnicas/ntp-notas-tecnicas-de-prevencion/11-serie-ntp-numeros-366-a-400-ano-1996/ntp-391-herramientas-manuales-i-condiciones-generales-de-seguridad" target="_blank" class="enllac-normativa">NTP 391</a>
+                    <a href="https://www.insst.es/normativa/seguridad-en-el-trabajo/trabajo-con-riesgo-electrico/listado-de-ntp" target="_blank" class="enllac-normativa">NTP elèctrics</a>
+                    <a href="https://www.insst.es/documentacion/colecciones-tecnicas/ntp-notas-tecnicas-de-prevencion/11-serie-ntp-numeros-366-a-400-ano-1996/ntp-387-evaluacion-de-las-condiciones-de-trabajo-metodo-del-analisis-ergonomico-del-puesto-de-trabajo" target="_blank" class="enllac-normativa">NTP 387</a>
+                    <a href="https://www.insst.es/documentacion/colecciones-tecnicas/ntp-notas-tecnicas-de-prevencion/9-serie-ntp-numeros-296-a-330-ano-1994/ntp-322-valoracion-del-riesgo-de-estres-termico-indice-wbgt" target="_blank" class="enllac-normativa">NTP 322</a>
+                </div>
+            </div>
+
+            <!-- IMPORTADOR JSON -->
+            <div class="import-area">
+                <h2 style="color:#D1222B;">📥 Importar JSON dels alumnes (RA2)</h2>
+                <p>Selecciona els fitxers JSON que han enviat els alumnes.</p>
+                <input type="file" id="jsonFiles" multiple accept=".json" style="padding:10px; border:2px dashed #D1222B; width:100%;">
+                <div class="buttons">
+                    <button class="btn btn-primary" id="carregarJsonBtn">📂 Carregar fitxers</button>
+                    <button class="btn btn-danger" id="netejarBtn">🗑️ Netejar tot</button>
+                </div>
+                <div id="statusMessage" style="margin-top:15px; padding:10px; border-radius:10px; display:none;"></div>
+            </div>
+
+            <!-- TAULA DE RESULTATS -->
+            <div id="taulaContainer" style="display:none;">
+                <h2 class="section-title">📊 Resultats del grup (RA2)</h2>
+                <div style="overflow-x: auto;">
+                    <table id="resultatsTaula">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Grup</th>
+                                <th>Investigació</th>
+                                <th>Normativa</th>
+                                <th>Riscos</th>
+                                <th>Qualitat</th>
+                                <th>Nota final</th>
+                                <th>PDF</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taulaBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- RÚBRICA VISIBLE (PER CONSULTA) -->
+                <div class="rubrica-visual">
+                    <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ RA2</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criteri</th>
+                                <th>Pes</th>
+                                <th>1 - No assolit</th>
+                                <th>2 - En procés</th>
+                                <th>3 - Assolit</th>
+                                <th>4 - Excel·lent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Investigació accident</strong></td>
+                                <td>30%</td>
+                                <td>Incompleta, no identifica causes</td>
+                                <td>Bàsica, identifica causes principals</td>
+                                <td>Detallada amb anàlisi causal completa</td>
+                                <td>Excel·lent amb anàlisi causal profund</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aplicació normativa</strong></td>
+                                <td>30%</td>
+                                <td>No identifica articles vulnerats</td>
+                                <td>Cites genèriques sense concretar</td>
+                                <td>Articles correctes identificats</td>
+                                <td>Relaciona amb jurisprudència i normativa</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Avaluació riscos</strong></td>
+                                <td>20%</td>
+                                <td>No identifica riscos o errors greus</td>
+                                <td>Identifica riscos principals sense prioritzar</td>
+                                <td>Identifica i classifica correctament</td>
+                                <td>Classificació excel·lent amb mesures associades</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Qualitat documents</strong></td>
+                                <td>10%</td>
+                                <td>Desestructurat, incomplet, errors greus</td>
+                                <td>Funcional però millorable</td>
+                                <td>Clar i ben organitzat</td>
+                                <td>Professional, reflexiu, amb aportacions personals</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="margin-top:10px; font-style:italic; color:#D1222B;">* Els valors automàtics són orientatius. Pots modificar-los manualment.</p>
+                </div>
+
+                <!-- SELECCIÓ D'ALUMNE PER VALORAR -->
+                <div class="valoracio-box">
+                    <h3 style="color:#D1222B;">📝 Avaluació individual (RA2)</h3>
+                    <select id="selectorAlumne" style="width:100%; padding:10px; margin:10px 0;">
+                        <option value="">-- Selecciona un alumne --</option>
+                    </select>
+                    
+                    <!-- BOTÓ PER MOSTRAR/AMAGAR RESPOSTES -->
+                    <div style="text-align: center; margin: 10px 0;">
+                        <button class="btn btn-primary" id="toggleRespostesBtn">
+                            📋 Mostrar/amagar respostes completes
+                        </button>
+                    </div>
+                    
+                    <!-- PANEL DE RESPOSTES DESPLEGABLE -->
+                    <div id="panelRespostes" class="panel-respostes">
+                        <h4 style="color:#D1222B; margin-bottom:10px;">Respostes de l'alumne</h4>
+                        <div id="contingutRespostes">
+                            Selecciona un alumne i fes clic a "Mostrar respostes".
+                        </div>
+                    </div>
+                    
+                    <h4 style="color:#D1222B;">Rúbrica RA2 (punts 1-4)</h4>
+                    
+                    <label><strong>Investigació accident (30%):</strong></label>
+                    <input type="number" id="notaInvestigacio" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Aplicació normativa (30%):</strong></label>
+                    <input type="number" id="notaNormativa" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Avaluació riscos (20%):</strong></label>
+                    <input type="number" id="notaRiscos" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Qualitat documents (10%):</strong></label>
+                    <input type="number" id="notaQualitat" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Punts forts observats:</strong></label>
+                    <textarea id="puntsForts" rows="3"></textarea>
+                    
+                    <label><strong>Aspectes a millorar:</strong></label>
+                    <textarea id="aspectesMillora" rows="3"></textarea>
+                    
+                    <label><strong>Recomanació professional:</strong></label>
+                    <textarea id="recomanacio" rows="2"></textarea>
+                    
+                    <label><strong>Valoració qualitativa global:</strong></label>
+                    <textarea id="valoracioGlobal" rows="4"></textarea>
+                    
+                    <div class="buttons">
+                        <button class="btn btn-primary" id="guardarAvaluacioBtn">💾 Guardar avaluació</button>
+                        <button class="btn btn-pdf" id="generarPdfIndividualBtn">📥 Generar PDF individual</button>
+                    </div>
+                </div>
+
+                <!-- BOTONS GENERALS -->
+                <div class="buttons">
+                    <button class="btn btn-excel" id="excelBtn">📥 Exportar a Excel</button>
+                    <button class="btn btn-pdf" id="pdfTotsBtn">📥 Generar PDFs de tots</button>
+                </div>
+            </div>
+
+            <hr>
+            <p style="text-align:center; color:#6c757d;">Eina de correcció per al professorat · RA2 · Les dades no es guarden al servidor</p>
+        </div>
+        <div class="footer">Diego Izquierdo · FOL · IOC · Avaluació RA2 ♿</div>
+    </div>
+
+    <script>
+        let alumnes = [];
+        let alumnesAvaluats = {};
+
+        // ===========================================
+        // FUNCIÓ PER OBTENIR NIVELL (1-4) A TEXT
+        // ===========================================
+        function getNivellText(valor) {
+            const nivells = ['No assolit', 'En procés', 'Assolit', 'Excel·lent'];
+            return nivells[valor - 1] || 'No assolit';
+        }
+
+        // ===========================================
+        // FUNCIÓ PER CALCULAR NOTA FINAL (sobre 10)
+        // ===========================================
+        function calcularNotaFinal(investigacio, normativa, riscos, qualitat) {
+            let nota = (investigacio * 0.3 + normativa * 0.3 + riscos * 0.2 + qualitat * 0.1) * 2.5;
+            return nota.toFixed(2);
+        }
+
+        // ===========================================
+        // FUNCIONS PER GENERAR CONTINGUT AUTOMÀTIC
+        // ===========================================
+        function generarPuntsFortsAuto(alumne) {
+            let punts = [];
+            
+            if (alumne.pregunta1 && alumne.pregunta1.length > 100) 
+                punts.push('RA2: Bona anàlisi de les causes de l\'accident.');
+            if (alumne.pregunta2 && alumne.pregunta2.toLowerCase().includes('lprl')) 
+                punts.push('RA2: Bona aplicació de la normativa (LPRL, REBT).');
+            if (alumne.pregunta4 && alumne.pregunta4.length > 100) 
+                punts.push('RA2: Bona identificació i classificació de riscos.');
+            
+            if (punts.length === 0) punts.push('Treball correcte en general.');
+            return punts.join('\n');
+        }
+
+        function generarAspectesMilloraAuto(alumne) {
+            let millores = [];
+            
+            if (!alumne.pregunta1 || alumne.pregunta1.length < 50) 
+                millores.push('RA2: Caldria aprofundir en l\'anàlisi de causes de l\'accident.');
+            if (!alumne.pregunta2 || !alumne.pregunta2.toLowerCase().includes('lprl')) 
+                millores.push('RA2: Cal concretar millor els articles normatius vulnerats.');
+            if (!alumne.pregunta4 || alumne.pregunta4.length < 50) 
+                millores.push('RA2: Es podria ampliar l\'avaluació de riscos i mesures preventives.');
+            
+            if (millores.length === 0) millores.push('Treball complet, felicitats!');
+            return millores.join('\n');
+        }
+
+        function generarRecomanacioAuto(alumne, nota) {
+            if (nota >= 8) {
+                return 'Excel·lent treball. Continua aprofundint en la normativa i les NTP específiques.';
+            } else if (nota >= 6) {
+                return 'Bona feina. Revisa els aspectes a millorar i aprofundeix en la LPRL i el REBT.';
+            } else {
+                return 'Treball suficient. Es recomana revisar els continguts bàsics de prevenció de riscos.';
+            }
+        }
+
+        function generarValoracioGlobalAuto(alumne, nota, nom) {
+            if (nota >= 8) {
+                return `${nom}, el teu treball demostra una comprensió excel·lent de la prevenció de riscos laborals. Has analitzat correctament l'accident, aplicat la normativa i avaluat els riscos de manera molt completa. L'informe és clar i ben estructurat. En conjunt, has fet una molt bona feina. Felicitats!`;
+            } else if (nota >= 6) {
+                return `${nom}, el teu treball demostra una comprensió sòlida de la prevenció de riscos. Has identificat els elements principals, però cal aprofundir en alguns aspectes normatius. Amb una mica més de detall, assoliràs l'excel·lència. Bona feina!`;
+            } else {
+                return `${nom}, el teu treball demostra una comprensió bàsica de la prevenció de riscos. Cal revisar els continguts fonamentals del RA2 i aprofundir en l'anàlisi de causes i normativa. Amb més dedicació, podràs millorar. Ànims!`;
+            }
+        }
+
+        // ===========================================
+        // PROCESSAR JSON (adaptat al RA2)
+        // ===========================================
+        function processarJSON(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    alumnes.push({
+                        nom: data.nom || 'Sense nom',
+                        grup: data.grup || 'Sense grup',
+                        // Respostes del RA2
+                        pregunta1: data.pregunta1 || '',
+                        pregunta2: data.pregunta2 || '',
+                        pregunta3: data.pregunta3 || '',
+                        pregunta4: data.pregunta4 || '',
+                        pregunta5: data.pregunta5 || '',
+                        aprenentatge: data.aprenentatge || '',
+                        // Notes (pendents)
+                        notaInvestigacio: 'pendent',
+                        notaNormativa: 'pendent',
+                        notaRiscos: 'pendent',
+                        notaQualitat: 'pendent',
+                        notaFinal: 'pendent',
+                        data: data.data || new Date().toISOString()
+                    });
+                    
+                    callback(null);
+                } catch (error) {
+                    callback('Error: ' + error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ===========================================
+        // ORDENAR PER COGNOM
+        // ===========================================
+        function getCognom(nomComplet) {
+            let parts = nomComplet.trim().split(' ');
+            return parts[parts.length - 1];
+        }
+
+        // ===========================================
+        // ACTUALITZAR TAULA
+        // ===========================================
+        function actualitzarTaula() {
+            // Ordenar per cognom
+            alumnes.sort((a, b) => {
+                let cognomA = getCognom(a.nom);
+                let cognomB = getCognom(b.nom);
+                return cognomA.localeCompare(cognomB, 'ca');
+            });
+
+            let tbody = document.getElementById('taulaBody');
+            let selector = document.getElementById('selectorAlumne');
+            tbody.innerHTML = '';
+            selector.innerHTML = '<option value="">-- Selecciona un alumne --</option>';
+            
+            alumnes.forEach((a, index) => {
+                let notaFinal = a.notaFinal === 'pendent' ? 'pendent' : a.notaFinal;
+                
+                let row = `<tr>
+                    <td>${a.nom}</td>
+                    <td>${a.grup}</td>
+                    <td>${a.notaInvestigacio}</td>
+                    <td>${a.notaNormativa}</td>
+                    <td>${a.notaRiscos}</td>
+                    <td>${a.notaQualitat}</td>
+                    <td><strong>${notaFinal}</strong></td>
+                    <td><button class="btn btn-pdf" onclick="generarPdfIndividual(${index})">📄</button></td>
+                </tr>`;
+                tbody.innerHTML += row;
+                
+                selector.innerHTML += `<option value="${index}">${a.nom} (${a.grup})</option>`;
+            });
+            
+            document.getElementById('taulaContainer').style.display = 'block';
+        }
+
+        // ===========================================
+        // TORNAR A DALT (SUAU)
+        // ===========================================
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // ===========================================
+        // PANEL DE RESPOSTES DESPLEGABLE
+        // ===========================================
+        document.getElementById('toggleRespostesBtn').addEventListener('click', function() {
+            let panel = document.getElementById('panelRespostes');
+            let contingut = document.getElementById('contingutRespostes');
+            let index = document.getElementById('selectorAlumne').value;
+            
+            if (index === '') {
+                alert('Selecciona un alumne primer');
+                return;
+            }
+            
+            let alumne = alumnes[index];
+            
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                // Mostrar panel amb les respostes
+                contingut.innerHTML = `
+                    <p><strong>1. Incompliments identificats:</strong><br>${alumne.pregunta1 || '(sense resposta)'}</p>
+                    <p><strong>2. Articles vulnerats (LPRL, REBT, RITE):</strong><br>${alumne.pregunta2 || '(sense resposta)'}</p>
+                    <p><strong>3. Pla d'intervenció proposat:</strong><br>${alumne.pregunta3 || '(sense resposta)'}</p>
+                    <p><strong>4. Riscos identificats al taller:</strong><br>${alumne.pregunta4 || '(sense resposta)'}</p>
+                    <p><strong>5. Mesures preventives i protectores:</strong><br>${alumne.pregunta5 || '(sense resposta)'}</p>
+                    <p><strong>6. Aprenentatge:</strong><br>${alumne.aprenentatge || '(sense resposta)'}</p>
+                `;
+                panel.style.display = 'block';
+            } else {
+                // Amagar panel
+                panel.style.display = 'none';
+            }
+        });
+
+        // ===========================================
+        // SELECCIONAR ALUMNE
+        // ===========================================
+        document.getElementById('selectorAlumne').addEventListener('change', function() {
+            let index = this.value;
+            if (index === '') {
+                document.getElementById('notaInvestigacio').value = '3';
+                document.getElementById('notaNormativa').value = '3';
+                document.getElementById('notaRiscos').value = '3';
+                document.getElementById('notaQualitat').value = '3';
+                document.getElementById('puntsForts').value = '';
+                document.getElementById('aspectesMillora').value = '';
+                document.getElementById('recomanacio').value = '';
+                document.getElementById('valoracioGlobal').value = '';
+                
+                // Amagar panel si estava obert
+                document.getElementById('panelRespostes').style.display = 'none';
+                return;
+            }
+            
+            let alumne = alumnes[index];
+            
+            if (alumnesAvaluats[index]) {
+                let av = alumnesAvaluats[index];
+                document.getElementById('notaInvestigacio').value = av.investigacio;
+                document.getElementById('notaNormativa').value = av.normativa;
+                document.getElementById('notaRiscos').value = av.riscos;
+                document.getElementById('notaQualitat').value = av.qualitat;
+                document.getElementById('puntsForts').value = av.puntsForts || '';
+                document.getElementById('aspectesMillora').value = av.aspectesMillora || '';
+                document.getElementById('recomanacio').value = av.recomanacio || '';
+                document.getElementById('valoracioGlobal').value = av.valoracioGlobal || '';
+            } else {
+                document.getElementById('notaInvestigacio').value = '3';
+                document.getElementById('notaNormativa').value = '3';
+                document.getElementById('notaRiscos').value = '3';
+                document.getElementById('notaQualitat').value = '3';
+                
+                let notaTemp = calcularNotaFinal(3, 3, 3, 3);
+                document.getElementById('puntsForts').value = generarPuntsFortsAuto(alumne);
+                document.getElementById('aspectesMillora').value = generarAspectesMilloraAuto(alumne);
+                document.getElementById('recomanacio').value = generarRecomanacioAuto(alumne, notaTemp);
+                document.getElementById('valoracioGlobal').value = generarValoracioGlobalAuto(alumne, notaTemp, alumne.nom.split(' ')[0]);
+            }
+        });
+
+        // ===========================================
+        // GUARDAR AVALUACIÓ
+        // ===========================================
+        document.getElementById('guardarAvaluacioBtn').addEventListener('click', function() {
+            let index = document.getElementById('selectorAlumne').value;
+            if (index === '') {
+                alert('Selecciona un alumne');
+                return;
+            }
+            
+            let investigacio = parseInt(document.getElementById('notaInvestigacio').value);
+            let normativa = parseInt(document.getElementById('notaNormativa').value);
+            let riscos = parseInt(document.getElementById('notaRiscos').value);
+            let qualitat = parseInt(document.getElementById('notaQualitat').value);
+            let notaFinal = calcularNotaFinal(investigacio, normativa, riscos, qualitat);
+            
+            alumnesAvaluats[index] = {
+                investigacio: investigacio,
+                normativa: normativa,
+                riscos: riscos,
+                qualitat: qualitat,
+                puntsForts: document.getElementById('puntsForts').value,
+                aspectesMillora: document.getElementById('aspectesMillora').value,
+                recomanacio: document.getElementById('recomanacio').value,
+                valoracioGlobal: document.getElementById('valoracioGlobal').value,
+                notaFinal: notaFinal
+            };
+            
+            alumnes[index].notaInvestigacio = investigacio + '/4 - ' + getNivellText(investigacio);
+            alumnes[index].notaNormativa = normativa + '/4 - ' + getNivellText(normativa);
+            alumnes[index].notaRiscos = riscos + '/4 - ' + getNivellText(riscos);
+            alumnes[index].notaQualitat = qualitat + '/4 - ' + getNivellText(qualitat);
+            alumnes[index].notaFinal = notaFinal;
+            
+            actualitzarTaula();
+            alert('Avaluació guardada correctament');
+        });
+
+        // ===========================================
+        // GENERAR PDF INDIVIDUAL
+        // ===========================================
+        function generarPdfIndividual(index) {
+            let alumne = alumnes[index];
+            let avaluacio = alumnesAvaluats[index] || {
+                investigacio: 3,
+                normativa: 3,
+                riscos: 3,
+                qualitat: 3,
+                puntsForts: generarPuntsFortsAuto(alumne),
+                aspectesMillora: generarAspectesMilloraAuto(alumne),
+                recomanacio: generarRecomanacioAuto(alumne, 7.5),
+                valoracioGlobal: generarValoracioGlobalAuto(alumne, 7.5, alumne.nom.split(' ')[0]),
+                notaFinal: calcularNotaFinal(3, 3, 3, 3)
+            };
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('INFORME D\'AVALUACIÓ - RA2', 20, 20);
+            
+            doc.setFontSize(10);
+            doc.text('Microactivitat: Investigació d\'accidents + Avaluació de riscos', 20, 30);
+            doc.text('Professor: Diego Izquierdo Perán', 20, 37);
+            doc.text('Data: ' + new Date().toLocaleDateString('ca-ES'), 20, 44);
+            
+            doc.text('DADES DE L\'ESTUDIANT', 20, 59);
+            doc.text('Nom: ' + alumne.nom, 20, 66);
+            doc.text('Grup: ' + alumne.grup, 20, 73);
+            
+            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 88);
+            doc.text('1. Investigació accident: ' + avaluacio.investigacio + '/4 - Nivell: ' + getNivellText(avaluacio.investigacio), 25, 98);
+            doc.text('2. Aplicació normativa: ' + avaluacio.normativa + '/4 - Nivell: ' + getNivellText(avaluacio.normativa), 25, 105);
+            doc.text('3. Avaluació riscos: ' + avaluacio.riscos + '/4 - Nivell: ' + getNivellText(avaluacio.riscos), 25, 112);
+            doc.text('4. Qualitat documents: ' + avaluacio.qualitat + '/4 - Nivell: ' + getNivellText(avaluacio.qualitat), 25, 119);
+            
+            doc.text('RESULTATS FINALS', 20, 134);
+            doc.text('PUNTUACIÓ TOTAL: ' + (avaluacio.investigacio + avaluacio.normativa + avaluacio.riscos + avaluacio.qualitat) + '/16', 20, 144);
+            doc.text('EQUIVALÈNCIA: ' + avaluacio.notaFinal + '/10', 20, 151);
+            
+            let nivellGlobal = parseFloat(avaluacio.notaFinal) >= 8 ? 'Excel·lent' : 
+                              parseFloat(avaluacio.notaFinal) >= 6 ? 'Assolit' : 'En procés';
+            doc.text('NIVELL: ' + nivellGlobal, 20, 158);
+            
+            doc.text('FEEDBACK PERSONALITZAT', 20, 173);
+            let y = 183;
+            
+            doc.text('Punts forts:', 20, y);
+            y += 7;
+            let puntsLines = doc.splitTextToSize(avaluacio.puntsForts || 'No especificat', 170);
+            doc.text(puntsLines, 20, y);
+            y += puntsLines.length * 5 + 10;
+            
+            doc.text('Aspectes a millorar:', 20, y);
+            y += 7;
+            let milloresLines = doc.splitTextToSize(avaluacio.aspectesMillora || 'No especificat', 170);
+            doc.text(milloresLines, 20, y);
+            y += milloresLines.length * 5 + 10;
+            
+            doc.text('Recomanació professional:', 20, y);
+            y += 7;
+            let recomanacioLines = doc.splitTextToSize('• ' + (avaluacio.recomanacio || 'No especificada'), 170);
+            doc.text(recomanacioLines, 20, y);
+            y += recomanacioLines.length * 5 + 10;
+            
+            doc.text('VALORACIÓ QUALITATIVA GLOBAL:', 20, y);
+            y += 7;
+            let valoracioLines = doc.splitTextToSize(avaluacio.valoracioGlobal || 'No especificada', 170);
+            doc.text(valoracioLines, 20, y);
+            
+            doc.save(`RA2_${alumne.nom.replace(/\s+/g, '_')}.pdf`);
+        }
+
+        window.generarPdfIndividual = generarPdfIndividual;
+
+        // ===========================================
+        // GENERAR PDF INDIVIDUAL (BOTÓ)
+        // ===========================================
+        document.getElementById('generarPdfIndividualBtn').addEventListener('click', function() {
+            let index = document.getElementById('selectorAlumne').value;
+            if (index === '') {
+                alert('Selecciona un alumne');
+                return;
+            }
+            generarPdfIndividual(parseInt(index));
+        });
+
+        // ===========================================
+        // GENERAR PDF DE TOTS
+        // ===========================================
+        document.getElementById('pdfTotsBtn').addEventListener('click', function() {
+            if (alumnes.length === 0) return;
+            for (let i = 0; i < alumnes.length; i++) {
+                setTimeout(() => {
+                    generarPdfIndividual(i);
+                }, i * 500);
+            }
+        });
+
+        // ===========================================
+        // EXPORTAR A EXCEL
+        // ===========================================
+        document.getElementById('excelBtn').addEventListener('click', function() {
+            if (alumnes.length === 0) {
+                alert('Primer carrega els JSON');
+                return;
+            }
+            
+            let dades = [['Nom', 'Grup', 'Investigació', 'Normativa', 'Riscos', 'Qualitat', 'Nota final']];
+            
+            alumnes.forEach(a => {
+                let index = alumnes.indexOf(a);
+                let av = alumnesAvaluats[index] || { investigacio: 'pendent', normativa: 'pendent', riscos: 'pendent', qualitat: 'pendent', notaFinal: 'pendent' };
+                
+                dades.push([
+                    a.nom,
+                    a.grup,
+                    av.investigacio,
+                    av.normativa,
+                    av.riscos,
+                    av.qualitat,
+                    av.notaFinal
+                ]);
+            });
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(dades);
+            XLSX.utils.book_append_sheet(wb, ws, 'RA2_Resultats');
+            XLSX.writeFile(wb, 'RA2_notes_grup.xlsx');
+        });
+
+        // ===========================================
+        // CARREGAR JSON
+        // ===========================================
+        document.getElementById('carregarJsonBtn').addEventListener('click', function() {
+            const files = document.getElementById('jsonFiles').files;
+            if (files.length === 0) {
+                alert('Selecciona almenys un fitxer');
+                return;
+            }
+            
+            alumnes = [];
+            alumnesAvaluats = {};
+            let pendents = files.length;
+            let errors = [];
+            
+            document.getElementById('statusMessage').style.display = 'block';
+            document.getElementById('statusMessage').innerHTML = 'Processant ' + pendents + ' fitxers...';
+            document.getElementById('statusMessage').style.background = '#fff3cd';
+            
+            for (let i = 0; i < files.length; i++) {
+                processarJSON(files[i], function(error) {
+                    if (error) errors.push(error);
+                    
+                    pendents--;
+                    if (pendents === 0) {
+                        if (errors.length > 0) {
+                            document.getElementById('statusMessage').innerHTML = '❌ Errors: ' + errors.join('<br>');
+                            document.getElementById('statusMessage').style.background = '#f8d7da';
+                        } else {
+                            document.getElementById('statusMessage').innerHTML = '✅ Processats ' + files.length + ' fitxers';
+                            document.getElementById('statusMessage').style.background = '#d4edda';
+                        }
+                        actualitzarTaula();
+                    }
+                });
+            }
+        });
+
+        // ===========================================
+        // NETEJAR
+        // ===========================================
+        document.getElementById('netejarBtn').addEventListener('click', function() {
+            alumnes = [];
+            alumnesAvaluats = {};
+            document.getElementById('taulaContainer').style.display = 'none';
+            document.getElementById('jsonFiles').value = '';
+            document.getElementById('statusMessage').style.display = 'none';
+            document.getElementById('selectorAlumne').innerHTML = '<option value="">-- Selecciona un alumne --</option>';
+            
+            // Amagar panel si estava obert
+            document.getElementById('panelRespostes').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

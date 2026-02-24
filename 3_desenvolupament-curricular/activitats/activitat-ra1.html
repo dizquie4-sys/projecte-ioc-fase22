@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA1 · Coneix el teu sector · Fitxa</title>
+    <style>
+        /* ===== ESTILS COMPARTITS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(209,34,43,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px 35px;
+            color: white;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+        .header .subtitol {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 50px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 40px 0 20px;
+        }
+        .subsection-title {
+            font-size: 1.4rem;
+            color: #D1222B;
+            margin: 30px 0 15px;
+        }
+        .info-box {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #D1222B;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #b01e25;
+        }
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-flotant:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+        }
+        .footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+        .footer a {
+            color: #FFC72C;
+            text-decoration: none;
+        }
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #FFC72C;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .nav-centre {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex: 1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+        }
+        .rubrica-visual {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .rubrica-visual table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubrica-visual th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        .rubrica-visual td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        .rubrica-visual .nivell-1 { background: #f8d7da; }
+        .rubrica-visual .nivell-2 { background: #fff3cd; }
+        .rubrica-visual .nivell-3 { background: #d4edda; }
+        .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT TORNAR A DALT -->
+    <button class="btn-flotant" id="tornarDaltBtn" title="Tornar a dalt" aria-label="Tornar a dalt">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
+
+    <div class="container">
+        <!-- CAPÇALERA -->
+        <div class="header">
+            <h1>📘 RA1 · Coneix el teu sector</h1>
+            <div class="subtitol">Fitxa de l'activitat · 2 hores</div>
+        </div>
+
+        <!-- CONTINGUT -->
+        <div class="content">
+            <!-- OBJECTIUS I JUSTIFICACIÓ -->
+            <h2 class="section-title">🔍 Objectius i justificació</h2>
+            <p>Aquesta activitat té com a finalitat que l'alumnat prengui consciència de les característiques del sector professional en què s'insereix el cicle formatiu, identifiqui les principals ocupacions i reflexioni sobre les competències més rellevants per al perfil d'instal·lador electricista. Dona resposta als criteris d'avaluació 1.1, 1.2 i 1.3 del RA1.</p>
+
+            <!-- METODOLOGIA -->
+            <h2 class="section-title">🧭 Metodologia i desenvolupament</h2>
+            
+            <div class="info-box">
+                <h3>Fase 1 · Exploració (1 h)</h3>
+                <p>Consulta aquestes fonts:</p>
+                <ul>
+                    <li><strong>Portals d'ocupació:</strong> Infojobs, Indeed, LinkedIn · filtra per “electricista”, “instal·lador”, “tècnic en domòtica”, “energia solar”.</li>
+                    <li><strong>Observatori del Treball:</strong> <a href="https://observatoritreball.gencat.cat" target="_blank">observatoritreball.gencat.cat</a></li>
+                    <li><strong>Associacions empresarials:</strong> PIMEC Electricitat, FEGICAT.</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>Fase 2 · Anàlisi i reflexió (1 h)</h3>
+                <p>Elabora un informe (1-2 pàgines) que respongui a:</p>
+                <ol>
+                    <li>Quines són les ocupacions més demandades actualment a Catalunya?</li>
+                    <li>Quines competències tècniques i personals es valoren més?</li>
+                    <li>Quines tendències de futur identifiques (digitalització, eficiència energètica, nous perfils professionals)?</li>
+                </ol>
+            </div>
+
+            <!-- EXEMPLE DE TAULA -->
+            <h2 class="section-title">📊 Exemple de taula d'anàlisi</h2>
+            <table>
+                <thead>
+                    <tr><th>Ocupació</th><th>Ofertes (aprox.)</th><th>Competències clau</th><th>Tipus de contracte</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Instal·lador electricista</td><td>150</td><td>Carnet instal·lador, REBT, treball en altura</td><td>Indefinit / Temporal</td></tr>
+                    <tr><td>Tècnic en energies renovables</td><td>45</td><td>Fotovoltaica, disseny, CATEC</td><td>Indefinit</td></tr>
+                    <tr><td>Electricista de manteniment</td><td>80</td><td>Automatismes, PLC, lectura de plànols</td><td>Indefinit / Temporal</td></tr>
+                    <tr><td>Tècnic en domòtica</td><td>30</td><td>Programació, KNX, sistemes IoT</td><td>Temporal / Projectes</td></tr>
+                </tbody>
+            </table>
+
+            <!-- PRODUCTE I EVIDÈNCIA -->
+            <h2 class="section-title">📦 Producte i evidència d'aprenentatge</h2>
+            <div class="info-box" style="background: #e6f2ff;">
+                <p>En finalitzar l'activitat, l'alumnat haurà de generar un <strong>informe individual</strong> en format PDF que inclogui:</p>
+                <ul>
+                    <li>Les respostes a les tres preguntes de la Fase 2.</li>
+                    <li>Una breu reflexió personal sobre el procés.</li>
+                </ul>
+                <p style="margin-top:10px;">✅ Aquest informe és l'evidència principal d'aprenentatge. S'ha de penjar a Moodle i incorporar al portafolis digital.</p>
+            </div>
+
+            <!-- RÚBRICA D'AVALUACIÓ -->
+            <h2 class="section-title">📊 Rúbrica d'avaluació</h2>
+            <div class="rubrica-visual">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criteri</th>
+                            <th>Pes</th>
+                            <th>1 - No assolit</th>
+                            <th>2 - En procés</th>
+                            <th>3 - Assolit</th>
+                            <th>4 - Excel·lent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Identificació d'ocupacions</strong></td>
+                            <td>40%</td>
+                            <td class="nivell-1">Identifica 1 o cap ocupació</td>
+                            <td class="nivell-2">Identifica 2-3 ocupacions sense detall</td>
+                            <td class="nivell-3">Identifica 4 ocupacions amb descripció bàsica</td>
+                            <td class="nivell-4">Identifica 5+ ocupacions amb anàlisi detallada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Anàlisi de competències</strong></td>
+                            <td>30%</td>
+                            <td class="nivell-1">No identifica competències</td>
+                            <td class="nivell-2">Llista genèrica sense diferenciar</td>
+                            <td class="nivell-3">Diferencia tècniques/personals</td>
+                            <td class="nivell-4">Relaciona competències amb ofertes reals</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tendències de futur</strong></td>
+                            <td>20%</td>
+                            <td class="nivell-1">No identifica tendències</td>
+                            <td class="nivell-2">Menciona 1 tendència sense desenvolupar</td>
+                            <td class="nivell-3">Identifica 2-3 tendències coherents</td>
+                            <td class="nivell-4">Projecta l'impacte professional de les tendències</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qualitat de l'informe</strong></td>
+                            <td>10%</td>
+                            <td class="nivell-1">Desestructurat, incomplet</td>
+                            <td class="nivell-2">Funcional però millorable</td>
+                            <td class="nivell-3">Clar i ben organitzat</td>
+                            <td class="nivell-4">Professional, reflexiu, amb aportacions personals</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ENLLAÇ A L'HTML COMPLET DE L'ALUMNE (SENSE TEXT ADDICIONAL) -->
+            <div style="text-align: center; margin: 40px 0 20px;">
+                <a href="#" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">
+                    🔍 Veure activitat completa per a alumnes
+                </a>
+            </div>
+
+            <!-- NAVEGACIÓ (AMB BOTÓ CENTRAL A DESENVOLUPAMENT) -->
+            <div class="nav-footer">
+                <!-- Botó esquerre: activitat anterior (no n'hi ha) -->
+                <div></div>
+                
+                <!-- Botó central: Tornar a Desenvolupament curricular -->
+                <div class="nav-centre">
+                    <a href="../index.html" class="btn btn-primary">
+                        ⬆️ Tornar a Desenvolupament curricular
+                    </a>
+                </div>
+                
+                <!-- Botó dret: Següent activitat (RA2) -->
+                <a href="activitat-ra2.html" class="btn">Següent: RA2 ➡️</a>
+            </div>
+        </div>
+
+        <!-- PEU -->
+        <div class="footer">
+            Diego Izquierdo Perán · FOL · IOC · 
+            <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
+        </div>
+    </div>
+
+    <script>
+        // TORNAR A DALT
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+        document.getElementById('accesibilitatInfo').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Aquest lloc compleix les pautes d\'accessibilitat WCAG 2.1 (nivell AA).');
+        });
+    </script>
+</body>
+</html>

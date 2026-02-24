@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA3 · De l'oferta al conveni · Anàlisi laboral</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* ESTILS COMPLETS (exactament igual que l'original) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(209,34,43,0.15);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        .header .accessibility-icon {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            border: 2px solid white;
+        }
+        .content {
+            padding: 30px 35px;
+        }
+        .badge-groc {
+            background: #FFC72C;
+            color: #1e293b;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 2px solid #D1222B;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 30px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .section-title .help-btn {
+            background: #FFC72C;
+            color: #D1222B;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .section-title .help-btn:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .info-box {
+            background: #fff1f0;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #D1222B;
+        }
+        .info-box h3 {
+            color: #D1222B;
+            margin-bottom: 10px;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: #b01e25;
+            border-color: #b01e25;
+        }
+        .btn-danger {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-close {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-close:hover {
+            background: #5a6268;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffd9d9;
+            border-radius: 12px;
+            margin: 8px 0 15px;
+            font-size: 1rem;
+        }
+        textarea:focus, input:focus, select:focus {
+            outline: 3px solid #FFC72C;
+            border-color: #D1222B;
+        }
+        .required::after {
+            content: " *";
+            color: #D1222B;
+            font-weight: bold;
+        }
+        .results-area {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid #D1222B;
+            display: none;
+        }
+        .score-badge {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .json-container {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 10px 0;
+        }
+        .footer {
+            background: #f1f5f9;
+            padding: 20px;
+            text-align: center;
+        }
+        hr {
+            border: 2px dashed #FFC72C;
+            margin: 30px 0;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+        .autoavaluacio-container {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+            display: none;
+        }
+        .quiz-item {
+            margin-bottom: 20px;
+        }
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .quiz-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .quiz-options label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .quiz-options input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+        .feedback-quiz {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+        }
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+            text-decoration: none;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        .rubrica-visual {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .rubrica-visual table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubrica-visual th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        .rubrica-visual td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        .rubrica-visual .nivell-1 { background: #f8d7da; }
+        .rubrica-visual .nivell-2 { background: #fff3cd; }
+        .rubrica-visual .nivell-3 { background: #d4edda; }
+        .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
+        
+        .examen-container {
+            background: #f0f7ff;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 3px solid #D1222B;
+            display: none;
+        }
+        .examen-pregunta {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #FFC72C;
+        }
+        .examen-pregunta p {
+            margin-bottom: 10px;
+        }
+        .examen-opcions {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .examen-opcions label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .examen-opcions input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+        .examen-feedback {
+            margin-top: 8px;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .examen-correcte {
+            background: #d4edda;
+            color: #155724;
+        }
+        .examen-incorrecte {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .examen-resultat {
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        .examen-superat {
+            background: #d4edda;
+            color: #155724;
+        }
+        .examen-no-superat {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* ESTILS PER ALS MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 3px solid #D1222B;
+            position: relative;
+        }
+        .close-modal {
+            color: #D1222B;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: sticky;
+            top: 0;
+            background: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid #D1222B;
+        }
+        .close-modal:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .modal h2 {
+            color: #D1222B;
+            margin-bottom: 20px;
+        }
+        .modal h3 {
+            color: #D1222B;
+            margin: 20px 0 10px;
+        }
+        .modal ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        .modal li {
+            margin-bottom: 5px;
+        }
+
+        /* ESTILS PER ALS BLOCS DESPLEGABLES */
+        .bloc-container {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+            display: none;
+        }
+        .bloc-title {
+            color: #D1222B;
+            margin-bottom: 15px;
+        }
+        
+        /* MODAL D'EXPLICACIÓ JSON */
+        .modal-explicacio {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-explicacio-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            border: 3px solid #D1222B;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-explicacio-tancar {
+            color: #D1222B;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid #D1222B;
+        }
+        .modal-explicacio-tancar:hover {
+            background: #D1222B;
+            color: white;
+        }
+        
+        /* BOTÓ FLOTANT ACCESSIBLE */
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            min-width: 60px;
+            min-height: 60px;
+            line-height: 1;
+        }
+        .btn-flotant:hover,
+        .btn-flotant:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+            outline-offset: 2px;
+            transform: scale(1.05);
+        }
+        .btn-flotant:focus-visible {
+            outline: 3px solid #FFC72C;
+            box-shadow: 0 0 0 5px rgba(209,34,43,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT ACCESSIBLE PER TORNAR A DALT -->
+    <button 
+        class="btn-flotant" 
+        id="tornarDaltBtn" 
+        title="Tornar a l'inici de la pàgina"
+        aria-label="Tornar a dalt"
+        role="button"
+        tabindex="0">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
+
+    <!-- MODAL D'EXPLICACIÓ DEL JSON -->
+    <div id="modalExplicacio" class="modal-explicacio">
+        <div class="modal-explicacio-content">
+            <span class="modal-explicacio-tancar">&times;</span>
+            <h2 style="color:#D1222B; margin-bottom:20px;">📤 Com enviar el teu treball</h2>
+            
+            <div style="margin:20px 0; padding:15px; background:#f0f7ff; border-radius:10px; border-left:5px solid #D1222B;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📁 Què és un fitxer JSON?</strong></p>
+                <p>És un format que conté TOTES les teves respostes en un sol fitxer. El professor el podrà llegir fàcilment.</p>
+            </div>
+            
+            <div style="margin:20px 0; padding:15px; background:#fff3cd; border-radius:10px; border-left:5px solid #FFC72C;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📥 Com el guardes?</strong></p>
+                <ol style="margin-left:20px;">
+                    <li>Omple totes les preguntes</li>
+                    <li>Prem el botó <strong>"Preparar per enviar"</strong></li>
+                    <li>Prem <strong>"📊 Exportar JSON"</strong></li>
+                    <li>El fitxer es desarà a la carpeta <strong>Descàrregues</strong></li>
+                </ol>
+            </div>
+            
+            <div style="margin:20px 0; padding:15px; background:#d4edda; border-radius:10px; border-left:5px solid #28a745;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📤 Com l'envies al professor?</strong></p>
+                <ul style="margin-left:20px;">
+                    <li><strong>Moodle:</strong> Puja'l com a tasca</li>
+                    <li><strong>Correu:</strong> Adjunta'l a un missatge</li>
+                    <li><strong>Drive:</strong> Comparteix l'enllaç</li>
+                </ul>
+            </div>
+            
+            <div style="text-align:center; margin-top:25px;">
+                <button class="btn btn-primary" id="tancarModalBtn">Entès</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1 id="main-title">⚡ RA3 · De l'oferta al conveni · Anàlisi laboral</h1>
+                <p>FOL – IPO I · CFGM Instal·lacions Elèctriques</p>
+            </div>
+            <div class="accessibility-icon" role="img" aria-label="Presentació accessible" title="Aquest contingut compleix criteris d'accessibilitat WCAG 2.1">
+                ♿
+            </div>
+        </div>
+        <div class="content">
+            <!-- Botons de la capçalera -->
+            <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-bottom: 20px;">
+                <button class="btn btn-primary" id="pdfInstruccionsBtn">
+                    📥 PDF Instruccions completes
+                </button>
+                <button class="btn btn-primary" id="modalPortafolisBtn">
+                    📋 Instruccions del portafolis
+                </button>
+            </div>
+
+            <!-- MODAL INSTRUCCIONS PORTAFOLIS -->
+            <div id="modalPortafolis" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>📋 INSTRUCCIONS DEL PORTAFOLIS DIGITAL PROFESSIONAL</h2>
+                    
+                    <h3>Què és el portafolis?</h3>
+                    <p>El portafolis digital és una recopilació de les teves evidències d'aprenentatge al llarg del mòdul. Ha de mostrar la teva evolució i les teves competències professionals.</p>
+                    
+                    <h3>Contingut obligatori:</h3>
+                    <ul>
+                        <li><strong>RA1 (Coneix el teu sector):</strong> Informe d'anàlisi ocupacional</li>
+                        <li><strong>RA2 (Investigació d'accidents):</strong> Informe d'investigació + Avaluació de riscos</li>
+                        <li><strong>RA3 (De l'oferta al conveni):</strong> Taula de contrast + conclusions grupals</li>
+                        <li><strong>RA4 (El meu perfil professional):</strong> DAFO + Full de ruta</li>
+                        <li><strong>RA5 (Identitat digital):</strong> PLE + Reflexió identitat digital + CV digital</li>
+                        <li><strong>Reflexió global:</strong> Connexions entre els RA i aprenentatges</li>
+                    </ul>
+                    
+                    <h3>Criteris d'avaluació del portafolis:</h3>
+                    <ul>
+                        <li><strong>Completesa (30%):</strong> Hi són totes les evidències?</li>
+                        <li><strong>Reflexió (30%):</strong> Qualitat de la reflexió global i connexions</li>
+                        <li><strong>Organització (20%):</strong> Estructura clara i professional</li>
+                        <li><strong>Accessibilitat (20%):</strong> El portafolis és usable per a tothom?</li>
+                    </ul>
+                    
+                    <h3>Dates clau:</h3>
+                    <ul>
+                        <li><strong>Lliurament final:</strong> [Data a determinar]</li>
+                        <li><strong>Revisió intermèdia:</strong> [Data a determinar]</li>
+                    </ul>
+                    
+                    <p style="margin-top:20px; font-style:italic;">Aquestes instruccions estan subjectes a possibles modificacions. Consulta sempre l'aula virtual per a la versió actualitzada.</p>
+                </div>
+            </div>
+
+            <!-- MODAL D'AJUDA PER A LA TAULA DE CONTRAST (NOU) -->
+            <div id="modalAjudaTaula" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="tancarModalAjuda()">&times;</span>
+                    <h2>❓ Com omplir la Taula de contrast</h2>
+                    
+                    <h3>📝 Què has de fer?</h3>
+                    <p>En aquesta secció has d'omplir les condicions laborals que has analitzat de l'oferta de treball.</p>
+                    
+                    <h3>📌 Instruccions:</h3>
+                    <ul>
+                        <li>Omple <strong>com a mínim 5 condicions</strong> (les 5 primeres són obligatòries).</li>
+                        <li>Per a cada condició, descriu:
+                            <ul>
+                                <li>Què diu l'oferta de treball</li>
+                                <li>Què estableix el conveni col·lectiu</li>
+                                <li>La teva avaluació (ajustat / millorable / incompliment)</li>
+                            </ul>
+                        </li>
+                        <li>Pots afegir fins a 7 condicions (les 2 últimes són opcionals).</li>
+                    </ul>
+                    
+                    <h3>🚀 Després d'omplir la taula:</h3>
+                    <ol>
+                        <li>Prem el botó <strong>"Preparar per enviar"</strong> (al final de la pàgina).</li>
+                        <li>A l'àrea de resultats, prem <strong>"Exportar JSON"</strong>.</li>
+                        <li>Puja el fitxer JSON generat a Moodle (o envia'l al professor).</li>
+                        <li>També pots generar un <strong>PDF</strong> de la teva activitat.</li>
+                    </ol>
+                    
+                    <p style="margin-top:20px; font-style:italic; color:#D1222B;">Aquestes respostes són les que avaluarà el professor.</p>
+                    
+                    <div style="text-align:center; margin-top:20px;">
+                        <button class="btn btn-primary" onclick="tancarModalAjuda()">Entès</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Distintiu groc -->
+            <div class="badge-groc">📌 Activitat · 4 hores</div>
+
+            <!-- OBJECTIUS I JUSTIFICACIÓ (punt 7.4) -->
+            <h2 class="section-title" id="objectius">🔍 Objectius i justificació</h2>
+            <p>Aquesta activitat té com a objectiu que l'alumnat sigui capaç d'analitzar críticament una oferta de treball real del sector de les instal·lacions elèctriques, identificant les condicions laborals pactades i contrastant-les amb el conveni col·lectiu aplicable. Es treballen específicament els criteris d'avaluació 3.1, 3.2, 3.4 i 3.7 del RA3.</p>
+
+            <!-- RÚBRICA VISIBLE (PER A L'ALUMNAT) -->
+            <div class="rubrica-visual">
+                <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ (per a la teva orientació)</h3>
+                <p>Aquesta rúbrica mostra els criteris amb què es valorarà la teva activitat. Els nivells van de 1 (No assolit) a 4 (Excel·lent).</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criteri</th>
+                            <th>Pes</th>
+                            <th>1 - No assolit</th>
+                            <th>2 - En procés</th>
+                            <th>3 - Assolit</th>
+                            <th>4 - Excel·lent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Identificació condicions</strong></td>
+                            <td>40%</td>
+                            <td class="nivell-1">Identifica 1 o cap condició</td>
+                            <td class="nivell-2">Identifica 2-3 condicions sense detall</td>
+                            <td class="nivell-3">Identifica 4 condicions amb descripció bàsica</td>
+                            <td class="nivell-4">Identifica 5+ condicions amb anàlisi detallada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Aplicació del conveni</strong></td>
+                            <td>30%</td>
+                            <td class="nivell-1">No localitza o no aplica el conveni</td>
+                            <td class="nivell-2">Esmenta el conveni però no l'aplica</td>
+                            <td class="nivell-3">Localitza el conveni i aplica continguts generals</td>
+                            <td class="nivell-4">Localitza el conveni i cita articles concrets</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Anàlisi crítica</strong></td>
+                            <td>20%</td>
+                            <td class="nivell-1">No realitza anàlisi comparativa</td>
+                            <td class="nivell-2">Descriu sense analitzar</td>
+                            <td class="nivell-3">Compara oferta i conveni sense aprofundir</td>
+                            <td class="nivell-4">Valora adequació i identifica riscos legals</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qualitat formal</strong></td>
+                            <td>10%</td>
+                            <td class="nivell-1">Incomplet o inintel·ligible</td>
+                            <td class="nivell-2">Confús o errors significatius</td>
+                            <td class="nivell-3">Llegible, petits errors</td>
+                            <td class="nivell-4">Document clar, ben estructurat, sense errors</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:10px; font-style:italic;">Aquesta rúbrica és orientativa. El professor la utilitzarà per a la qualificació final.</p>
+            </div>
+
+            <!-- ENLLAÇOS D'INTERÈS (ACTUALITZATS) -->
+            <div class="info-links">
+                <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
+                <div>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u3-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: Condicions laborals (IOC)</a>
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430" target="_blank" class="enllac-normativa">Estatut dels Treballadors</a>
+                    <a href="https://treball.gencat.cat/ca/consell_relacions_laborals/convenis_colectius/cercador_de_convenis/" target="_blank" class="enllac-normativa">Cerca de convenis (Generalitat)</a>
+                    <a href="https://www.boe.es/biblioteca_juridica/index.php?tipo=C" target="_blank" class="enllac-normativa">Codi de Treball (BOE)</a>
+                </div>
+                <div style="margin-top:10px;">
+                    <p><strong>🔍 Mètode VERIFICA per al pensament crític:</strong></p>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/mini-campanya%20digital.html" target="_blank" class="enllac-normativa">Campanya VERIFICA.TE (consulta-la)</a>
+                    <p style="background:#fff3cd; padding:10px; border-radius:5px; margin-top:10px;">
+                        <strong>V</strong>erifica la font · <strong>E</strong>scepticisme saludable · <strong>R</strong>astreja l'evidència · <strong>I</strong>dentifica biaixos · <strong>F</strong>onts alternatives · <strong>I</strong>nterpreta amb context · <strong>C</strong>ontrasta amb experts · <strong>A</strong>plica el criteri propi
+                    </p>
+                </div>
+            </div>
+
+            <!-- METODOLOGIA I DESENVOLUPAMENT -->
+            <h2 class="section-title" id="metodologia">🧭 Metodologia i desenvolupament</h2>
+            
+            <!-- FASE 1: Anàlisi individual -->
+            <div class="info-box">
+                <h3>🔍 Fase 1 · Anàlisi individual (2 hores)</h3>
+                <p><strong>Oferta de treball simulada:</strong> "Instal·lador electricista per a manteniment industrial. Contracte temporal de 6 mesos, jornada completa de 40 hores setmanals, salari base de 1.200 € mensuals + plus de perillositat. Període de prova de 3 mesos. Horari de dilluns a divendres de 8 a 17 h amb possibilitat de realitzar hores extraordinàries."</p>
+                <p><strong>Tasques (consulta el <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u3-pdfindex.pdf#page=54" target="_blank">llibre digital (pàg. 54)</a> per al període de prova, <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u3-pdfindex.pdf#page=21" target="_blank">pàg. 21-23</a> per a jornada i hores extres):</strong></p>
+                <ol>
+                    <li>Identifica els elements clau de l'oferta: tipus de contracte, jornada, salari, període de prova, etc.</li>
+                    <li>Localitza el conveni col·lectiu aplicable (sector metal·lúrgic o conveni d'empresa).</li>
+                    <li>Contrasta, com a mínim, cinc condicions laborals (salari base, complements, jornada, hores extraordinàries, període de prova).</li>
+                    <li>Emplena una taula de contrast amb tres columnes: Condició pactada a l'oferta / Condició segons conveni / Avaluació (ajustat/millorable/incompliment).</li>
+                </ol>
+                <p><strong>Aplica el <a href="#" onclick="mostrarAjudaTaula(); return false;">mètode VERIFICA</a> per analitzar la informació.</strong></p>
+            </div>
+
+            <!-- FASE 2: Treball col·laboratiu -->
+            <div class="info-box">
+                <h3>👥 Fase 2 · Treball col·laboratiu (2 hores)</h3>
+                <p>En grups de 3-4 persones, mitjançant un document compartit (Canva Docs, Google Docs), haureu de:</p>
+                <ol>
+                    <li>Compartir les taules individuals i identificar elements comuns i discrepàncies.</li>
+                    <li>Redactar una conclusió conjunta sobre les condicions laborals més rellevants del sector.</li>
+                    <li>Penjar l'enllaç del document a l'aula virtual i comentar almenys dues aportacions d'altres grups.</li>
+                </ol>
+            </div>
+
+            <!-- FASE 3: Producte i evidència -->
+            <div class="info-box" style="background: #e6f2ff; border-left-color: #D1222B;">
+                <h3 style="color:#D1222B;">📦 Fase 3 · Producte i evidència d'aprenentatge</h3>
+                <p>En finalitzar l'activitat, hauràs de generar:</p>
+                <ul>
+                    <li><strong>Taula de contrast individual (PDF o enllaç).</strong> S'incorpora al portafolis.</li>
+                    <li><strong>Document col·laboratiu amb anàlisi comparada i conclusions (enllaç).</strong> S'incorpora al portafolis.</li>
+                </ul>
+                <p style="margin-top:10px;">✅ Aquests documents seran les evidències principals d'aprenentatge.</p>
+            </div>
+
+            <hr>
+
+            <!-- FORMULARI PER A L'ESTUDIANT -->
+            <h2 class="section-title">📋 Dades de l'estudiant</h2>
+            <label class="required" for="nom">Nom i cognoms</label>
+            <input type="text" id="nom" placeholder="Ex: Maria Garcia" aria-required="true">
+            
+            <label class="required" for="grup">Grup</label>
+            <input type="text" id="grup" placeholder="Ex: Grup A" aria-required="true">
+            
+            <label class="required" for="enllac">Enllaç al document col·laboratiu (Canva, Google Docs...)</label>
+            <input type="url" id="enllac" placeholder="https://..." aria-required="true">
+            
+            <label for="autovaloracio">Autovaloració de l'activitat (dificultat, utilitat...)</label>
+            <select id="autovaloracio">
+                <option value="">-- Selecciona --</option>
+                <option value="1">1 - Molt difícil</option>
+                <option value="2">2 - Una mica difícil</option>
+                <option value="3">3 - Neutral</option>
+                <option value="4">4 - Fàcil</option>
+                <option value="5">5 - Molt fàcil i útil</option>
+            </select>
+
+            <!-- BOTONS DELS BLOCS (DESPLEGABLES) -->
+            <div style="text-align:center; margin:20px 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" id="toggleBlocTaulaBtn" aria-expanded="false">
+                    📊 Taula de contrast individual
+                </button>
+                <button class="btn btn-primary" id="toggleBlocConclusionsBtn" aria-expanded="false">
+                    🧠 Conclusions individuals
+                </button>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- BLOC TAULA DE CONTRAST -->
+            <!-- =========================================== -->
+            <div class="bloc-container" id="blocTaulaContainer" aria-hidden="true">
+                <h3 class="bloc-title">📊 Taula de contrast individual</h3>
+                <p>Omple la taula amb com a mínim 5 condicions laborals. Prem el botó ❓ per a més informació.</p>
+                
+                <label class="required" for="condicio1">Condició 1 (ex: tipus de contracte)</label>
+                <textarea id="condicio1" required aria-required="true" rows="2" placeholder="Què diu l'oferta? Què diu el conveni? Avaluació"></textarea>
+                
+                <label class="required" for="condicio2">Condició 2 (ex: jornada laboral)</label>
+                <textarea id="condicio2" required aria-required="true" rows="2"></textarea>
+                
+                <label class="required" for="condicio3">Condició 3 (ex: salari base)</label>
+                <textarea id="condicio3" required aria-required="true" rows="2"></textarea>
+                
+                <label class="required" for="condicio4">Condició 4 (ex: període de prova)</label>
+                <textarea id="condicio4" required aria-required="true" rows="2"></textarea>
+                
+                <label class="required" for="condicio5">Condició 5 (ex: hores extraordinàries)</label>
+                <textarea id="condicio5" required aria-required="true" rows="2"></textarea>
+                
+                <label for="condicio6">Condició 6 (opcional)</label>
+                <textarea id="condicio6" rows="2"></textarea>
+                
+                <label for="condicio7">Condició 7 (opcional)</label>
+                <textarea id="condicio7" rows="2"></textarea>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- BLOC CONCLUSIONS -->
+            <!-- =========================================== -->
+            <div class="bloc-container" id="blocConclusionsContainer" aria-hidden="true">
+                <h3 class="bloc-title">🧠 Conclusions individuals</h3>
+                <label class="required" for="conclusio">Quines conclusions extreus d'aquest contrast? Quins riscos legals has identificat?</label>
+                <textarea id="conclusio" required aria-required="true" rows="4"></textarea>
+            </div>
+
+            <!-- BOTONS D'AUTOAVALUACIÓ -->
+            <div style="text-align:center; margin:20px 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" id="toggleAutoavaluacioBtn" aria-expanded="false">
+                    📝 Autoavaluació prèvia (10 preguntes)
+                </button>
+                <button class="btn btn-primary" id="toggleExamenBtn" aria-expanded="false">
+                    📝 AUTOAVALUACIÓ PER A L'EXAMEN FINAL (20 preguntes)
+                </button>
+            </div>
+
+            <!-- AUTOAVALUACIÓ 10 PREGUNTES -->
+            <div class="autoavaluacio-container" id="autoavaluacioContainer" aria-hidden="true">
+                <h3 style="color:#D1222B;">Autoavaluació (10 preguntes)</h3>
+                <p>Respon aquestes 10 preguntes per comprovar els teus coneixements sobre condicions laborals.</p>
+
+                <div class="quiz-item">
+                    <div class="quiz-question">1. Quina és la durada màxima del període de prova per a un tècnic?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz1" value="a"> 1 mes</label>
+                        <label><input type="radio" name="quiz1" value="b"> 2 mesos</label>
+                        <label><input type="radio" name="quiz1" value="c"> 6 mesos</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">2. Quina llei regula l'Estatut dels Treballadors?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz2" value="a"> Llei 31/1995</label>
+                        <label><input type="radio" name="quiz2" value="b"> RD Legislatiu 2/2015</label>
+                        <label><input type="radio" name="quiz2" value="c"> RD 842/2002</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">3. Quantes hores extraordinàries es poden fer com a màxim a l'any?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz3" value="a"> 60 hores</label>
+                        <label><input type="radio" name="quiz3" value="b"> 80 hores</label>
+                        <label><input type="radio" name="quiz3" value="c"> 100 hores</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">4. El salari mínim interprofessional (SMI) el fixa...</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz4" value="a"> El conveni col·lectiu</label>
+                        <label><input type="radio" name="quiz4" value="b"> El Govern</label>
+                        <label><input type="radio" name="quiz4" value="c"> L'empresa</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">5. Quina és la jornada màxima setmanal ordinària?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz5" value="a"> 35 hores</label>
+                        <label><input type="radio" name="quiz5" value="b"> 40 hores</label>
+                        <label><input type="radio" name="quiz5" value="c"> 45 hores</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">6. Quin descans setmanal mínim té dret un treballador?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz6" value="a"> 1 dia</label>
+                        <label><input type="radio" name="quiz6" value="b"> 1,5 dies</label>
+                        <label><input type="radio" name="quiz6" value="c"> 2 dies</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">7. Què és un conveni col·lectiu?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz7" value="a"> Un contracte entre empresari i treballador</label>
+                        <label><input type="radio" name="quiz7" value="b"> Un acord entre sindicats i empresaris</label>
+                        <label><input type="radio" name="quiz7" value="c"> Una llei aprovada pel Parlament</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">8. Quin és el límit màxim de la jornada diària?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz8" value="a"> 8 hores</label>
+                        <label><input type="radio" name="quiz8" value="b"> 9 hores</label>
+                        <label><input type="radio" name="quiz8" value="c"> 10 hores</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">9. Les hores extraordinàries poden ser obligatòries?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz9" value="a"> Sí, sempre</label>
+                        <label><input type="radio" name="quiz9" value="b"> No, mai</label>
+                        <label><input type="radio" name="quiz9" value="c"> Sí, si ho pacta el conveni</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">10. Què has de fer amb la taula de contrast?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="quiz10" value="a"> Guardar-la a l'ordinador</label>
+                        <label><input type="radio" name="quiz10" value="b"> Penjar-la a Moodle i incorporar-la al portafolis</label>
+                        <label><input type="radio" name="quiz10" value="c"> Enviar-la per correu al professor</label>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; margin-bottom:20px;">
+                    <button class="btn btn-primary" id="checkQuizBtn">✅ Comprova respostes</button>
+                    <button class="btn btn-outline" id="resetQuizBtn">↻ Tornar a començar</button>
+                    <button class="btn btn-close" id="closeQuizBtn">✖ Tancar</button>
+                </div>
+                <div id="quizFeedback" class="feedback-quiz"></div>
+            </div>
+
+            <!-- AUTOAVALUACIÓ 20 PREGUNTES -->
+            <div class="examen-container" id="examenContainer" aria-hidden="true">
+                <h2 style="color:#D1222B; margin-bottom:20px;">📝 AUTOAVALUACIÓ PER A L'EXAMEN FINAL (20 preguntes)</h2>
+                <p style="margin-bottom:20px;">Aquestes preguntes són representatives del que trobaràs a l'examen final. 
+                Has d'obtenir un mínim del <strong>70% (14/20)</strong> per considerar que has assolit els continguts.</p>
+
+                <div id="examen-preguntes"></div>
+
+                <div style="text-align:center; margin:20px 0;">
+                    <button class="btn btn-primary" id="comprovarExamenBtn">✅ Comprova respostes</button>
+                    <button class="btn btn-secondary" id="reiniciarExamenBtn">↻ Reiniciar examen</button>
+                    <button class="btn btn-close" id="closeExamenBtn">✖ Tancar</button>
+                </div>
+
+                <div id="examen-resultat" class="examen-resultat"></div>
+                <div id="examen-feedback-global" style="margin-top:15px;"></div>
+            </div>
+
+            <!-- Botons d'acció finals -->
+            <div class="buttons">
+                <button class="btn btn-danger" id="resetBtn">🗑️ Esborrar tot</button>
+                <button class="btn btn-primary" id="submitBtn">✅ Preparar per enviar</button>
+            </div>
+
+            <!-- Àrea de resultats -->
+            <div class="results-area" id="resultsArea">
+                <h2 style="color:#D1222B;">📈 Dades per al professor</h2>
+                <p>Prem "Exporta JSON" per generar un fitxer amb les teves respostes.</p>
+                <div class="buttons">
+                    <button class="btn btn-primary" id="pdfBtn">📥 Descarregar PDF (per a Moodle)</button>
+                    <button class="btn btn-success" id="jsonBtn">📊 Exportar JSON</button>
+                    <button class="btn btn-primary" id="copyJsonBtn">📋 Copiar JSON al portapapers</button>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button class="btn btn-secondary" id="explicacioJsonBtn">❓ Com enviar (explicació)</button>
+                </div>
+                <div id="jsonContainer" class="json-container" style="display:none;"></div>
+                <div id="copyStatus" style="display:none; background:#d4edda; padding:10px; border-radius:10px; margin-top:10px;">✅ JSON copiat!</div>
+            </div>
+
+            <!-- Recordatori final millorat -->
+            <div style="background: #e6f2ff; border-radius: 20px; padding: 20px; margin: 30px 0; border-left: 5px solid #D1222B;">
+                <span style="font-size:1.3rem; font-weight:bold;">📁 LLIURAMENT DE L'ACTIVITAT</span>
+                
+                <p style="margin-top:15px;">Abans de tancar aquesta pàgina, assegura't que has completat els següents passos:</p>
+                
+                <div style="background: white; border-radius: 15px; padding: 20px; margin: 15px 0; border: 2px solid #D1222B;">
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">1</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📥 DESA EL TEU TREBALL (OPCIONAL)</strong>
+                            <p style="margin-top:5px;">Totes les respostes es guarden automàticament al teu navegador. Pots tancar i tornar-hi més tard sense perdre res.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">2</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📤 EXPORTA EL FITXER JSON</strong>
+                            <p style="margin-top:5px;">Prem el botó <strong>"📊 Exportar JSON"</strong> (a la secció de resultats). Es generarà un fitxer amb les teves respostes que es desarà a la carpeta <strong>DESCARREGUES</strong>.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">3</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📎 PENJA A MOODLE</strong>
+                            <p style="margin-top:5px;">Puja a Moodle els següents documents:</p>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li><strong>📁 Fitxer JSON</strong> (obligatori - conté totes les respostes)</li>
+                                <li><strong>📊 Taula de contrast individual</strong> (PDF o enllaç)</li>
+                                <li><strong>👥 Document col·laboratiu</strong> (enllaç)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">4</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📁 INCORPORA AL PORTAFOLIS</strong>
+                            <p style="margin-top:5px;">Guarda una còpia de tots els documents al teu <strong>portafolis digital professional</strong>.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div style="background: #FFC72C; border-radius: 15px; padding: 15px; margin-top: 15px; border: 2px solid #D1222B; text-align: center;">
+                    <p style="font-weight:bold; color:#D1222B; font-size: 1.1rem;">⚠️ IMPORTANT: El fitxer JSON és l'única evidència que conté TOTES les teves respostes.</p>
+                    <p style="margin-top:5px;">Sense aquest fitxer, el professor no podrà avaluar correctament la teva activitat.</p>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="footer">Diego Izquierdo · FOL · IOC · Contingut accessible ♿</div>
+    </div>
+
+    <script>
+        // ===========================================
+        // FUNCIONS DELS MODALS
+        // ===========================================
+        var modalPortafolis = document.getElementById('modalPortafolis');
+        var btnPortafolis = document.getElementById('modalPortafolisBtn');
+        var spanPortafolis = document.getElementsByClassName('close-modal')[0];
+        
+        btnPortafolis.onclick = function() {
+            modalPortafolis.style.display = 'block';
+        }
+        
+        spanPortafolis.onclick = function() {
+            modalPortafolis.style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modalPortafolis) {
+                modalPortafolis.style.display = 'none';
+            }
+            var modalAjuda = document.getElementById('modalAjudaTaula');
+            if (event.target == modalAjuda) {
+                modalAjuda.style.display = 'none';
+            }
+        }
+
+        function mostrarAjudaTaula() {
+            document.getElementById('modalAjudaTaula').style.display = 'block';
+        }
+
+        function tancarModalAjuda() {
+            document.getElementById('modalAjudaTaula').style.display = 'none';
+        }
+
+        window.mostrarAjudaTaula = mostrarAjudaTaula;
+        window.tancarModalAjuda = tancarModalAjuda;
+
+        // ===========================================
+        // GUARDAT AUTOMÀTIC AMB LOCALSTORAGE (PREFIX ra3_)
+        // ===========================================
+        const PREFIX = 'ra3_';
+        
+        function carregarDadesGuardades() {
+            document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+                let valorGuardat = localStorage.getItem(PREFIX + camp.id);
+                if (valorGuardat) camp.value = valorGuardat;
+            });
+            
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                let nom = radio.name;
+                let valorGuardat = localStorage.getItem(PREFIX + nom);
+                if (valorGuardat === radio.value) radio.checked = true;
+            });
+        }
+        
+        function guardarCamp(camp) {
+            localStorage.setItem(PREFIX + camp.id, camp.value);
+        }
+        
+        function guardarRadio(name, value) {
+            localStorage.setItem(PREFIX + name, value);
+        }
+        
+        // Carregar en iniciar
+        window.addEventListener('load', carregarDadesGuardades);
+        
+        // Guardar en cada canvi
+        document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+            camp.addEventListener('input', function() { guardarCamp(this); });
+        });
+        
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                guardarRadio(this.name, this.value);
+            });
+        });
+
+        // ===========================================
+        // MODAL D'EXPLICACIÓ JSON
+        // ===========================================
+        function obrirModalExplicacio() {
+            document.getElementById('modalExplicacio').style.display = 'block';
+        }
+        
+        document.getElementById('explicacioJsonBtn')?.addEventListener('click', obrirModalExplicacio);
+        
+        document.querySelector('.modal-explicacio-tancar').addEventListener('click', function() {
+            document.getElementById('modalExplicacio').style.display = 'none';
+        });
+        
+        document.getElementById('tancarModalBtn').addEventListener('click', function() {
+            document.getElementById('modalExplicacio').style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(event) {
+            let modal = document.getElementById('modalExplicacio');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // ===========================================
+        // BOTÓ FLOTANT TORNAR A DALT
+        // ===========================================
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // ===========================================
+        // Toggle Blocs (Taula i Conclusions)
+        // ===========================================
+        document.getElementById('toggleBlocTaulaBtn').addEventListener('click', function() {
+            let container = document.getElementById('blocTaulaContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('toggleBlocConclusionsBtn').addEventListener('click', function() {
+            let container = document.getElementById('blocConclusionsContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        // ===========================================
+        // PDF d'instruccions (cal ampliar-lo)
+        // ===========================================
+        document.getElementById('pdfInstruccionsBtn').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(20);
+            doc.setTextColor(209,34,43);
+            doc.text('RA3 · De l\'oferta al conveni', 20, 20);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0,0,0);
+            doc.text('DESCRIPCIÓ', 20, 35);
+            doc.setFontSize(10);
+            doc.text('Activitat de 4 hores per analitzar una oferta de treball del sector elèctric', 20, 45);
+            
+            doc.setFontSize(12);
+            doc.text('OBJECTIUS', 20, 60);
+            doc.setFontSize(10);
+            doc.text('• Identificar les condicions clau d\'una oferta de treball', 25, 70);
+            doc.text('• Localitzar el conveni col·lectiu aplicable', 25, 77);
+            doc.text('• Contrastar oferta i conveni (mínim 5 condicions)', 25, 84);
+            
+            doc.setFontSize(12);
+            doc.text('METODOLOGIA', 20, 99);
+            doc.setFontSize(10);
+            doc.text('Fase 1 (2h): Anàlisi individual de l\'oferta', 25, 109);
+            doc.text('Fase 2 (2h): Treball col·laboratiu i conclusions', 25, 116);
+            doc.text('Fase 3: Lliurament de documents a Moodle + portafolis', 25, 123);
+            
+            // PREGUNTES DE L'ACTIVITAT (NOU)
+            doc.setFontSize(12);
+            doc.text('PREGUNTES DE L\'ACTIVITAT', 20, 143);
+            doc.setFontSize(10);
+            
+            let y = 153;
+            const preguntes = [
+                'TAULA DE CONTRAST:',
+                '• Condició 1 (ex: tipus de contracte)',
+                '• Condició 2 (ex: jornada laboral)',
+                '• Condició 3 (ex: salari base)',
+                '• Condició 4 (ex: període de prova)',
+                '• Condició 5 (ex: hores extraordinàries)',
+                '• Condició 6 (opcional)',
+                '• Condició 7 (opcional)',
+                '',
+                'CONCLUSIONS:',
+                '• Quines conclusions extreus? Quins riscos legals has identificat?'
+            ];
+            
+            preguntes.forEach(p => {
+                if (p === '') {
+                    y += 3;
+                } else {
+                    doc.text(p, 25, y);
+                    y += 6;
+                }
+            });
+            
+            // Rúbrica
+            doc.addPage();
+            doc.setFontSize(12);
+            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 20);
+            
+            doc.setFontSize(8);
+            doc.text('Criteri', 20, 30);
+            doc.text('Excel·lent (4)', 50, 30);
+            doc.text('Assolit (3)', 85, 30);
+            doc.text('En procés (2)', 120, 30);
+            doc.text('No assolit (1)', 155, 30);
+            doc.text('Pes', 185, 30);
+            
+            doc.line(20, 32, 195, 32);
+            
+            doc.text('C1: Identificació', 20, 42);
+            doc.text('5+ condicions', 50, 42);
+            doc.text('anàlisi detallada', 50, 47);
+            doc.text('4 condicions', 85, 42);
+            doc.text('descripció', 85, 47);
+            doc.text('2-3 condicions', 120, 42);
+            doc.text('sense detall', 120, 47);
+            doc.text('1 o cap', 155, 42);
+            doc.text('condició', 155, 47);
+            doc.text('40%', 185, 45);
+            
+            doc.text('C2: Conveni', 20, 57);
+            doc.text('Articles', 50, 57);
+            doc.text('concrets', 50, 62);
+            doc.text('Continguts', 85, 57);
+            doc.text('generals', 85, 62);
+            doc.text('Esmenta', 120, 57);
+            doc.text('conveni', 120, 62);
+            doc.text('No aplica', 155, 57);
+            doc.text('conveni', 155, 62);
+            doc.text('30%', 185, 60);
+            
+            doc.text('C3: Anàlisi', 20, 72);
+            doc.text('Valora riscos', 50, 72);
+            doc.text('legals', 50, 77);
+            doc.text('Compara', 85, 72);
+            doc.text('sense aprof.', 85, 77);
+            doc.text('Descriu', 120, 72);
+            doc.text('sense anàlisi', 120, 77);
+            doc.text('No compara', 155, 72);
+            doc.text('oferta/conveni', 155, 77);
+            doc.text('20%', 185, 75);
+            
+            doc.text('C4: Qualitat', 20, 87);
+            doc.text('Clar', 50, 87);
+            doc.text('estructurat', 50, 92);
+            doc.text('Llegible', 85, 87);
+            doc.text('errors', 85, 92);
+            doc.text('Confús', 120, 87);
+            doc.text('millorable', 120, 92);
+            doc.text('Incomplet', 155, 87);
+            doc.text('inintel·ligible', 155, 92);
+            doc.text('10%', 185, 90);
+            
+            doc.save('RA3_instruccions_completes.pdf');
+        });
+
+        // ===========================================
+        // Toggle autoavaluació 10 preguntes
+        // ===========================================
+        document.getElementById('toggleAutoavaluacioBtn').addEventListener('click', function() {
+            let container = document.getElementById('autoavaluacioContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('toggleExamenBtn').addEventListener('click', function() {
+            let container = document.getElementById('examenContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('closeQuizBtn').addEventListener('click', function() {
+            document.getElementById('autoavaluacioContainer').style.display = 'none';
+            document.getElementById('toggleAutoavaluacioBtn').setAttribute('aria-expanded', 'false');
+        });
+
+        document.getElementById('closeExamenBtn').addEventListener('click', function() {
+            document.getElementById('examenContainer').style.display = 'none';
+            document.getElementById('toggleExamenBtn').setAttribute('aria-expanded', 'false');
+        });
+
+        // ===========================================
+        // Comprova autoavaluació 10 preguntes
+        // ===========================================
+        document.getElementById('checkQuizBtn').addEventListener('click', function() {
+            let correctes = 0;
+            
+            if (document.querySelector('input[name="quiz1"]:checked')?.value === 'c') correctes++;
+            if (document.querySelector('input[name="quiz2"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz3"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz4"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz5"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz6"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz7"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz8"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="quiz9"]:checked')?.value === 'c') correctes++;
+            if (document.querySelector('input[name="quiz10"]:checked')?.value === 'b') correctes++;
+
+            let feedback = document.getElementById('quizFeedback');
+            feedback.style.display = 'block';
+            
+            if (correctes === 10) {
+                feedback.innerHTML = '✅ Excel·lent! Has respost correctament totes les preguntes.';
+                feedback.style.background = '#d4edda';
+                feedback.style.color = '#155724';
+            } else if (correctes >= 7) {
+                feedback.innerHTML = `✅ Has obtingut ${correctes}/10. Molt bé! Revisa els errors.`;
+                feedback.style.background = '#fff3cd';
+                feedback.style.color = '#856404';
+            } else {
+                feedback.innerHTML = `❌ Has obtingut ${correctes}/10. Torna a llegir l'activitat.`;
+                feedback.style.background = '#f8d7da';
+                feedback.style.color = '#721c24';
+            }
+        });
+
+        // Reiniciar autoavaluació
+        document.getElementById('resetQuizBtn').addEventListener('click', function() {
+            for(let i = 1; i <= 10; i++) {
+                let radios = document.querySelectorAll(`input[name="quiz${i}"]`);
+                radios.forEach(r => r.checked = false);
+            }
+            document.getElementById('quizFeedback').style.display = 'none';
+        });
+
+        // ===========================================
+        // EXAMEN DE 20 PREGUNTES
+        // ===========================================
+        const preguntesExamen = [
+            { pregunta: "1. L'Estatut dels Treballadors és la norma bàsica que regula les relacions laborals.", tipus: "vf", correcta: "v", explicacio: "Correcte. L'Estatut dels Treballadors (RD Legislatiu 2/2015) és la norma fonamental." },
+            { pregunta: "2. Quin és el límit màxim del període de prova per a un tècnic?", tipus: "mc", opcions: ["a) 1 mes", "b) 2 mesos", "c) 6 mesos"], correcta: "c", explicacio: "Per a tècnics titulats, el període de prova pot ser de fins a 6 mesos." },
+            { pregunta: "3. La jornada ordinària màxima setmanal és de 40 hores.", tipus: "vf", correcta: "v", explicacio: "Correcte, segons l'article 34 de l'Estatut dels Treballadors." },
+            { pregunta: "4. Quantes hores extraordinàries es poden fer a l'any com a màxim?", tipus: "mc", opcions: ["a) 60 hores", "b) 80 hores", "c) 100 hores"], correcta: "b", explicacio: "El límit és de 80 hores a l'any." },
+            { pregunta: "5. El salari mínim interprofessional el fixa el conveni col·lectiu.", tipus: "vf", correcta: "f", explicacio: "Fals. El fixa el Govern anualment." },
+            { pregunta: "6. Quin descans setmanal mínim té dret un treballador?", tipus: "mc", opcions: ["a) 1 dia", "b) 1,5 dies", "c) 2 dies"], correcta: "b", explicacio: "Són 1,5 dies ininterromputs (36 hores)." },
+            { pregunta: "7. Les hores extraordinàries poden ser obligatòries si ho pacta el conveni.", tipus: "vf", correcta: "v", explicacio: "Vertader. El conveni pot establir l'obligatorietat." },
+            { pregunta: "8. Què és un conveni col·lectiu?", tipus: "mc", opcions: ["a) Un contracte individual", "b) Un acord entre sindicats i empresaris", "c) Una llei"], correcta: "b", explicacio: "És un acord entre la representació dels treballadors i els empresaris." },
+            { pregunta: "9. El període de prova s'ha de fer per escrit.", tipus: "vf", correcta: "v", explicacio: "Vertader. Si no es fa per escrit, s'entén que no hi ha període de prova." },
+            { pregunta: "10. Quina és la durada màxima de la jornada diària?", tipus: "mc", opcions: ["a) 8 hores", "b) 9 hores", "c) 10 hores"], correcta: "b", explicacio: "9 hores, llevat que per conveni es distribueixi de manera diferent." },
+            { pregunta: "11. El salari base el fixa sempre el conveni col·lectiu.", tipus: "vf", correcta: "v", explicacio: "Vertader. El conveni estableix els salaris base per categories." },
+            { pregunta: "12. Quin és el descans mínim durant la jornada laboral?", tipus: "mc", opcions: ["a) 10 minuts", "b) 15 minuts", "c) 30 minuts"], correcta: "b", explicacio: "15 minuts quan la jornada supera les 6 hores." },
+            { pregunta: "13. Les vacances mínimes són de 30 dies naturals.", tipus: "vf", correcta: "v", explicacio: "Vertader, 30 dies naturals o 22 dies laborables." },
+            { pregunta: "14. Què és FOGASA?", tipus: "mc", opcions: ["a) Un sindicat", "b) El Fons de Garantia Salarial", "c) Un conveni"], correcta: "b", explicacio: "FOGASA garanteix el cobrament de salaris i indemnitzacions." },
+            { pregunta: "15. L'empresa pot modificar unilateralment les condicions de treball.", tipus: "vf", correcta: "f", explicacio: "Fals. Hi ha procediments específics per a modificacions substancials." },
+            { pregunta: "16. Què és la quitança?", tipus: "mc", opcions: ["a) La nòmina mensual", "b) La liquidació en finalitzar el contracte", "c) Un complement salarial"], correcta: "b", explicacio: "És la liquidació d'havers en acabar la relació laboral." },
+            { pregunta: "17. Els sindicats tenen dret a la vaga.", tipus: "vf", correcta: "v", explicacio: "Vertader, és un dret fonamental reconegut a la Constitució." },
+            { pregunta: "18. Quin és el termini de preavís per a un acomiadament objectiu?", tipus: "mc", opcions: ["a) 10 dies", "b) 15 dies", "c) 30 dies"], correcta: "b", explicacio: "Són 15 dies." },
+            { pregunta: "19. La baixa per malaltia comuna la paga l'empresa.", tipus: "vf", correcta: "f", explicacio: "Fals. La paga la Seguretat Social a partir del 4t dia." },
+            { pregunta: "20. On has de penjar la taula de contrast?", tipus: "mc", opcions: ["a) A l'ordinador", "b) A Moodle i al portafolis", "c) Enviar per correu"], correcta: "b", explicacio: "S'ha de penjar a Moodle i incorporar al portafolis." }
+        ];
+
+        function generarPreguntesExamen() {
+            let html = '';
+            preguntesExamen.forEach((p, index) => {
+                html += `<div class="examen-pregunta">`;
+                html += `<p><strong>${p.pregunta}</strong></p>`;
+                
+                if (p.tipus === 'vf') {
+                    html += `<div class="examen-opcions">`;
+                    html += `<label><input type="radio" name="examen-${index}" value="v"> Vertader</label>`;
+                    html += `<label><input type="radio" name="examen-${index}" value="f"> Fals</label>`;
+                    html += `</div>`;
+                } else {
+                    html += `<div class="examen-opcions">`;
+                    p.opcions.forEach((opt, optIndex) => {
+                        let valor = String.fromCharCode(97 + optIndex);
+                        html += `<label><input type="radio" name="examen-${index}" value="${valor}"> ${opt}</label>`;
+                    });
+                    html += `</div>`;
+                }
+                html += `<div id="feedback-${index}" class="examen-feedback"></div>`;
+                html += `</div>`;
+            });
+            document.getElementById('examen-preguntes').innerHTML = html;
+        }
+
+        function comprovarExamen() {
+            let correctes = 0;
+            let total = preguntesExamen.length;
+            
+            preguntesExamen.forEach((p, index) => {
+                let seleccio = document.querySelector(`input[name="examen-${index}"]:checked`);
+                let feedbackDiv = document.getElementById(`feedback-${index}`);
+                
+                if (seleccio) {
+                    if (seleccio.value === p.correcta) {
+                        correctes++;
+                        feedbackDiv.innerHTML = `✅ Correcte! ${p.explicacio || ''}`;
+                        feedbackDiv.className = 'examen-feedback examen-correcte';
+                    } else {
+                        let correctaText = p.correcta === 'v' ? 'Vertader' : p.correcta === 'f' ? 'Fals' : p.opcions[{'a':0,'b':1,'c':2}[p.correcta]];
+                        feedbackDiv.innerHTML = `❌ Incorrecte. La resposta correcta és: ${correctaText}. ${p.explicacio || ''}`;
+                        feedbackDiv.className = 'examen-feedback examen-incorrecte';
+                    }
+                    feedbackDiv.style.display = 'block';
+                } else {
+                    feedbackDiv.innerHTML = '❌ Sense respondre.';
+                    feedbackDiv.className = 'examen-feedback examen-incorrecte';
+                    feedbackDiv.style.display = 'block';
+                }
+            });
+            
+            let percentatge = (correctes / total * 100).toFixed(1);
+            let resultatDiv = document.getElementById('examen-resultat');
+            let feedbackGlobal = document.getElementById('examen-feedback-global');
+            
+            resultatDiv.innerHTML = `Resultat: ${correctes}/${total} (${percentatge}%)`;
+            
+            if (correctes >= 14) {
+                resultatDiv.classList.add('examen-superat');
+                resultatDiv.classList.remove('examen-no-superat');
+                feedbackGlobal.innerHTML = '<p style="color:#155724;">✅ SUPERAT! Estàs preparat per a l\'examen final.</p>';
+            } else {
+                resultatDiv.classList.add('examen-no-superat');
+                resultatDiv.classList.remove('examen-superat');
+                feedbackGlobal.innerHTML = '<p style="color:#721c24;">❌ NO SUPERAT. Revisa els continguts i torna-ho a intentar.</p>';
+            }
+        }
+
+        function reiniciarExamen() {
+            preguntesExamen.forEach((_, index) => {
+                let radios = document.querySelectorAll(`input[name="examen-${index}"]`);
+                radios.forEach(r => r.checked = false);
+                let feedbackDiv = document.getElementById(`feedback-${index}`);
+                feedbackDiv.style.display = 'none';
+            });
+            document.getElementById('examen-resultat').innerHTML = '';
+            document.getElementById('examen-feedback-global').innerHTML = '';
+        }
+
+        generarPreguntesExamen();
+        document.getElementById('comprovarExamenBtn').addEventListener('click', comprovarExamen);
+        document.getElementById('reiniciarExamenBtn').addEventListener('click', reiniciarExamen);
+
+        // ===========================================
+        // BOTÓ RESET MILLORAT (esborra localStorage)
+        // ===========================================
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('⚠️ Això esborrarà TOTES les respostes i les dades guardades. Estàs segur?')) {
+                
+                document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+                    camp.value = '';
+                });
+                
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    let clau = localStorage.key(i);
+                    if (clau.startsWith(PREFIX)) {
+                        localStorage.removeItem(clau);
+                    }
+                }
+                
+                document.getElementById('resultsArea').style.display = 'none';
+                
+                alert('✅ Totes les respostes s\'han esborrat correctament.');
+            }
+        });
+
+        // ===========================================
+        // SUBMIT (Preparar per enviar)
+        // ===========================================
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            let requiredIds = ['nom', 'grup', 'condicio1', 'condicio2', 'condicio3', 'condicio4', 'condicio5', 'conclusio'];
+            let valid = true;
+            requiredIds.forEach(id => {
+                let field = document.getElementById(id);
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#D1222B';
+                    valid = false;
+                } else {
+                    field.style.borderColor = '#ffd9d9';
+                }
+            });
+
+            if (!valid) { alert('Omple tots els camps obligatoris (*)'); return; }
+
+            window._estudiantData = {
+                nom: document.getElementById('nom').value,
+                grup: document.getElementById('grup').value,
+                enllac: document.getElementById('enllac').value,
+                autoval: document.getElementById('autovaloracio').value,
+                condicio1: document.getElementById('condicio1').value,
+                condicio2: document.getElementById('condicio2').value,
+                condicio3: document.getElementById('condicio3').value,
+                condicio4: document.getElementById('condicio4').value,
+                condicio5: document.getElementById('condicio5').value,
+                condicio6: document.getElementById('condicio6').value,
+                condicio7: document.getElementById('condicio7').value,
+                conclusio: document.getElementById('conclusio').value,
+                data: new Date().toISOString()
+            };
+
+            document.getElementById('resultsArea').style.display = 'block';
+            
+            // Mostrar modal de recordatori després de preparar
+            setTimeout(() => {
+                document.getElementById('modalExplicacio').style.display = 'block';
+            }, 500);
+        });
+
+        // ===========================================
+        // PDF (DESCARREGAR PDF PER A MOODLE)
+        // ===========================================
+        document.getElementById('pdfBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { alert('Primer prepara les dades'); return; }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(16);
+            doc.setTextColor(209,34,43);
+            doc.text('INFORME D\'ACTIVITAT - RA3', 20, 20);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(0,0,0);
+            doc.text('Estudiant: ' + (d.nom || ''), 20, 30);
+            doc.text('Grup: ' + (d.grup || ''), 20, 37);
+            doc.text('Data: ' + new Date().toLocaleDateString('ca-ES'), 20, 44);
+            
+            doc.text('TAULA DE CONTRAST', 20, 54);
+            let y = 64;
+            
+            let condicions = [
+                '1. ' + (d.condicio1 || '-'),
+                '2. ' + (d.condicio2 || '-'),
+                '3. ' + (d.condicio3 || '-'),
+                '4. ' + (d.condicio4 || '-'),
+                '5. ' + (d.condicio5 || '-')
+            ];
+            
+            if (d.condicio6) condicions.push('6. ' + d.condicio6);
+            if (d.condicio7) condicions.push('7. ' + d.condicio7);
+            
+            condicions.forEach(r => {
+                let lines = doc.splitTextToSize(r, 170);
+                doc.text(lines, 20, y);
+                y += lines.length * 5 + 5;
+            });
+            
+            doc.text('CONCLUSIONS', 20, y);
+            let conclLines = doc.splitTextToSize(d.conclusio || '-', 170);
+            doc.text(conclLines, 20, y + 10);
+            
+            doc.save(`RA3_informe_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.pdf`);
+        });
+
+        // ===========================================
+        // JSON (EXPORTAR)
+        // ===========================================
+        document.getElementById('jsonBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { 
+                alert('Primer has de fer clic a "Preparar per enviar"');
+                return; 
+            }
+            
+            try {
+                let jsonCont = document.getElementById('jsonContainer');
+                let jsonStr = JSON.stringify(d, null, 2);
+                
+                // Mostrar el JSON a la pantalla
+                if (jsonCont) {
+                    jsonCont.style.display = 'block';
+                    jsonCont.textContent = jsonStr;
+                }
+                
+                // Crear i descarregar el fitxer
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `RA3_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.json`;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                
+                // Netejar
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                alert('✅ Fitxer JSON desat a DESCÀRREGUES');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error en exportar el JSON');
+            }
+        });
+
+        // ===========================================
+        // Copiar JSON al portapapers
+        // ===========================================
+        document.getElementById('copyJsonBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { alert('Primer prepara les dades'); return; }
+            
+            let jsonStr = JSON.stringify(d, null, 2);
+            navigator.clipboard.writeText(jsonStr).then(() => {
+                let status = document.getElementById('copyStatus');
+                status.style.display = 'block';
+                setTimeout(() => status.style.display = 'none', 2000);
+            }).catch(() => {
+                alert('❌ No s\'ha pogut copiar');
+            });
+        });
+    </script>
+</body>
+</html>

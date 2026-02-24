@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA3 · Professor · Avaluació automàtica</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <style>
+        /* ESTILS COMPLETS (exactament igual que els RA) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(209,34,43,0.15);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        .header .accessibility-icon {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            border: 2px solid white;
+        }
+        .content {
+            padding: 30px 35px;
+        }
+        .badge-groc {
+            background: #FFC72C;
+            color: #1e293b;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 2px solid #D1222B;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 30px 0 20px;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: #b01e25;
+            border-color: #b01e25;
+        }
+        .btn-danger {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+        .btn-excel {
+            background: #1e88e5;
+            color: white;
+            border: none;
+        }
+        .btn-pdf {
+            background: #dc3545;
+            color: white;
+            border: none;
+        }
+        .btn-dalt {
+            background: #FFC72C;
+            color: #D1222B;
+            border: none;
+            font-weight: bold;
+        }
+        .btn-dalt:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .import-area {
+            background: #f0f7ff;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #D1222B;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+        }
+        tr:hover {
+            background: #fff3cd;
+        }
+        .valoracio-box {
+            background: #e6f2ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #D1222B;
+        }
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffd9d9;
+            border-radius: 12px;
+            margin: 8px 0 15px;
+            font-size: 1rem;
+        }
+        textarea:focus, input:focus, select:focus {
+            outline: 3px solid #FFC72C;
+            border-color: #D1222B;
+        }
+        .footer {
+            background: #f1f5f9;
+            padding: 20px;
+            text-align: center;
+        }
+        hr {
+            border: 2px dashed #FFC72C;
+            margin: 30px 0;
+        }
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        .rubrica-visual {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .rubrica-visual table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubrica-visual th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        .rubrica-visual td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        
+        /* PANEL DE RESPOSTES DESPLEGABLE */
+        .panel-respostes {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 2px solid #D1222B;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        /* BOTÓ FLOTANT PER TORNAR A DALT */
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT PER TORNAR A DALT -->
+    <button class="btn btn-dalt btn-flotant" id="tornarDaltBtn" title="Tornar a dalt">
+        ⬆️ Dalt
+    </button>
+
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>⚡ RA3 · Professor · Avaluació automàtica</h1>
+                <p>De l'oferta al conveni · Anàlisi laboral</p>
+            </div>
+            <div class="accessibility-icon">♿</div>
+        </div>
+        <div class="content">
+            <div class="badge-groc">📌 Corrector automàtic per al RA3</div>
+
+            <!-- ENLLAÇOS D'INTERÈS (conservats del RA3) -->
+            <div class="info-links">
+                <p><strong>📚 Enllaços d'interès per a la correcció:</strong></p>
+                <div>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u3-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: Condicions laborals (IOC)</a>
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430" target="_blank" class="enllac-normativa">Estatut dels Treballadors</a>
+                    <a href="https://treball.gencat.cat/ca/consell_relacions_laborals/convenis_colectius/cercador_de_convenis/" target="_blank" class="enllac-normativa">Cerca de convenis (Generalitat)</a>
+                    <a href="https://www.boe.es/biblioteca_juridica/index.php?tipo=C" target="_blank" class="enllac-normativa">Codi de Treball (BOE)</a>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/mini-campanya%20digital.html" target="_blank" class="enllac-normativa">VERIFICA.TE</a>
+                </div>
+            </div>
+
+            <!-- IMPORTADOR JSON -->
+            <div class="import-area">
+                <h2 style="color:#D1222B;">📥 Importar JSON dels alumnes (RA3)</h2>
+                <p>Selecciona els fitxers JSON que han enviat els alumnes.</p>
+                <input type="file" id="jsonFiles" multiple accept=".json" style="padding:10px; border:2px dashed #D1222B; width:100%;">
+                <div class="buttons">
+                    <button class="btn btn-primary" id="carregarJsonBtn">📂 Carregar fitxers</button>
+                    <button class="btn btn-danger" id="netejarBtn">🗑️ Netejar tot</button>
+                </div>
+                <div id="statusMessage" style="margin-top:15px; padding:10px; border-radius:10px; display:none;"></div>
+            </div>
+
+            <!-- TAULA DE RESULTATS -->
+            <div id="taulaContainer" style="display:none;">
+                <h2 class="section-title">📊 Resultats del grup (RA3)</h2>
+                <div style="overflow-x: auto;">
+                    <table id="resultatsTaula">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Grup</th>
+                                <th>Identificació</th>
+                                <th>Conveni</th>
+                                <th>Anàlisi</th>
+                                <th>Qualitat</th>
+                                <th>Nota final</th>
+                                <th>PDF</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taulaBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- RÚBRICA VISIBLE (PER CONSULTA) -->
+                <div class="rubrica-visual">
+                    <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ RA3</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criteri</th>
+                                <th>Pes</th>
+                                <th>1 - No assolit</th>
+                                <th>2 - En procés</th>
+                                <th>3 - Assolit</th>
+                                <th>4 - Excel·lent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Identificació condicions</strong></td>
+                                <td>40%</td>
+                                <td>Identifica 1 o cap condició</td>
+                                <td>Identifica 2-3 condicions sense detall</td>
+                                <td>Identifica 4 condicions amb descripció bàsica</td>
+                                <td>Identifica 5+ condicions amb anàlisi detallada</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aplicació del conveni</strong></td>
+                                <td>30%</td>
+                                <td>No localitza o no aplica el conveni</td>
+                                <td>Esmenta el conveni però no l'aplica</td>
+                                <td>Localitza el conveni i aplica continguts generals</td>
+                                <td>Localitza el conveni i cita articles concrets</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Anàlisi crítica</strong></td>
+                                <td>20%</td>
+                                <td>No realitza anàlisi comparativa</td>
+                                <td>Descriu sense analitzar</td>
+                                <td>Compara oferta i conveni sense aprofundir</td>
+                                <td>Valora adequació i identifica riscos legals</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Qualitat formal</strong></td>
+                                <td>10%</td>
+                                <td>Incomplet o inintel·ligible</td>
+                                <td>Confús o errors significatius</td>
+                                <td>Llegible, petits errors</td>
+                                <td>Document clar, ben estructurat, sense errors</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="margin-top:10px; font-style:italic; color:#D1222B;">* Els valors automàtics són orientatius. Pots modificar-los manualment.</p>
+                </div>
+
+                <!-- SELECCIÓ D'ALUMNE PER VALORAR -->
+                <div class="valoracio-box">
+                    <h3 style="color:#D1222B;">📝 Avaluació individual (RA3)</h3>
+                    <select id="selectorAlumne" style="width:100%; padding:10px; margin:10px 0;">
+                        <option value="">-- Selecciona un alumne --</option>
+                    </select>
+                    
+                    <!-- BOTÓ PER MOSTRAR/AMAGAR RESPOSTES -->
+                    <div style="text-align: center; margin: 10px 0;">
+                        <button class="btn btn-primary" id="toggleRespostesBtn">
+                            📋 Mostrar/amagar respostes completes
+                        </button>
+                    </div>
+                    
+                    <!-- PANEL DE RESPOSTES DESPLEGABLE -->
+                    <div id="panelRespostes" class="panel-respostes">
+                        <h4 style="color:#D1222B; margin-bottom:10px;">Respostes de l'alumne</h4>
+                        <div id="contingutRespostes">
+                            Selecciona un alumne i fes clic a "Mostrar respostes".
+                        </div>
+                    </div>
+                    
+                    <h4 style="color:#D1222B;">Rúbrica RA3 (punts 1-4)</h4>
+                    
+                    <label><strong>Identificació de condicions (40%):</strong></label>
+                    <input type="number" id="notaIdentificacio" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Aplicació del conveni (30%):</strong></label>
+                    <input type="number" id="notaConveni" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Anàlisi crítica (20%):</strong></label>
+                    <input type="number" id="notaAnalisi" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Qualitat formal (10%):</strong></label>
+                    <input type="number" id="notaQualitat" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Punts forts observats:</strong></label>
+                    <textarea id="puntsForts" rows="3"></textarea>
+                    
+                    <label><strong>Aspectes a millorar:</strong></label>
+                    <textarea id="aspectesMillora" rows="3"></textarea>
+                    
+                    <label><strong>Recomanació professional:</strong></label>
+                    <textarea id="recomanacio" rows="2"></textarea>
+                    
+                    <label><strong>Valoració qualitativa global:</strong></label>
+                    <textarea id="valoracioGlobal" rows="4"></textarea>
+                    
+                    <div class="buttons">
+                        <button class="btn btn-primary" id="guardarAvaluacioBtn">💾 Guardar avaluació</button>
+                        <button class="btn btn-pdf" id="generarPdfIndividualBtn">📥 Generar PDF individual</button>
+                    </div>
+                </div>
+
+                <!-- BOTONS GENERALS -->
+                <div class="buttons">
+                    <button class="btn btn-excel" id="excelBtn">📥 Exportar a Excel</button>
+                    <button class="btn btn-pdf" id="pdfTotsBtn">📥 Generar PDFs de tots</button>
+                </div>
+            </div>
+
+            <hr>
+            <p style="text-align:center; color:#6c757d;">Eina de correcció per al professorat · RA3 · Les dades no es guarden al servidor</p>
+        </div>
+        <div class="footer">Diego Izquierdo · FOL · IOC · Avaluació RA3 ♿</div>
+    </div>
+
+    <script>
+        let alumnes = [];
+        let alumnesAvaluats = {};
+
+        // ===========================================
+        // FUNCIÓ PER OBTENIR NIVELL (1-4) A TEXT
+        // ===========================================
+        function getNivellText(valor) {
+            const nivells = ['No assolit', 'En procés', 'Assolit', 'Excel·lent'];
+            return nivells[valor - 1] || 'No assolit';
+        }
+
+        // ===========================================
+        // FUNCIÓ PER CALCULAR NOTA FINAL (sobre 10)
+        // ===========================================
+        function calcularNotaFinal(identificacio, conveni, analisi, qualitat) {
+            let nota = (identificacio * 0.4 + conveni * 0.3 + analisi * 0.2 + qualitat * 0.1) * 2.5;
+            return nota.toFixed(2);
+        }
+
+        // ===========================================
+        // FUNCIONS PER GENERAR CONTINGUT AUTOMÀTIC
+        // ===========================================
+        function generarPuntsFortsAuto(alumne) {
+            let punts = [];
+            
+            // Comptar quantes condicions ha omplert
+            let condicionsCompletes = 0;
+            for (let i = 1; i <= 7; i++) {
+                if (alumne['condicio' + i] && alumne['condicio' + i].length > 20) condicionsCompletes++;
+            }
+            
+            if (condicionsCompletes >= 5) 
+                punts.push(`RA3: Ha identificat ${condicionsCompletes} condicions laborals amb bon detall.`);
+            
+            if (alumne.conclusio && alumne.conclusio.length > 100) 
+                punts.push('RA3: Bones conclusions, amb reflexió crítica.');
+            
+            if (punts.length === 0) punts.push('Treball correcte en general.');
+            return punts.join('\n');
+        }
+
+        function generarAspectesMilloraAuto(alumne) {
+            let millores = [];
+            
+            // Comptar quantes condicions ha omplert
+            let condicionsCompletes = 0;
+            for (let i = 1; i <= 7; i++) {
+                if (alumne['condicio' + i] && alumne['condicio' + i].length > 20) condicionsCompletes++;
+            }
+            
+            if (condicionsCompletes < 5) 
+                millores.push(`RA3: Només ha identificat ${condicionsCompletes} condicions. Cal arribar a 5.`);
+            
+            if (!alumne.conclusio || alumne.conclusio.length < 50) 
+                millores.push('RA3: Les conclusions són massa breus. Caldria aprofundir.');
+            
+            if (millores.length === 0) millores.push('Treball complet, felicitats!');
+            return millores.join('\n');
+        }
+
+        function generarRecomanacioAuto(alumne, nota) {
+            if (nota >= 8) {
+                return 'Excel·lent treball. Continua aprofundint en la interpretació de convenis col·lectius.';
+            } else if (nota >= 6) {
+                return 'Bona feina. Revisa els aspectes a millorar i aprofundeix en els articles concrets del conveni.';
+            } else {
+                return 'Treball suficient. Es recomana revisar els continguts bàsics del RA3 i la metodologia VERIFICA.';
+            }
+        }
+
+        function generarValoracioGlobalAuto(alumne, nota, nom) {
+            if (nota >= 8) {
+                return `${nom}, el teu treball demostra una comprensió excel·lent de les condicions laborals. Has identificat correctament les condicions de l'oferta, aplicat el conveni amb precisió i realitzat una anàlisi crítica molt sòlida. L'informe és clar i ben estructurat. En conjunt, has fet una molt bona feina. Felicitats!`;
+            } else if (nota >= 6) {
+                return `${nom}, el teu treball demostra una comprensió sòlida de les condicions laborals. Has identificat els elements principals i has aplicat el conveni de manera adequada. Amb una mica més de detall en els articles concrets, assoliràs l'excel·lència. Bona feina!`;
+            } else {
+                return `${nom}, el teu treball demostra una comprensió bàsica de les condicions laborals. Cal revisar els continguts fonamentals del RA3 i aprofundir en l'anàlisi de les condicions i l'aplicació del conveni. Amb més dedicació, podràs millorar. Ànims!`;
+            }
+        }
+
+        // ===========================================
+        // PROCESSAR JSON (adaptat al RA3)
+        // ===========================================
+        function processarJSON(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    alumnes.push({
+                        nom: data.nom || 'Sense nom',
+                        grup: data.grup || 'Sense grup',
+                        // Respostes del RA3 (fins a 7 condicions)
+                        condicio1: data.condicio1 || '',
+                        condicio2: data.condicio2 || '',
+                        condicio3: data.condicio3 || '',
+                        condicio4: data.condicio4 || '',
+                        condicio5: data.condicio5 || '',
+                        condicio6: data.condicio6 || '',
+                        condicio7: data.condicio7 || '',
+                        conclusio: data.conclusio || '',
+                        // Notes (pendents)
+                        notaIdentificacio: 'pendent',
+                        notaConveni: 'pendent',
+                        notaAnalisi: 'pendent',
+                        notaQualitat: 'pendent',
+                        notaFinal: 'pendent',
+                        data: data.data || new Date().toISOString()
+                    });
+                    
+                    callback(null);
+                } catch (error) {
+                    callback('Error: ' + error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ===========================================
+        // ORDENAR PER COGNOM
+        // ===========================================
+        function getCognom(nomComplet) {
+            let parts = nomComplet.trim().split(' ');
+            return parts[parts.length - 1];
+        }
+
+        // ===========================================
+        // ACTUALITZAR TAULA
+        // ===========================================
+        function actualitzarTaula() {
+            // Ordenar per cognom
+            alumnes.sort((a, b) => {
+                let cognomA = getCognom(a.nom);
+                let cognomB = getCognom(b.nom);
+                return cognomA.localeCompare(cognomB, 'ca');
+            });
+
+            let tbody = document.getElementById('taulaBody');
+            let selector = document.getElementById('selectorAlumne');
+            tbody.innerHTML = '';
+            selector.innerHTML = '<option value="">-- Selecciona un alumne --</option>';
+            
+            alumnes.forEach((a, index) => {
+                let notaFinal = a.notaFinal === 'pendent' ? 'pendent' : a.notaFinal;
+                
+                let row = `<tr>
+                    <td>${a.nom}</td>
+                    <td>${a.grup}</td>
+                    <td>${a.notaIdentificacio}</td>
+                    <td>${a.notaConveni}</td>
+                    <td>${a.notaAnalisi}</td>
+                    <td>${a.notaQualitat}</td>
+                    <td><strong>${notaFinal}</strong></td>
+                    <td><button class="btn btn-pdf" onclick="generarPdfIndividual(${index})">📄</button></td>
+                </tr>`;
+                tbody.innerHTML += row;
+                
+                selector.innerHTML += `<option value="${index}">${a.nom} (${a.grup})</option>`;
+            });
+            
+            document.getElementById('taulaContainer').style.display = 'block';
+        }
+
+        // ===========================================
+        // TORNAR A DALT (SUAU)
+        // ===========================================
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // ===========================================
+        // PANEL DE RESPOSTES DESPLEGABLE
+        // ===========================================
+        document.getElementById('toggleRespostesBtn').addEventListener('click', function() {
+            let panel = document.getElementById('panelRespostes');
+            let contingut = document.getElementById('contingutRespostes');
+            let index = document.getElementById('selectorAlumne').value;
+            
+            if (index === '') {
+                alert('Selecciona un alumne primer');
+                return;
+            }
+            
+            let alumne = alumnes[index];
+            
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                // Mostrar panel amb les respostes
+                let respostesHTML = '<p><strong>Condicions analitzades:</strong></p>';
+                for (let i = 1; i <= 7; i++) {
+                    if (alumne['condicio' + i]) {
+                        respostesHTML += `<p><strong>Condició ${i}:</strong><br>${alumne['condicio' + i]}</p>`;
+                    }
+                }
+                respostesHTML += `<p><strong>Conclusions:</strong><br>${alumne.conclusio || '(sense resposta)'}</p>`;
+                
+                contingut.innerHTML = respostesHTML;
+                panel.style.display = 'block';
+            } else {
+                // Amagar panel
+                panel.style.display = 'none';
+            }
+        });
+
+        // ===========================================
+        // SELECCIONAR ALUMNE
+        // ===========================================
+        document.getElementById('selectorAlumne').addEventListener('change', function() {
+            let index = this.value;
+            if (index === '') {
+                document.getElementById('notaIdentificacio').value = '3';
+                document.getElementById('notaConveni').value = '3';
+                document.getElementById('notaAnalisi').value = '3';
+                document.getElementById('notaQualitat').value = '3';
+                document.getElementById('puntsForts').value = '';
+                document.getElementById('aspectesMillora').value = '';
+                document.getElementById('recomanacio').value = '';
+                document.getElementById('valoracioGlobal').value = '';
+                
+                // Amagar panel si estava obert
+                document.getElementById('panelRespostes').style.display = 'none';
+                return;
+            }
+            
+            let alumne = alumnes[index];
+            
+            if (alumnesAvaluats[index]) {
+                let av = alumnesAvaluats[index];
+                document.getElementById('notaIdentificacio').value = av.identificacio;
+                document.getElementById('notaConveni').value = av.conveni;
+                document.getElementById('notaAnalisi').value = av.analisi;
+                document.getElementById('notaQualitat').value = av.qualitat;
+                document.getElementById('puntsForts').value = av.puntsForts || '';
+                document.getElementById('aspectesMillora').value = av.aspectesMillora || '';
+                document.getElementById('recomanacio').value = av.recomanacio || '';
+                document.getElementById('valoracioGlobal').value = av.valoracioGlobal || '';
+            } else {
+                document.getElementById('notaIdentificacio').value = '3';
+                document.getElementById('notaConveni').value = '3';
+                document.getElementById('notaAnalisi').value = '3';
+                document.getElementById('notaQualitat').value = '3';
+                
+                let notaTemp = calcularNotaFinal(3, 3, 3, 3);
+                document.getElementById('puntsForts').value = generarPuntsFortsAuto(alumne);
+                document.getElementById('aspectesMillora').value = generarAspectesMilloraAuto(alumne);
+                document.getElementById('recomanacio').value = generarRecomanacioAuto(alumne, notaTemp);
+                document.getElementById('valoracioGlobal').value = generarValoracioGlobalAuto(alumne, notaTemp, alumne.nom.split(' ')[0]);
+            }
+        });
+
+        // ===========================================
+        // GUARDAR AVALUACIÓ
+        // ===========================================
+        document.getElementById('guardarAvaluacioBtn').addEventListener('click', function() {
+            let index = document.getElementById('selectorAlumne').value;
+            if (index === '') {
+                alert('Selecciona un alumne');
+                return;
+            }
+            
+            let identificacio = parseInt(document.getElementById('notaIdentificacio').value);
+            let conveni = parseInt(document.getElementById('notaConveni').value);
+            let analisi = parseInt(document.getElementById('notaAnalisi').value);
+            let qualitat = parseInt(document.getElementById('notaQualitat').value);
+            let notaFinal = calcularNotaFinal(identificacio, conveni, analisi, qualitat);
+            
+            alumnesAvaluats[index] = {
+                identificacio: identificacio,
+                conveni: conveni,
+                analisi: analisi,
+                qualitat: qualitat,
+                puntsForts: document.getElementById('puntsForts').value,
+                aspectesMillora: document.getElementById('aspectesMillora').value,
+                recomanacio: document.getElementById('recomanacio').value,
+                valoracioGlobal: document.getElementById('valoracioGlobal').value,
+                notaFinal: notaFinal
+            };
+            
+            alumnes[index].notaIdentificacio = identificacio + '/4 - ' + getNivellText(identificacio);
+            alumnes[index].notaConveni = conveni + '/4 - ' + getNivellText(conveni);
+            alumnes[index].notaAnalisi = analisi + '/4 - ' + getNivellText(analisi);
+            alumnes[index].notaQualitat = qualitat + '/4 - ' + getNivellText(qualitat);
+            alumnes[index].notaFinal = notaFinal;
+            
+            actualitzarTaula();
+            alert('Avaluació guardada correctament');
+        });
+
+        // ===========================================
+        // GENERAR PDF INDIVIDUAL
+        // ===========================================
+        function generarPdfIndividual(index) {
+            let alumne = alumnes[index];
+            let avaluacio = alumnesAvaluats[index] || {
+                identificacio: 3,
+                conveni: 3,
+                analisi: 3,
+                qualitat: 3,
+                puntsForts: generarPuntsFortsAuto(alumne),
+                aspectesMillora: generarAspectesMilloraAuto(alumne),
+                recomanacio: generarRecomanacioAuto(alumne, 7.5),
+                valoracioGlobal: generarValoracioGlobalAuto(alumne, 7.5, alumne.nom.split(' ')[0]),
+                notaFinal: calcularNotaFinal(3, 3, 3, 3)
+            };
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('INFORME D\'AVALUACIÓ - RA3', 20, 20);
+            
+            doc.setFontSize(10);
+            doc.text('Microactivitat: De l\'oferta al conveni', 20, 30);
+            doc.text('Professor: Diego Izquierdo Perán', 20, 37);
+            doc.text('Data: ' + new Date().toLocaleDateString('ca-ES'), 20, 44);
+            
+            doc.text('DADES DE L\'ESTUDIANT', 20, 59);
+            doc.text('Nom: ' + alumne.nom, 20, 66);
+            doc.text('Grup: ' + alumne.grup, 20, 73);
+            
+            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 88);
+            doc.text('1. Identificació condicions: ' + avaluacio.identificacio + '/4 - Nivell: ' + getNivellText(avaluacio.identificacio), 25, 98);
+            doc.text('2. Aplicació del conveni: ' + avaluacio.conveni + '/4 - Nivell: ' + getNivellText(avaluacio.conveni), 25, 105);
+            doc.text('3. Anàlisi crítica: ' + avaluacio.analisi + '/4 - Nivell: ' + getNivellText(avaluacio.analisi), 25, 112);
+            doc.text('4. Qualitat formal: ' + avaluacio.qualitat + '/4 - Nivell: ' + getNivellText(avaluacio.qualitat), 25, 119);
+            
+            doc.text('RESULTATS FINALS', 20, 134);
+            doc.text('PUNTUACIÓ TOTAL: ' + (avaluacio.identificacio + avaluacio.conveni + avaluacio.analisi + avaluacio.qualitat) + '/16', 20, 144);
+            doc.text('EQUIVALÈNCIA: ' + avaluacio.notaFinal + '/10', 20, 151);
+            
+            let nivellGlobal = parseFloat(avaluacio.notaFinal) >= 8 ? 'Excel·lent' : 
+                              parseFloat(avaluacio.notaFinal) >= 6 ? 'Assolit' : 'En procés';
+            doc.text('NIVELL: ' + nivellGlobal, 20, 158);
+            
+            doc.text('FEEDBACK PERSONALITZAT', 20, 173);
+            let y = 183;
+            
+            doc.text('Punts forts:', 20, y);
+            y += 7;
+            let puntsLines = doc.splitTextToSize(avaluacio.puntsForts || 'No especificat', 170);
+            doc.text(puntsLines, 20, y);
+            y += puntsLines.length * 5 + 10;
+            
+            doc.text('Aspectes a millorar:', 20, y);
+            y += 7;
+            let milloresLines = doc.splitTextToSize(avaluacio.aspectesMillora || 'No especificat', 170);
+            doc.text(milloresLines, 20, y);
+            y += milloresLines.length * 5 + 10;
+            
+            doc.text('Recomanació professional:', 20, y);
+            y += 7;
+            let recomanacioLines = doc.splitTextToSize('• ' + (avaluacio.recomanacio || 'No especificada'), 170);
+            doc.text(recomanacioLines, 20, y);
+            y += recomanacioLines.length * 5 + 10;
+            
+            doc.text('VALORACIÓ QUALITATIVA GLOBAL:', 20, y);
+            y += 7;
+            let valoracioLines = doc.splitTextToSize(avaluacio.valoracioGlobal || 'No especificada', 170);
+            doc.text(valoracioLines, 20, y);
+            
+            doc.save(`RA3_${alumne.nom.replace(/\s+/g, '_')}.pdf`);
+        }
+
+        window.generarPdfIndividual = generarPdfIndividual;
+
+        // ===========================================
+        // GENERAR PDF INDIVIDUAL (BOTÓ)
+        // ===========================================
+        document.getElementById('generarPdfIndividualBtn').addEventListener('click', function() {
+            let index = document.getElementById('selectorAlumne').value;
+            if (index === '') {
+                alert('Selecciona un alumne');
+                return;
+            }
+            generarPdfIndividual(parseInt(index));
+        });
+
+        // ===========================================
+        // GENERAR PDF DE TOTS
+        // ===========================================
+        document.getElementById('pdfTotsBtn').addEventListener('click', function() {
+            if (alumnes.length === 0) return;
+            for (let i = 0; i < alumnes.length; i++) {
+                setTimeout(() => {
+                    generarPdfIndividual(i);
+                }, i * 500);
+            }
+        });
+
+        // ===========================================
+        // EXPORTAR A EXCEL
+        // ===========================================
+        document.getElementById('excelBtn').addEventListener('click', function() {
+            if (alumnes.length === 0) {
+                alert('Primer carrega els JSON');
+                return;
+            }
+            
+            let dades = [['Nom', 'Grup', 'Identificació', 'Conveni', 'Anàlisi', 'Qualitat', 'Nota final']];
+            
+            alumnes.forEach(a => {
+                let index = alumnes.indexOf(a);
+                let av = alumnesAvaluats[index] || { identificacio: 'pendent', conveni: 'pendent', analisi: 'pendent', qualitat: 'pendent', notaFinal: 'pendent' };
+                
+                dades.push([
+                    a.nom,
+                    a.grup,
+                    av.identificacio,
+                    av.conveni,
+                    av.analisi,
+                    av.qualitat,
+                    av.notaFinal
+                ]);
+            });
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(dades);
+            XLSX.utils.book_append_sheet(wb, ws, 'RA3_Resultats');
+            XLSX.writeFile(wb, 'RA3_notes_grup.xlsx');
+        });
+
+        // ===========================================
+        // CARREGAR JSON
+        // ===========================================
+        document.getElementById('carregarJsonBtn').addEventListener('click', function() {
+            const files = document.getElementById('jsonFiles').files;
+            if (files.length === 0) {
+                alert('Selecciona almenys un fitxer');
+                return;
+            }
+            
+            alumnes = [];
+            alumnesAvaluats = {};
+            let pendents = files.length;
+            let errors = [];
+            
+            document.getElementById('statusMessage').style.display = 'block';
+            document.getElementById('statusMessage').innerHTML = 'Processant ' + pendents + ' fitxers...';
+            document.getElementById('statusMessage').style.background = '#fff3cd';
+            
+            for (let i = 0; i < files.length; i++) {
+                processarJSON(files[i], function(error) {
+                    if (error) errors.push(error);
+                    
+                    pendents--;
+                    if (pendents === 0) {
+                        if (errors.length > 0) {
+                            document.getElementById('statusMessage').innerHTML = '❌ Errors: ' + errors.join('<br>');
+                            document.getElementById('statusMessage').style.background = '#f8d7da';
+                        } else {
+                            document.getElementById('statusMessage').innerHTML = '✅ Processats ' + files.length + ' fitxers';
+                            document.getElementById('statusMessage').style.background = '#d4edda';
+                        }
+                        actualitzarTaula();
+                    }
+                });
+            }
+        });
+
+        // ===========================================
+        // NETEJAR
+        // ===========================================
+        document.getElementById('netejarBtn').addEventListener('click', function() {
+            alumnes = [];
+            alumnesAvaluats = {};
+            document.getElementById('taulaContainer').style.display = 'none';
+            document.getElementById('jsonFiles').value = '';
+            document.getElementById('statusMessage').style.display = 'none';
+            document.getElementById('selectorAlumne').innerHTML = '<option value="">-- Selecciona un alumne --</option>';
+            
+            // Amagar panel si estava obert
+            document.getElementById('panelRespostes').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

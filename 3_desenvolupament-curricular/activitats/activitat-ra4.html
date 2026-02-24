@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA4 · El meu perfil professional · DAFO + Full de ruta · Fitxa</title>
+    <style>
+        /* ===== ESTILS COMPARTITS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(209,34,43,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px 35px;
+            color: white;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+        .header .subtitol {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 50px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 40px 0 20px;
+        }
+        .subsection-title {
+            font-size: 1.4rem;
+            color: #D1222B;
+            margin: 30px 0 15px;
+        }
+        .info-box {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #D1222B;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #b01e25;
+        }
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-flotant:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+        }
+        .footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+        .footer a {
+            color: #FFC72C;
+            text-decoration: none;
+        }
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #FFC72C;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .nav-centre {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex: 1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+        }
+        .rubrica-visual {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .rubrica-visual table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubrica-visual th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        .rubrica-visual td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        .rubrica-visual .nivell-1 { background: #f8d7da; }
+        .rubrica-visual .nivell-2 { background: #fff3cd; }
+        .rubrica-visual .nivell-3 { background: #d4edda; }
+        .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        .test-grafica {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .test-barra {
+            text-align: center;
+            width: 100px;
+        }
+        .barra {
+            width: 60px;
+            height: 150px;
+            background: #e9ecef;
+            border-radius: 10px;
+            position: relative;
+            margin: 10px auto;
+            border: 1px solid #ced4da;
+        }
+        .barra-omplerta {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #D1222B;
+            border-radius: 10px;
+            transition: height 0.3s;
+        }
+        .exemple-barra-a { height: 80%; }
+        .exemple-barra-b { height: 60%; }
+        .exemple-barra-c { height: 90%; }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT TORNAR A DALT -->
+    <button class="btn-flotant" id="tornarDaltBtn" title="Tornar a dalt" aria-label="Tornar a dalt">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
+
+    <div class="container">
+        <!-- CAPÇALERA -->
+        <div class="header">
+            <h1>🎯 RA4 · El meu perfil professional · DAFO + Full de ruta</h1>
+            <div class="subtitol">Fitxa de l'activitat · 3 hores</div>
+        </div>
+
+        <!-- CONTINGUT -->
+        <div class="content">
+            <!-- OBJECTIUS I JUSTIFICACIÓ -->
+            <h2 class="section-title">🔍 Objectius i justificació</h2>
+            <p>Aquesta activitat té com a objectiu que l'alumnat prengui consciència del seu propi potencial professional, identificant fortaleses, febleses, oportunitats i amenaces (anàlisi DAFO) i elabori un full de ruta personalitzat per a la millora de l'ocupabilitat. Dona resposta als criteris d'avaluació 4.1, 4.6, 4.10 i 4.11 del RA4.</p>
+
+            <!-- ENLLAÇOS D'INTERÈS -->
+            <div class="info-links">
+                <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
+                <div>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u4-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: Orientació professional (IOC)</a>
+                    <a href="https://europass.europa.eu/es/create-europass-cv" target="_blank" class="enllac-normativa">Crear CV Europass</a>
+                    <a href="https://serveiocupacio.gencat.cat/ca/inici/" target="_blank" class="enllac-normativa">SOC - Servei d'Ocupació</a>
+                </div>
+            </div>
+
+            <!-- METODOLOGIA - FASE 1 -->
+            <h2 class="section-title">🧭 Metodologia i desenvolupament</h2>
+            
+            <div class="info-box">
+                <h3>📝 Fase 1 · Autodiagnosi (1,5 hores)</h3>
+                <p><strong>Objectiu:</strong> Prendre consciència del teu potencial professional mitjançant:</p>
+                <ol>
+                    <li><strong>Test d'interessos professionals</strong> (exemple a continuació).</li>
+                    <li><strong>Identificació de fites professionals prèvies</strong> (formació, experiència, cursos).</li>
+                    <li><strong>Elaboració d'una matriu DAFO personal</strong> centrada en el perfil d'instal·lador electricista/mantenidor.</li>
+                </ol>
+            </div>
+
+            <!-- EXEMPLE DE TEST D'INTERESSOS -->
+            <h2 class="section-title">📊 Exemple de test d'interessos professionals</h2>
+            <div class="test-grafica">
+                <div class="test-barra">
+                    <div class="barra">
+                        <div class="barra-omplerta exemple-barra-a"></div>
+                    </div>
+                    <p><strong>Bloc A</strong><br>Tècnic</p>
+                </div>
+                <div class="test-barra">
+                    <div class="barra">
+                        <div class="barra-omplerta exemple-barra-b"></div>
+                    </div>
+                    <p><strong>Bloc B</strong><br>Equip</p>
+                </div>
+                <div class="test-barra">
+                    <div class="barra">
+                        <div class="barra-omplerta exemple-barra-c"></div>
+                    </div>
+                    <p><strong>Bloc C</strong><br>Innovació</p>
+                </div>
+            </div>
+            <p style="text-align: center; font-style: italic;">Exemple de resultats del test d'interessos professionals</p>
+
+            <!-- EXEMPLE DE FITES PROFESSIONALS -->
+            <div class="info-box" style="background:#fff3cd;">
+                <h3>🏆 Exemple de fites professionals prèvies</h3>
+                <p><strong>Formació reglada:</strong> CFGM Instal·lacions Elèctriques (2022), Curs de PRL (2023)</p>
+                <p><strong>Experiència laboral:</strong> 1 any en pràctiques, 6 mesos en empresa d'automatismes</p>
+                <p><strong>Altres cursos o certificacions:</strong> Carnet de carretons, curs de domòtica</p>
+            </div>
+
+            <!-- METODOLOGIA - FASE 2 -->
+            <div class="info-box">
+                <h3>🎯 Fase 2 · Planificació (1,5 hores)</h3>
+                <p>A partir del DAFO, hauràs de:</p>
+                <ol>
+                    <li>Formular <strong>3 objectius professionals concrets</strong> a assolir en 1-2 anys.</li>
+                    <li>Definir <strong>accions específiques</strong> per a cada objectiu (formació, certificacions, etc.).</li>
+                    <li>Establir un <strong>cronograma senzill</strong> i els <strong>recursos necessaris</strong>.</li>
+                    <li>Redactar un <strong>full de ruta</strong> en format lliure (infografia, document escrit, presentació digital).</li>
+                </ol>
+            </div>
+
+            <!-- EXEMPLE DE DAFO -->
+            <h2 class="section-title">📊 Exemple d'anàlisi DAFO</h2>
+            <table>
+                <tr>
+                    <th style="background: #e74c3c; color: white;">🔴 Debilitats</th>
+                    <th style="background: #f39c12; color: white;">🟡 Amenaces</th>
+                </tr>
+                <tr>
+                    <td>Manca d'experiència en domòtica</td>
+                    <td>Competència creixent</td>
+                </tr>
+                <tr>
+                    <td>Poca formació en anglès tècnic</td>
+                    <td>Crisi econòmica</td>
+                </tr>
+                <tr>
+                    <th style="background: #2ecc71; color: white;">🟢 Fortaleses</th>
+                    <th style="background: #3498db; color: white;">🔵 Oportunitats</th>
+                </tr>
+                <tr>
+                    <td>Carnet d'instal·lador</td>
+                    <td>Augment demanda energies renovables</td>
+                </tr>
+                <tr>
+                    <td>Experiència en manteniment</td>
+                    <td>Subvencions per a formació</td>
+                </tr>
+            </table>
+
+            <!-- EXEMPLE DE FULL DE RUTA -->
+            <h2 class="section-title">🎯 Exemple de full de ruta</h2>
+            <table>
+                <tr>
+                    <th>Objectiu</th>
+                    <th>Accions</th>
+                    <th>Termini</th>
+                    <th>Recursos</th>
+                </tr>
+                <tr>
+                    <td>Millorar en domòtica</td>
+                    <td>Curs KNX (40h), projecte propi</td>
+                    <td>6 mesos</td>
+                    <td>300€, 2 h/set</td>
+                </tr>
+                <tr>
+                    <td>Aconseguir feina estable</td>
+                    <td>Actualitzar CV, LinkedIn, 10 ofertes/setmana</td>
+                    <td>3 mesos</td>
+                    <td>Ordinador</td>
+                </tr>
+                <tr>
+                    <td>Obtenir carnet carretons</td>
+                    <td>Curs online (20h), examen</td>
+                    <td>2 mesos</td>
+                    <td>150€</td>
+                </tr>
+            </table>
+
+            <!-- PRODUCTE I EVIDÈNCIA -->
+            <h2 class="section-title">📦 Producte i evidència d'aprenentatge</h2>
+            <div class="info-box" style="background: #e6f2ff;">
+                <p>En finalitzar l'activitat, l'alumnat haurà de generar:</p>
+                <ul>
+                    <li><strong>Document individual: DAFO + full de ruta (PDF o infografia).</strong></li>
+                </ul>
+                <p style="margin-top:10px;">✅ Aquest document és l'evidència principal d'aprenentatge. S'ha de penjar a Moodle i incorporar al portafolis digital.</p>
+            </div>
+
+            <!-- RÚBRICA D'AVALUACIÓ -->
+            <h2 class="section-title">📊 Rúbrica d'avaluació</h2>
+            <div class="rubrica-visual">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criteri</th>
+                            <th>Pes</th>
+                            <th>1 - No assolit</th>
+                            <th>2 - En procés</th>
+                            <th>3 - Assolit</th>
+                            <th>4 - Excel·lent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Autodiagnosi (DAFO)</strong></td>
+                            <td>40%</td>
+                            <td class="nivell-1">No identifica o errors greus</td>
+                            <td class="nivell-2">Identifica 2-3 elements</td>
+                            <td class="nivell-3">Identifica els 4 amb anàlisi bàsica</td>
+                            <td class="nivell-4">Anàlisi completa i ben fonamentada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Full de ruta</strong></td>
+                            <td>30%</td>
+                            <td class="nivell-1">Objectius poc clars o irreals</td>
+                            <td class="nivell-2">Objectius bàsics sense planificació</td>
+                            <td class="nivell-3">3 objectius amb accions i terminis</td>
+                            <td class="nivell-4">Objectius amb accions, terminis i recursos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reflexió</strong></td>
+                            <td>20%</td>
+                            <td class="nivell-1">No connecta DAFO amb full de ruta</td>
+                            <td class="nivell-2">Connexió superficial</td>
+                            <td class="nivell-3">Connexió clara</td>
+                            <td class="nivell-4">Reflexió profunda i visió de futur</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qualitat formal</strong></td>
+                            <td>10%</td>
+                            <td class="nivell-1">Incomplet o inintel·ligible</td>
+                            <td class="nivell-2">Confús o errors significatius</td>
+                            <td class="nivell-3">Clar i organitzat</td>
+                            <td class="nivell-4">Professional, ben estructurat</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ENLLAÇ A L'HTML COMPLET DE L'ALUMNE -->
+            <div style="text-align: center; margin: 40px 0 20px;">
+                <a href="#" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">
+                    🔍 Veure activitat completa per a alumnes
+                </a>
+            </div>
+
+            <!-- NAVEGACIÓ -->
+            <div class="nav-footer">
+                <!-- Botó esquerre: RA3 -->
+                <a href="activitat-ra3.html" class="btn">⬅️ RA3</a>
+                
+                <!-- Botó central: Tornar a Desenvolupament curricular -->
+                <div class="nav-centre">
+                    <a href="../index.html" class="btn btn-primary">
+                        ⬆️ Tornar a Desenvolupament curricular
+                    </a>
+                </div>
+                
+                <!-- Botó dret: RA5 -->
+                <a href="activitat-ra5.html" class="btn">RA5 ➡️</a>
+            </div>
+        </div>
+
+        <!-- PEU -->
+        <div class="footer">
+            Diego Izquierdo Perán · FOL · IOC · 
+            <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
+        </div>
+    </div>
+
+    <script>
+        // TORNAR A DALT
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+        document.getElementById('accesibilitatInfo').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Aquest lloc compleix les pautes d\'accessibilitat WCAG 2.1 (nivell AA).');
+        });
+    </script>
+</body>
+</html>

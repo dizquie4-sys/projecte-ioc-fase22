@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projecte Didàctic · FOL · IOC</title>
+    <style>
+        /* ===== RESET I ESTILS GENERALS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(209,34,43,0.2);
+            overflow: hidden;
+        }
+
+        /* ===== CAPÇALERA ===== */
+        .header {
+            background: #D1222B;
+            padding: 40px 50px;
+            color: white;
+            position: relative;
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        .header .subtitol {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        .header .autor {
+            font-size: 1.2rem;
+            border-left: 5px solid #FFC72C;
+            padding-left: 20px;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        .accessibility-icon {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            border: 3px solid white;
+        }
+
+        /* ===== CONTINGUT PRINCIPAL ===== */
+        .content {
+            padding: 50px;
+        }
+
+        /* ===== TARGETES D'ACCÉS ===== */
+        .targetes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        .targeta {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid #FFC72C;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .targeta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(209,34,43,0.2);
+            border-color: #D1222B;
+            background: white;
+        }
+        .targeta:hover .targeta-titol {
+            color: #D1222B;
+        }
+        .targeta-titol {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1e293b;
+            transition: color 0.3s;
+        }
+        .targeta-desc {
+            color: #4b5563;
+            margin-bottom: 20px;
+        }
+        .targeta-icona {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* ===== BOTONS ===== */
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            margin: 5px;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #b01e25;
+        }
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        .btn-flotant:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+        }
+
+        /* ===== PEU DE PÀGINA ===== */
+        .footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            font-size: 1rem;
+        }
+        .footer a {
+            color: #FFC72C;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== ACCESSIBILITAT I RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .header .subtitol { font-size: 1.2rem; }
+            .content { padding: 30px; }
+            .targetes-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT TORNAR A DALT -->
+    <button class="btn-flotant" id="tornarDaltBtn" title="Tornar a dalt" aria-label="Tornar a dalt">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
+
+    <div class="container">
+        <!-- CAPÇALERA -->
+        <div class="header">
+            <div class="accessibility-icon" aria-label="Compleix criteris WCAG 2.1">♿</div>
+            <h1>⚡ Projecte Didàctic · IPO I</h1>
+            <div class="subtitol">Identitat digital, anàlisi crítica i prevenció: un fil conductor per a l'ocupabilitat en el sector elèctric</div>
+            <div class="autor">Diego Izquierdo Perán · Febrer 2026</div>
+        </div>
+
+        <!-- CONTINGUT PRINCIPAL -->
+        <div class="content">
+            <!-- CITA INSPIRADORA -->
+            <div style="text-align: center; font-style: italic; color: #4b5563; margin-bottom: 40px; font-size: 1.2rem;">
+                “L'educació no és omplir un poal, sinó encendre un foc.” — William Butler Yeats
+            </div>
+
+            <!-- DESCRIPCIÓ BREU -->
+            <div style="background: #f0f7ff; border-radius: 20px; padding: 30px; margin-bottom: 40px; border-left: 8px solid #D1222B;">
+                <p style="font-size: 1.2rem; margin-bottom: 15px;">
+                    Aquest projecte presenta una proposta didàctica per al mòdul d'Itinerari Personal per a l'Ocupabilitat I (IPO I) del CFGM d'Instal·lacions Elèctriques i Automàtiques a l'Institut Obert de Catalunya (IOC).
+                </p>
+                <p style="font-size: 1.1rem;">
+                    ⚡ <strong>Fil conductor:</strong> Identitat digital professional, anàlisi crítica de les condicions laborals i prevenció de riscos.
+                </p>
+            </div>
+
+            <!-- TARGETES D'ACCÉS A LES SECCIONS -->
+            <h2 style="font-size: 2rem; color: #D1222B; margin-bottom: 20px; border-left: 8px solid #FFC72C; padding-left: 20px;">
+                📂 Accés al projecte
+            </h2>
+
+            <div class="targetes-grid">
+                <!-- Targeta Marc Pedagògic -->
+                <a href="1_marc-pedagogic/index.html" class="targeta">
+                    <div class="targeta-icona">📚</div>
+                    <div class="targeta-titol">Marc pedagògic</div>
+                    <div class="targeta-desc">Model IOC, fonaments, avaluació, inclusió i tecnologies digitals.</div>
+                </a>
+
+                <!-- Targeta Desenvolupament Curricular -->
+                <a href="2_desenvolupament-curricular/index.html" class="targeta">
+                    <div class="targeta-icona">⚙️</div>
+                    <div class="targeta-titol">Desenvolupament curricular</div>
+                    <div class="targeta-desc">Contextualització, activitats RA1-RA5, ponderació i coherència.</div>
+                </a>
+
+                <!-- Targeta Conclusions -->
+                <a href="3_conclusions-i-compromis.html" class="targeta">
+                    <div class="targeta-icona">🎯</div>
+                    <div class="targeta-titol">Conclusions i compromís</div>
+                    <div class="targeta-desc">Aprenentatges clau i compromís professional amb l'IOC.</div>
+                </a>
+
+                <!-- Targeta Bibliografia -->
+                <a href="4_bibliografia.html" class="targeta">
+                    <div class="targeta-icona">📖</div>
+                    <div class="targeta-titol">Bibliografia</div>
+                    <div class="targeta-desc">Normativa, referències i documents institucionals.</div>
+                </a>
+
+                <!-- Targeta Annexos -->
+                <a href="annexos/index.html" class="targeta">
+                    <div class="targeta-icona">📎</div>
+                    <div class="targeta-titol">Annexos</div>
+                    <div class="targeta-desc">Rúbriques i certificat de competència digital (CDD).</div>
+                </a>
+            </div>
+
+            <!-- ACCÉS RÀPID A LES ACTIVITATS -->
+            <div style="margin-top: 50px;">
+                <h2 style="font-size: 1.8rem; color: #D1222B; margin-bottom: 20px;">🧩 Exemplificació d'activitats (RA1-RA5)</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+                    <a href="2_desenvolupament-curricular/fitxes/fitxa-ra1.html" class="btn btn-primary">📘 RA1</a>
+                    <a href="2_desenvolupament-curricular/fitxes/fitxa-ra2.html" class="btn btn-primary">⚠️ RA2</a>
+                    <a href="2_desenvolupament-curricular/fitxes/fitxa-ra3.html" class="btn btn-primary">⚖️ RA3</a>
+                    <a href="2_desenvolupament-curricular/fitxes/fitxa-ra4.html" class="btn btn-primary">🎯 RA4</a>
+                    <a href="2_desenvolupament-curricular/fitxes/fitxa-ra5.html" class="btn btn-primary">💻 RA5</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PEU DE PÀGINA -->
+        <div class="footer">
+            Diego Izquierdo Perán · FOL · IOC · 
+            <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
+        </div>
+    </div>
+
+    <script>
+        // BOTÓ TORNAR A DALT (SUAU)
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // TECLAT (ENTER) TAMBÉ FUNCIONA
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // INFO ACCESSIBILITAT (OPCIONAL)
+        document.getElementById('accesibilitatInfo').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Aquest lloc compleix les pautes d\'accessibilitat WCAG 2.1 (nivell AA).');
+        });
+    </script>
+</body>
+</html>

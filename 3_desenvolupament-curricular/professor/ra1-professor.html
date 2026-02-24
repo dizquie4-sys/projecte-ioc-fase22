@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA1 · Professor · Avaluació automàtica</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <style>
+        /* ESTILS COMPLETS (exactament igual que els RA) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(209,34,43,0.15);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        .header .accessibility-icon {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            border: 2px solid white;
+        }
+        .content {
+            padding: 30px 35px;
+        }
+        .badge-groc {
+            background: #FFC72C;
+            color: #1e293b;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 2px solid #D1222B;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 30px 0 20px;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: #b01e25;
+            border-color: #b01e25;
+        }
+        .btn-danger {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+        .btn-excel {
+            background: #1e88e5;
+            color: white;
+            border: none;
+        }
+        .btn-pdf {
+            background: #dc3545;
+            color: white;
+            border: none;
+        }
+        .btn-dalt {
+            background: #FFC72C;
+            color: #D1222B;
+            border: none;
+            font-weight: bold;
+        }
+        .btn-dalt:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .import-area {
+            background: #f0f7ff;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #D1222B;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+        }
+        tr:hover {
+            background: #fff3cd;
+        }
+        .valoracio-box {
+            background: #e6f2ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #D1222B;
+        }
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffd9d9;
+            border-radius: 12px;
+            margin: 8px 0 15px;
+            font-size: 1rem;
+        }
+        textarea:focus, input:focus, select:focus {
+            outline: 3px solid #FFC72C;
+            border-color: #D1222B;
+        }
+        .footer {
+            background: #f1f5f9;
+            padding: 20px;
+            text-align: center;
+        }
+        hr {
+            border: 2px dashed #FFC72C;
+            margin: 30px 0;
+        }
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        .rubrica-visual {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .rubrica-visual table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubrica-visual th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        .rubrica-visual td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        
+        /* PANEL DE RESPOSTES DESPLEGABLE */
+        .panel-respostes {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 2px solid #D1222B;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        /* BOTÓ FLOTANT PER TORNAR A DALT */
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT PER TORNAR A DALT -->
+    <button class="btn btn-dalt btn-flotant" id="tornarDaltBtn" title="Tornar a dalt">
+        ⬆️ Dalt
+    </button>
+
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>⚡ RA1 · Professor · Avaluació automàtica</h1>
+                <p>Coneix el teu sector · Importació JSON + Excel + PDF</p>
+            </div>
+            <div class="accessibility-icon">♿</div>
+        </div>
+        <div class="content">
+            <div class="badge-groc">📌 Corrector automàtic per al RA1</div>
+
+            <!-- ENLLAÇOS D'INTERÈS (conservats del RA1) -->
+            <div class="info-links">
+                <p><strong>📚 Enllaços d'interès per a la correcció:</strong></p>
+                <div>
+                    <a href="https://observatoritreball.gencat.cat" target="_blank" class="enllac-normativa">Observatori del Treball</a>
+                    <a href="https://www.infojobs.net" target="_blank" class="enllac-normativa">Infojobs</a>
+                    <a href="https://www.linkedin.com" target="_blank" class="enllac-normativa">LinkedIn</a>
+                    <a href="https://www.pimec.org" target="_blank" class="enllac-normativa">PIMEC</a>
+                </div>
+            </div>
+
+            <!-- IMPORTADOR JSON -->
+            <div class="import-area">
+                <h2 style="color:#D1222B;">📥 Importar JSON dels alumnes (RA1)</h2>
+                <p>Selecciona els fitxers JSON que han enviat els alumnes.</p>
+                <input type="file" id="jsonFiles" multiple accept=".json" style="padding:10px; border:2px dashed #D1222B; width:100%;">
+                <div class="buttons">
+                    <button class="btn btn-primary" id="carregarJsonBtn">📂 Carregar fitxers</button>
+                    <button class="btn btn-danger" id="netejarBtn">🗑️ Netejar tot</button>
+                </div>
+                <div id="statusMessage" style="margin-top:15px; padding:10px; border-radius:10px; display:none;"></div>
+            </div>
+
+            <!-- TAULA DE RESULTATS -->
+            <div id="taulaContainer" style="display:none;">
+                <h2 class="section-title">📊 Resultats del grup (RA1)</h2>
+                <div style="overflow-x: auto;">
+                    <table id="resultatsTaula">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Grup</th>
+                                <th>Ocupacions</th>
+                                <th>Competències</th>
+                                <th>Tendències</th>
+                                <th>Qualitat</th>
+                                <th>Nota final</th>
+                                <th>PDF</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taulaBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- RÚBRICA VISIBLE (PER CONSULTA) -->
+                <div class="rubrica-visual">
+                    <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ RA1</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criteri</th>
+                                <th>Pes</th>
+                                <th>1 - No assolit</th>
+                                <th>2 - En procés</th>
+                                <th>3 - Assolit</th>
+                                <th>4 - Excel·lent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Identificació d'ocupacions</strong></td>
+                                <td>40%</td>
+                                <td>Identifica 1 o cap ocupació</td>
+                                <td>Identifica 2-3 ocupacions sense detall</td>
+                                <td>Identifica 4 ocupacions amb descripció bàsica</td>
+                                <td>Identifica 5+ ocupacions amb anàlisi detallada</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Anàlisi de competències</strong></td>
+                                <td>30%</td>
+                                <td>No identifica competències</td>
+                                <td>Llista genèrica sense diferenciar</td>
+                                <td>Diferencia tècniques/personals</td>
+                                <td>Relaciona competències amb ofertes reals</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tendències de futur</strong></td>
+                                <td>20%</td>
+                                <td>No identifica tendències</td>
+                                <td>Menciona 1 tendència sense desenvolupar</td>
+                                <td>Identifica 2-3 tendències coherents</td>
+                                <td>Projecta l'impacte professional de les tendències</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Qualitat de l'informe</strong></td>
+                                <td>10%</td>
+                                <td>Desestructurat, incomplet</td>
+                                <td>Funcional però millorable</td>
+                                <td>Clar i ben organitzat</td>
+                                <td>Professional, reflexiu, amb aportacions personals</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="margin-top:10px; font-style:italic; color:#D1222B;">* Els valors automàtics són orientatius. Pots modificar-los manualment.</p>
+                </div>
+
+                <!-- SELECCIÓ D'ALUMNE PER VALORAR -->
+                <div class="valoracio-box">
+                    <h3 style="color:#D1222B;">📝 Avaluació individual (RA1)</h3>
+                    <select id="selectorAlumne" style="width:100%; padding:10px; margin:10px 0;">
+                        <option value="">-- Selecciona un alumne --</option>
+                    </select>
+                    
+                    <!-- BOTÓ PER MOSTRAR/AMAGAR RESPOSTES -->
+                    <div style="text-align: center; margin: 10px 0;">
+                        <button class="btn btn-primary" id="toggleRespostesBtn">
+                            📋 Mostrar/amagar respostes completes
+                        </button>
+                    </div>
+                    
+                    <!-- PANEL DE RESPOSTES DESPLEGABLE -->
+                    <div id="panelRespostes" class="panel-respostes">
+                        <h4 style="color:#D1222B; margin-bottom:10px;">Respostes de l'alumne</h4>
+                        <div id="contingutRespostes">
+                            Selecciona un alumne i fes clic a "Mostrar respostes".
+                        </div>
+                    </div>
+                    
+                    <h4 style="color:#D1222B;">Rúbrica RA1 (punts 1-4)</h4>
+                    
+                    <label><strong>Identificació d'ocupacions (40%):</strong></label>
+                    <input type="number" id="notaOcupacions" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Anàlisi de competències (30%):</strong></label>
+                    <input type="number" id="notaCompetencies" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Tendències de futur (20%):</strong></label>
+                    <input type="number" id="notaTendencies" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Qualitat de l'informe (10%):</strong></label>
+                    <input type="number" id="notaQualitat" min="1" max="4" step="1" value="3">
+                    
+                    <label><strong>Punts forts observats:</strong></label>
+                    <textarea id="puntsForts" rows="3"></textarea>
+                    
+                    <label><strong>Aspectes a millorar:</strong></label>
+                    <textarea id="aspectesMillora" rows="3"></textarea>
+                    
+                    <label><strong>Recomanació professional:</strong></label>
+                    <textarea id="recomanacio" rows="2"></textarea>
+                    
+                    <label><strong>Valoració qualitativa global:</strong></label>
+                    <textarea id="valoracioGlobal" rows="4"></textarea>
+                    
+                    <div class="buttons">
+                        <button class="btn btn-primary" id="guardarAvaluacioBtn">💾 Guardar avaluació</button>
+                        <button class="btn btn-pdf" id="generarPdfIndividualBtn">📥 Generar PDF individual</button>
+                    </div>
+                </div>
+
+                <!-- BOTONS GENERALS -->
+                <div class="buttons">
+                    <button class="btn btn-excel" id="excelBtn">📥 Exportar a Excel</button>
+                    <button class="btn btn-pdf" id="pdfTotsBtn">📥 Generar PDFs de tots</button>
+                </div>
+            </div>
+
+            <hr>
+            <p style="text-align:center; color:#6c757d;">Eina de correcció per al professorat · RA1 · Les dades no es guarden al servidor</p>
+        </div>
+        <div class="footer">Diego Izquierdo · FOL · IOC · Avaluació RA1 ♿</div>
+    </div>
+
+    <script>
+        let alumnes = [];
+        let alumnesAvaluats = {};
+
+        // ===========================================
+        // FUNCIÓ PER OBTENIR NIVELL (1-4) A TEXT
+        // ===========================================
+        function getNivellText(valor) {
+            const nivells = ['No assolit', 'En procés', 'Assolit', 'Excel·lent'];
+            return nivells[valor - 1] || 'No assolit';
+        }
+
+        // ===========================================
+        // FUNCIÓ PER CALCULAR NOTA FINAL (sobre 10)
+        // ===========================================
+        function calcularNotaFinal(ocupacions, competencies, tendencies, qualitat) {
+            let nota = (ocupacions * 0.4 + competencies * 0.3 + tendencies * 0.2 + qualitat * 0.1) * 2.5;
+            return nota.toFixed(2);
+        }
+
+        // ===========================================
+        // FUNCIONS PER GENERAR CONTINGUT AUTOMÀTIC
+        // ===========================================
+        function generarPuntsFortsAuto(alumne) {
+            let punts = [];
+            
+            if (alumne.ocupacions && alumne.ocupacions.length > 100) 
+                punts.push('RA1: Bona identificació de les ocupacions del sector.');
+            if (alumne.competencies && alumne.competencies.length > 100) 
+                punts.push('RA1: Bona anàlisi de les competències tècniques i personals.');
+            if (alumne.tendencies && alumne.tendencies.length > 100) 
+                punts.push('RA1: Bones reflexions sobre les tendències de futur.');
+            
+            if (punts.length === 0) punts.push('Treball correcte en general.');
+            return punts.join('\n');
+        }
+
+        function generarAspectesMilloraAuto(alumne) {
+            let millores = [];
+            
+            if (!alumne.ocupacions || alumne.ocupacions.length < 50) 
+                millores.push('RA1: Caldria aprofundir més en la identificació d\'ocupacions.');
+            if (!alumne.competencies || alumne.competencies.length < 50) 
+                millores.push('RA1: Es podria ampliar l\'anàlisi de competències.');
+            if (!alumne.tendencies || alumne.tendencies.length < 50) 
+                millores.push('RA1: Cal reflexionar més sobre les tendències de futur.');
+            
+            if (millores.length === 0) millores.push('Treball complet, felicitats!');
+            return millores.join('\n');
+        }
+
+        function generarRecomanacioAuto(alumne, nota) {
+            if (nota >= 8) {
+                return 'Excel·lent treball. Continua aprofundint en el coneixement del sector.';
+            } else if (nota >= 6) {
+                return 'Bona feina. Revisa els aspectes a millorar per assolir l\'excel·lència.';
+            } else {
+                return 'Treball suficient. Es recomana revisar els continguts bàsics del RA1.';
+            }
+        }
+
+        function generarValoracioGlobalAuto(alumne, nota, nom) {
+            if (nota >= 8) {
+                return `${nom}, el teu treball demostra una comprensió excel·lent del sector productiu. Has identificat correctament les ocupacions, competències i tendències de futur. L'informe és clar i ben estructurat. En conjunt, has fet una molt bona feina. Felicitats!`;
+            } else if (nota >= 6) {
+                return `${nom}, el teu treball demostra una comprensió sòlida del sector. Has identificat els elements principals, però cal aprofundir en alguns aspectes. Amb una mica més de detall, assoliràs l'excel·lència. Bona feina!`;
+            } else {
+                return `${nom}, el teu treball demostra una comprensió bàsica del sector. Cal revisar els continguts fonamentals del RA1 i aprofundir en l'anàlisi. Amb més dedicació, podràs millorar. Ànims!`;
+            }
+        }
+
+        // ===========================================
+        // PROCESSAR JSON (adaptat al RA1)
+        // ===========================================
+        function processarJSON(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    alumnes.push({
+                        nom: data.nom || 'Sense nom',
+                        grup: data.grup || 'Sense grup',
+                        // Respostes del RA1
+                        ocupacions: data.ocupacions || '',
+                        competencies: data.competencies || '',
+                        tendencies: data.tendencies || '',
+                        einautil: data.einautil || '',
+                        // Notes (pendents)
+                        notaOcupacions: 'pendent',
+                        notaCompetencies: 'pendent',
+                        notaTendencies: 'pendent',
+                        notaQualitat: 'pendent',
+                        notaFinal: 'pendent',
+                        data: data.data || new Date().toISOString()
+                    });
+                    
+                    callback(null);
+                } catch (error) {
+                    callback('Error: ' + error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ===========================================
+        // ORDENAR PER COGNOM
+        // ===========================================
+        function getCognom(nomComplet) {
+            let parts = nomComplet.trim().split(' ');
+            return parts[parts.length - 1];
+        }
+
+        // ===========================================
+        // ACTUALITZAR TAULA
+        // ===========================================
+        function actualitzarTaula() {
+            // Ordenar per cognom
+            alumnes.sort((a, b) => {
+                let cognomA = getCognom(a.nom);
+                let cognomB = getCognom(b.nom);
+                return cognomA.localeCompare(cognomB, 'ca');
+            });
+
+            let tbody = document.getElementById('taulaBody');
+            let selector = document.getElementById('selectorAlumne');
+            tbody.innerHTML = '';
+            selector.innerHTML = '<option value="">-- Selecciona un alumne --</option>';
+            
+            alumnes.forEach((a, index) => {
+                let notaFinal = a.notaFinal === 'pendent' ? 'pendent' : a.notaFinal;
+                
+                let row = `<tr>
+                    <td>${a.nom}</td>
+                    <td>${a.grup}</td>
+                    <td>${a.notaOcupacions}</td>
+                    <td>${a.notaCompetencies}</td>
+                    <td>${a.notaTendencies}</td>
+                    <td>${a.notaQualitat}</td>
+                    <td><strong>${notaFinal}</strong></td>
+                    <td><button class="btn btn-pdf" onclick="generarPdfIndividual(${index})">📄</button></td>
+                </tr>`;
+                tbody.innerHTML += row;
+                
+                selector.innerHTML += `<option value="${index}">${a.nom} (${a.grup})</option>`;
+            });
+            
+            document.getElementById('taulaContainer').style.display = 'block';
+        }
+
+        // ===========================================
+        // TORNAR A DALT (SUAU)
+        // ===========================================
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // ===========================================
+        // PANEL DE RESPOSTES DESPLEGABLE
+        // ===========================================
+        document.getElementById('toggleRespostesBtn').addEventListener('click', function() {
+            let panel = document.getElementById('panelRespostes');
+            let contingut = document.getElementById('contingutRespostes');
+            let index = document.getElementById('selectorAlumne').value;
+            
+            if (index === '') {
+                alert('Selecciona un alumne primer');
+                return;
+            }
+            
+            let alumne = alumnes[index];
+            
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                // Mostrar panel amb les respostes
+                contingut.innerHTML = `
+                    <p><strong>Ocupacions:</strong><br>${alumne.ocupacions || '(sense resposta)'}</p>
+                    <p><strong>Competències:</strong><br>${alumne.competencies || '(sense resposta)'}</p>
+                    <p><strong>Tendències:</strong><br>${alumne.tendencies || '(sense resposta)'}</p>
+                    <p><strong>Eina útil:</strong> ${alumne.einautil || '(sense resposta)'}</p>
+                `;
+                panel.style.display = 'block';
+            } else {
+                // Amagar panel
+                panel.style.display = 'none';
+            }
+        });
+
+        // ===========================================
+        // SELECCIONAR ALUMNE
+        // ===========================================
+        document.getElementById('selectorAlumne').addEventListener('change', function() {
+            let index = this.value;
+            if (index === '') {
+                document.getElementById('notaOcupacions').value = '3';
+                document.getElementById('notaCompetencies').value = '3';
+                document.getElementById('notaTendencies').value = '3';
+                document.getElementById('notaQualitat').value = '3';
+                document.getElementById('puntsForts').value = '';
+                document.getElementById('aspectesMillora').value = '';
+                document.getElementById('recomanacio').value = '';
+                document.getElementById('valoracioGlobal').value = '';
+                
+                // Amagar panel si estava obert
+                document.getElementById('panelRespostes').style.display = 'none';
+                return;
+            }
+            
+            let alumne = alumnes[index];
+            
+            if (alumnesAvaluats[index]) {
+                let av = alumnesAvaluats[index];
+                document.getElementById('notaOcupacions').value = av.ocupacions;
+                document.getElementById('notaCompetencies').value = av.competencies;
+                document.getElementById('notaTendencies').value = av.tendencies;
+                document.getElementById('notaQualitat').value = av.qualitat;
+                document.getElementById('puntsForts').value = av.puntsForts || '';
+                document.getElementById('aspectesMillora').value = av.aspectesMillora || '';
+                document.getElementById('recomanacio').value = av.recomanacio || '';
+                document.getElementById('valoracioGlobal').value = av.valoracioGlobal || '';
+            } else {
+                document.getElementById('notaOcupacions').value = '3';
+                document.getElementById('notaCompetencies').value = '3';
+                document.getElementById('notaTendencies').value = '3';
+                document.getElementById('notaQualitat').value = '3';
+                
+                let notaTemp = calcularNotaFinal(3, 3, 3, 3);
+                document.getElementById('puntsForts').value = generarPuntsFortsAuto(alumne);
+                document.getElementById('aspectesMillora').value = generarAspectesMilloraAuto(alumne);
+                document.getElementById('recomanacio').value = generarRecomanacioAuto(alumne, notaTemp);
+                document.getElementById('valoracioGlobal').value = generarValoracioGlobalAuto(alumne, notaTemp, alumne.nom.split(' ')[0]);
+            }
+        });
+
+        // ===========================================
+        // GUARDAR AVALUACIÓ
+        // ===========================================
+        document.getElementById('guardarAvaluacioBtn').addEventListener('click', function() {
+            let index = document.getElementById('selectorAlumne').value;
+            if (index === '') {
+                alert('Selecciona un alumne');
+                return;
+            }
+            
+            let ocupacions = parseInt(document.getElementById('notaOcupacions').value);
+            let competencies = parseInt(document.getElementById('notaCompetencies').value);
+            let tendencies = parseInt(document.getElementById('notaTendencies').value);
+            let qualitat = parseInt(document.getElementById('notaQualitat').value);
+            let notaFinal = calcularNotaFinal(ocupacions, competencies, tendencies, qualitat);
+            
+            alumnesAvaluats[index] = {
+                ocupacions: ocupacions,
+                competencies: competencies,
+                tendencies: tendencies,
+                qualitat: qualitat,
+                puntsForts: document.getElementById('puntsForts').value,
+                aspectesMillora: document.getElementById('aspectesMillora').value,
+                recomanacio: document.getElementById('recomanacio').value,
+                valoracioGlobal: document.getElementById('valoracioGlobal').value,
+                notaFinal: notaFinal
+            };
+            
+            alumnes[index].notaOcupacions = ocupacions + '/4 - ' + getNivellText(ocupacions);
+            alumnes[index].notaCompetencies = competencies + '/4 - ' + getNivellText(competencies);
+            alumnes[index].notaTendencies = tendencies + '/4 - ' + getNivellText(tendencies);
+            alumnes[index].notaQualitat = qualitat + '/4 - ' + getNivellText(qualitat);
+            alumnes[index].notaFinal = notaFinal;
+            
+            actualitzarTaula();
+            alert('Avaluació guardada correctament');
+        });
+
+        // ===========================================
+        // GENERAR PDF INDIVIDUAL
+        // ===========================================
+        function generarPdfIndividual(index) {
+            let alumne = alumnes[index];
+            let avaluacio = alumnesAvaluats[index] || {
+                ocupacions: 3,
+                competencies: 3,
+                tendencies: 3,
+                qualitat: 3,
+                puntsForts: generarPuntsFortsAuto(alumne),
+                aspectesMillora: generarAspectesMilloraAuto(alumne),
+                recomanacio: generarRecomanacioAuto(alumne, 7.5),
+                valoracioGlobal: generarValoracioGlobalAuto(alumne, 7.5, alumne.nom.split(' ')[0]),
+                notaFinal: calcularNotaFinal(3, 3, 3, 3)
+            };
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('INFORME D\'AVALUACIÓ - RA1', 20, 20);
+            
+            doc.setFontSize(10);
+            doc.text('Microactivitat: Coneix el teu sector', 20, 30);
+            doc.text('Professor: Diego Izquierdo Perán', 20, 37);
+            doc.text('Data: ' + new Date().toLocaleDateString('ca-ES'), 20, 44);
+            
+            doc.text('DADES DE L\'ESTUDIANT', 20, 59);
+            doc.text('Nom: ' + alumne.nom, 20, 66);
+            doc.text('Grup: ' + alumne.grup, 20, 73);
+            
+            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 88);
+            doc.text('1. Identificació d\'ocupacions: ' + avaluacio.ocupacions + '/4 - Nivell: ' + getNivellText(avaluacio.ocupacions), 25, 98);
+            doc.text('2. Anàlisi de competències: ' + avaluacio.competencies + '/4 - Nivell: ' + getNivellText(avaluacio.competencies), 25, 105);
+            doc.text('3. Tendències de futur: ' + avaluacio.tendencies + '/4 - Nivell: ' + getNivellText(avaluacio.tendencies), 25, 112);
+            doc.text('4. Qualitat de l\'informe: ' + avaluacio.qualitat + '/4 - Nivell: ' + getNivellText(avaluacio.qualitat), 25, 119);
+            
+            doc.text('RESULTATS FINALS', 20, 134);
+            doc.text('PUNTUACIÓ TOTAL: ' + (avaluacio.ocupacions + avaluacio.competencies + avaluacio.tendencies + avaluacio.qualitat) + '/16', 20, 144);
+            doc.text('EQUIVALÈNCIA: ' + avaluacio.notaFinal + '/10', 20, 151);
+            
+            let nivellGlobal = parseFloat(avaluacio.notaFinal) >= 8 ? 'Excel·lent' : 
+                              parseFloat(avaluacio.notaFinal) >= 6 ? 'Assolit' : 'En procés';
+            doc.text('NIVELL: ' + nivellGlobal, 20, 158);
+            
+            doc.text('FEEDBACK PERSONALITZAT', 20, 173);
+            let y = 183;
+            
+            doc.text('Punts forts:', 20, y);
+            y += 7;
+            let puntsLines = doc.splitTextToSize(avaluacio.puntsForts || 'No especificat', 170);
+            doc.text(puntsLines, 20, y);
+            y += puntsLines.length * 5 + 10;
+            
+            doc.text('Aspectes a millorar:', 20, y);
+            y += 7;
+            let milloresLines = doc.splitTextToSize(avaluacio.aspectesMillora || 'No especificat', 170);
+            doc.text(milloresLines, 20, y);
+            y += milloresLines.length * 5 + 10;
+            
+            doc.text('Recomanació professional:', 20, y);
+            y += 7;
+            let recomanacioLines = doc.splitTextToSize('• ' + (avaluacio.recomanacio || 'No especificada'), 170);
+            doc.text(recomanacioLines, 20, y);
+            y += recomanacioLines.length * 5 + 10;
+            
+            doc.text('VALORACIÓ QUALITATIVA GLOBAL:', 20, y);
+            y += 7;
+            let valoracioLines = doc.splitTextToSize(avaluacio.valoracioGlobal || 'No especificada', 170);
+            doc.text(valoracioLines, 20, y);
+            
+            doc.save(`RA1_${alumne.nom.replace(/\s+/g, '_')}.pdf`);
+        }
+
+        window.generarPdfIndividual = generarPdfIndividual;
+
+        // ===========================================
+        // GENERAR PDF INDIVIDUAL (BOTÓ)
+        // ===========================================
+        document.getElementById('generarPdfIndividualBtn').addEventListener('click', function() {
+            let index = document.getElementById('selectorAlumne').value;
+            if (index === '') {
+                alert('Selecciona un alumne');
+                return;
+            }
+            generarPdfIndividual(parseInt(index));
+        });
+
+        // ===========================================
+        // GENERAR PDF DE TOTS
+        // ===========================================
+        document.getElementById('pdfTotsBtn').addEventListener('click', function() {
+            if (alumnes.length === 0) return;
+            for (let i = 0; i < alumnes.length; i++) {
+                setTimeout(() => {
+                    generarPdfIndividual(i);
+                }, i * 500);
+            }
+        });
+
+        // ===========================================
+        // EXPORTAR A EXCEL
+        // ===========================================
+        document.getElementById('excelBtn').addEventListener('click', function() {
+            if (alumnes.length === 0) {
+                alert('Primer carrega els JSON');
+                return;
+            }
+            
+            let dades = [['Nom', 'Grup', 'Ocupacions', 'Competències', 'Tendències', 'Qualitat', 'Nota final']];
+            
+            alumnes.forEach(a => {
+                let index = alumnes.indexOf(a);
+                let av = alumnesAvaluats[index] || { ocupacions: 'pendent', competencies: 'pendent', tendencies: 'pendent', qualitat: 'pendent', notaFinal: 'pendent' };
+                
+                dades.push([
+                    a.nom,
+                    a.grup,
+                    av.ocupacions,
+                    av.competencies,
+                    av.tendencies,
+                    av.qualitat,
+                    av.notaFinal
+                ]);
+            });
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(dades);
+            XLSX.utils.book_append_sheet(wb, ws, 'RA1_Resultats');
+            XLSX.writeFile(wb, 'RA1_notes_grup.xlsx');
+        });
+
+        // ===========================================
+        // CARREGAR JSON
+        // ===========================================
+        document.getElementById('carregarJsonBtn').addEventListener('click', function() {
+            const files = document.getElementById('jsonFiles').files;
+            if (files.length === 0) {
+                alert('Selecciona almenys un fitxer');
+                return;
+            }
+            
+            alumnes = [];
+            alumnesAvaluats = {};
+            let pendents = files.length;
+            let errors = [];
+            
+            document.getElementById('statusMessage').style.display = 'block';
+            document.getElementById('statusMessage').innerHTML = 'Processant ' + pendents + ' fitxers...';
+            document.getElementById('statusMessage').style.background = '#fff3cd';
+            
+            for (let i = 0; i < files.length; i++) {
+                processarJSON(files[i], function(error) {
+                    if (error) errors.push(error);
+                    
+                    pendents--;
+                    if (pendents === 0) {
+                        if (errors.length > 0) {
+                            document.getElementById('statusMessage').innerHTML = '❌ Errors: ' + errors.join('<br>');
+                            document.getElementById('statusMessage').style.background = '#f8d7da';
+                        } else {
+                            document.getElementById('statusMessage').innerHTML = '✅ Processats ' + files.length + ' fitxers';
+                            document.getElementById('statusMessage').style.background = '#d4edda';
+                        }
+                        actualitzarTaula();
+                    }
+                });
+            }
+        });
+
+        // ===========================================
+        // NETEJAR
+        // ===========================================
+        document.getElementById('netejarBtn').addEventListener('click', function() {
+            alumnes = [];
+            alumnesAvaluats = {};
+            document.getElementById('taulaContainer').style.display = 'none';
+            document.getElementById('jsonFiles').value = '';
+            document.getElementById('statusMessage').style.display = 'none';
+            document.getElementById('selectorAlumne').innerHTML = '<option value="">-- Selecciona un alumne --</option>';
+            
+            // Amagar panel si estava obert
+            document.getElementById('panelRespostes').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

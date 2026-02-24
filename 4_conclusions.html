@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conclusions · Projecte IOC</title>
+    <style>
+        /* ===== ESTILS COMPARTITS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(209,34,43,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px 35px;
+            color: white;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+        .content {
+            padding: 40px 50px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 40px 0 20px;
+        }
+        .subsection-title {
+            font-size: 1.4rem;
+            color: #D1222B;
+            margin: 30px 0 15px;
+        }
+        .info-box {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #D1222B;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-flotant:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+        }
+        .footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+        .footer a {
+            color: #FFC72C;
+            text-decoration: none;
+        }
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #FFC72C;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+        }
+        .cita {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #4b5563;
+            border-left: 5px solid #FFC72C;
+            padding-left: 20px;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT TORNAR A DALT -->
+    <button class="btn-flotant" id="tornarDaltBtn" title="Tornar a dalt" aria-label="Tornar a dalt">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
+
+    <div class="container">
+        <!-- CAPÇALERA -->
+        <div class="header">
+            <h1>🎯 Conclusions i compromís professional</h1>
+        </div>
+
+        <!-- CONTINGUT -->
+        <div class="content">
+            <!-- CITA INICIAL -->
+            <div class="cita">
+                "El fil conductor d'aquest projecte no acaba aquí. Cada alumne que aprengui a protegir-se d'un risc, a llegir críticament una oferta de treball o a construir la seva marca personal serà un pas més cap a una FP més humana, crítica i connectada amb el món real."
+            </div>
+
+            <!-- 10.1 APRENENTATGES CLAU -->
+            <h2 class="section-title">📚 10.1. Aprenentatges clau del projecte</h2>
+            <p>Aquest projecte ha permès dissenyar una proposta didàctica integrada per al mòdul d'IPO I que:</p>
+            
+            <div class="info-box">
+                <ol style="margin-left: 20px;">
+                    <li><strong>Contextualitza els aprenentatges</strong> en el perfil professional del CFGM d'Instal·lacions Elèctriques i Automàtiques, donant resposta a les necessitats reals de l'alumnat adult de l'IOC.</li>
+                    <li><strong>Integra els resultats d'aprenentatge</strong> en un fil conductor coherent —identitat digital professional, anàlisi crítica de les condicions laborals i prevenció de riscos laborals— que connecta amb els objectius estratègics del centre i amb les exigències del teixit productiu català.</li>
+                    <li><strong>Desplega una metodologia activa i competencial</strong> adaptada a l'entorn no presencial, amb activitats que generen productes reutilitzables per a l'alumnat (informe d'investigació, DAFO, full de ruta, PLE, CV digital).</li>
+                    <li><strong>Dona resposta als reptes contemporanis</strong> de la formació professional:
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>L'avaluació formativa, mitjançant rúbriques transparents, feedback estructurat i coavaluació entre iguals.</li>
+                            <li>La inclusió digital, mitjançant l'aplicació dels principis DUA i un kit d'accessibilitat de cost zero.</li>
+                            <li>El pensament crític en l'era de la IA, mitjançant la campanya VERIFICA.TE i activitats de contrast i verificació.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Compleix escrupolosament la normativa d'avaluació de l'IOC</strong> (CCCFPLOE, NOFC) i s'alinea amb els objectius estratègics de la Programació General Anual 2025-2026, especialment en matèria d'innovació tecnopedagògica i inclusió.</li>
+                </ol>
+            </div>
+
+            <!-- 10.2 COMPROMÍS PROFESSIONAL -->
+            <h2 class="section-title">🤝 10.2. Compromís professional amb l'IOC</h2>
+            
+            <p>La meva trajectòria professional com a professor de l'especialitat 505 (Formació i Orientació Laboral) i funcionari de carrera del cos de professors de secundària es combina amb una formació multidisciplinària —mestre d'Educació Especial, llicenciat en Psicologia i doctor en Lògica i Filosofia de la Ciència— que em proporciona una visió integral dels processos educatius, de l'atenció a la diversitat i del pensament crític aplicat a l'ensenyament.</p>
+
+            <p>Aquesta experiència em permet assumir el compromís explícit de:</p>
+
+            <table>
+                <tr>
+                    <th>Àmbit</th>
+                    <th>Compromís</th>
+                </tr>
+                <tr>
+                    <td><strong>Materials didàctics</strong></td>
+                    <td>Desenvolupar materials accessibles i de qualitat, aplicant els criteris DUA des de la fase de disseny.</td>
+                </tr>
+                <tr>
+                    <td><strong>Acompanyament</strong></td>
+                    <td>Acompanyar els estudiants en la construcció de la seva identitat professional mitjançant tutoria personalitzada i feedback orientador.</td>
+                </tr>
+                <tr>
+                    <td><strong>Treball en equip</strong></td>
+                    <td>Col·laborar activament amb l'equip docent del departament de FOL i amb les coordinacions de cicle en la millora contínua de la pràctica educativa no presencial.</td>
+                </tr>
+                <tr>
+                    <td><strong>Cultura digital crítica</strong></td>
+                    <td>Contribuir a la cultura digital crítica del centre, desplegant la campanya VERIFICA.TE i altres actuacions que promoguin l'ús ètic, responsable i fonamentat de la intel·ligència artificial.</td>
+                </tr>
+                <tr>
+                    <td><strong>Objectius estratègics</strong></td>
+                    <td>Participar en els objectius estratègics de l'IOC, especialment en matèria d'innovació tecnopedagògica (Objectiu 1, PGA 25-26) i d'inclusió digital (Objectiu 3, PGA 25-26).</td>
+                </tr>
+            </table>
+
+            <!-- FRASE FINAL DESTACADA -->
+            <div style="background: #f0f7ff; border-radius: 20px; padding: 30px; margin: 40px 0; text-align: center; border: 3px solid #D1222B;">
+                <p style="font-size: 1.3rem; font-style: italic; color: #D1222B;">
+                    "El fil conductor d'aquest projecte no acaba aquí. Cada alumne que aprengui a protegir-se d'un risc, a llegir críticament una oferta de treball o a construir la seva marca personal serà un pas més cap a una FP més humana, crítica i connectada amb el món real."
+                </p>
+            </div>
+
+            <!-- NAVEGACIÓ -->
+            <div class="nav-footer">
+                <a href="3_desenvolupament-curricular/index.html" class="btn">⬅️ Anterior: Desenvolupament curricular</a>
+                <a href="5_bibliografia.html" class="btn btn-primary">Següent: Bibliografia ➡️</a>
+            </div>
+        </div>
+
+        <!-- PEU -->
+        <div class="footer">
+            Diego Izquierdo Perán · FOL · IOC · 
+            <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
+        </div>
+    </div>
+
+    <script>
+        // TORNAR A DALT
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+        document.getElementById('accesibilitatInfo').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Aquest lloc compleix les pautes d\'accessibilitat WCAG 2.1 (nivell AA).');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA1 · Coneix el teu sector · Activitat completa</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* =========================================== */
+        /* ESTILS UNIFICATS (exactament com els RA2-RA5) */
+        /* =========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(209,34,43,0.15);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+        .header .accessibility-icon {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            border: 2px solid white;
+        }
+        .content {
+            padding: 30px 35px;
+        }
+        .badge-groc {
+            background: #FFC72C;
+            color: #1e293b;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 2px solid #D1222B;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 30px 0 20px;
+        }
+        .info-box {
+            background: #fff1f0;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #D1222B;
+        }
+        .info-box h3 {
+            color: #D1222B;
+            margin-bottom: 10px;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: #b01e25;
+            border-color: #b01e25;
+        }
+        .btn-danger {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffd9d9;
+            border-radius: 12px;
+            margin: 8px 0 15px;
+            font-size: 1rem;
+        }
+        textarea:focus, input:focus, select:focus {
+            outline: 3px solid #FFC72C;
+            border-color: #D1222B;
+        }
+        .required::after {
+            content: " *";
+            color: #D1222B;
+            font-weight: bold;
+        }
+        .scale-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .scale-item {
+            flex: 1;
+            min-width: 180px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scale-item:hover, .scale-item:focus {
+            background: #fff1f0;
+            border-color: #D1222B;
+            outline: none;
+        }
+        .scale-item.selected {
+            background: #fff1f0;
+            border-color: #D1222B;
+            box-shadow: 0 0 0 3px rgba(209,34,43,0.2);
+        }
+        .level-icon {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .level-1 { background: #e74c3c; }
+        .level-2 { background: #f39c12; }
+        .level-3 { background: #2ecc71; }
+        .level-4 { background: #D1222B; }
+        .results-area {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid #D1222B;
+            display: none;
+        }
+        .score-badge {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .json-container {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 10px 0;
+        }
+        .footer {
+            background: #f1f5f9;
+            padding: 20px;
+            text-align: center;
+        }
+        hr {
+            border: 2px dashed #FFC72C;
+            margin: 30px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+        .autoavaluacio-container {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+            display: none;
+        }
+        .quiz-item {
+            margin-bottom: 20px;
+        }
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .quiz-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .quiz-options label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .quiz-options input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+        .feedback-quiz {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+        }
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+            text-decoration: none;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        .rubrica-visual {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .rubrica-visual table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubrica-visual th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        .rubrica-visual td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        .rubrica-visual .nivell-1 { background: #f8d7da; }
+        .rubrica-visual .nivell-2 { background: #fff3cd; }
+        .rubrica-visual .nivell-3 { background: #d4edda; }
+        .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
+        
+        .examen-container {
+            background: #f0f7ff;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 3px solid #D1222B;
+            display: none;
+        }
+        .examen-pregunta {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #FFC72C;
+        }
+        .examen-pregunta p {
+            margin-bottom: 10px;
+        }
+        .examen-opcions {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .examen-opcions label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .examen-opcions input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+        .examen-feedback {
+            margin-top: 8px;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .examen-correcte {
+            background: #d4edda;
+            color: #155724;
+        }
+        .examen-incorrecte {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .examen-resultat {
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        .examen-superat {
+            background: #d4edda;
+            color: #155724;
+        }
+        .examen-no-superat {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* ESTILS PER ALS MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 3px solid #D1222B;
+            position: relative;
+        }
+        .close-modal {
+            color: #D1222B;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: sticky;
+            top: 0;
+            background: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid #D1222B;
+        }
+        .close-modal:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .modal h2 {
+            color: #D1222B;
+            margin-bottom: 20px;
+        }
+        .modal h3 {
+            color: #D1222B;
+            margin: 20px 0 10px;
+        }
+        .modal ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        .modal li {
+            margin-bottom: 5px;
+        }
+
+        /* ESTILS PER ALS BLOCS DESPLEGABLES */
+        .bloc-container {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+            display: none;
+        }
+        .bloc-title {
+            color: #D1222B;
+            margin-bottom: 15px;
+        }
+        
+        /* MODAL D'EXPLICACIÓ JSON */
+        .modal-explicacio {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-explicacio-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            border: 3px solid #D1222B;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-explicacio-tancar {
+            color: #D1222B;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid #D1222B;
+        }
+        .modal-explicacio-tancar:hover {
+            background: #D1222B;
+            color: white;
+        }
+        
+        /* BOTÓ FLOTANT ACCESSIBLE */
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            min-width: 60px;
+            min-height: 60px;
+            line-height: 1;
+        }
+        .btn-flotant:hover,
+        .btn-flotant:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+            outline-offset: 2px;
+            transform: scale(1.05);
+        }
+        .btn-flotant:focus-visible {
+            outline: 3px solid #FFC72C;
+            box-shadow: 0 0 0 5px rgba(209,34,43,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT ACCESSIBLE PER TORNAR A DALT -->
+    <button 
+        class="btn-flotant" 
+        id="tornarDaltBtn" 
+        title="Tornar a l'inici de la pàgina"
+        aria-label="Tornar a dalt"
+        role="button"
+        tabindex="0">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
+
+    <!-- MODAL D'EXPLICACIÓ DEL JSON -->
+    <div id="modalExplicacio" class="modal-explicacio">
+        <div class="modal-explicacio-content">
+            <span class="modal-explicacio-tancar">&times;</span>
+            <h2 style="color:#D1222B; margin-bottom:20px;">📤 Com enviar el teu treball</h2>
+            
+            <div style="margin:20px 0; padding:15px; background:#f0f7ff; border-radius:10px; border-left:5px solid #D1222B;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📁 Què és un fitxer JSON?</strong></p>
+                <p>És un format que conté TOTES les teves respostes en un sol fitxer. El professor el podrà llegir fàcilment.</p>
+            </div>
+            
+            <div style="margin:20px 0; padding:15px; background:#fff3cd; border-radius:10px; border-left:5px solid #FFC72C;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📥 Com el guardes?</strong></p>
+                <ol style="margin-left:20px;">
+                    <li>Omple totes les preguntes</li>
+                    <li>Prem el botó <strong>"Preparar per enviar"</strong></li>
+                    <li>Prem <strong>"📊 Exportar JSON"</strong></li>
+                    <li>El fitxer es desarà a la carpeta <strong>Descàrregues</strong></li>
+                </ol>
+            </div>
+            
+            <div style="margin:20px 0; padding:15px; background:#d4edda; border-radius:10px; border-left:5px solid #28a745;">
+                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📤 Com l'envies al professor?</strong></p>
+                <ul style="margin-left:20px;">
+                    <li><strong>Moodle:</strong> Puja'l com a tasca</li>
+                    <li><strong>Correu:</strong> Adjunta'l a un missatge</li>
+                    <li><strong>Drive:</strong> Comparteix l'enllaç</li>
+                </ul>
+            </div>
+            
+            <div style="text-align:center; margin-top:25px;">
+                <button class="btn btn-primary" id="tancarModalBtn">Entès</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1 id="main-title">⚡ RA1 · Coneix el teu sector</h1>
+                <p>FOL – IPO I · CFGM Instal·lacions Elèctriques</p>
+            </div>
+            <div class="accessibility-icon" role="img" aria-label="Presentació accessible" title="Aquest contingut compleix criteris d'accessibilitat WCAG 2.1">
+                ♿
+            </div>
+        </div>
+        <div class="content">
+            <!-- Botons de la capçalera -->
+            <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-bottom: 20px;">
+                <button class="btn btn-primary" id="pdfInstruccionsBtn">
+                    📥 PDF Instruccions completes
+                </button>
+                <button class="btn btn-primary" id="modalPortafolisBtn">
+                    📋 Instruccions del portafolis
+                </button>
+            </div>
+
+            <!-- MODAL INSTRUCCIONS PORTAFOLIS -->
+            <div id="modalPortafolis" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>📋 INSTRUCCIONS DEL PORTAFOLIS DIGITAL PROFESSIONAL</h2>
+                    
+                    <h3>Què és el portafolis?</h3>
+                    <p>El portafolis digital és una recopilació de les teves evidències d'aprenentatge al llarg del mòdul. Ha de mostrar la teva evolució i les teves competències professionals.</p>
+                    
+                    <h3>Contingut obligatori:</h3>
+                    <ul>
+                        <li><strong>RA1 (Coneix el teu sector):</strong> Informe d'anàlisi ocupacional</li>
+                        <li><strong>RA2 (Investigació d'accidents):</strong> Informe d'investigació + Avaluació de riscos</li>
+                        <li><strong>RA3 (De l'oferta al conveni):</strong> Taula de contrast + conclusions grupals</li>
+                        <li><strong>RA4 (El meu perfil professional):</strong> DAFO + Full de ruta</li>
+                        <li><strong>RA5 (Identitat digital):</strong> PLE + Reflexió identitat digital + CV digital</li>
+                        <li><strong>Reflexió global:</strong> Connexions entre els RA i aprenentatges</li>
+                    </ul>
+                    
+                    <h3>Criteris d'avaluació del portafolis:</h3>
+                    <ul>
+                        <li><strong>Completesa (30%):</strong> Hi són totes les evidències?</li>
+                        <li><strong>Reflexió (30%):</strong> Qualitat de la reflexió global i connexions</li>
+                        <li><strong>Organització (20%):</strong> Estructura clara i professional</li>
+                        <li><strong>Accessibilitat (20%):</strong> El portafolis és usable per a tothom?</li>
+                    </ul>
+                    
+                    <h3>Dates clau:</h3>
+                    <ul>
+                        <li><strong>Lliurament final:</strong> [Data a determinar]</li>
+                        <li><strong>Revisió intermèdia:</strong> [Data a determinar]</li>
+                    </ul>
+                    
+                    <p style="margin-top:20px; font-style:italic;">Aquestes instruccions estan subjectes a possibles modificacions. Consulta sempre l'aula virtual per a la versió actualitzada.</p>
+                </div>
+            </div>
+
+            <!-- Distintiu groc -->
+            <div class="badge-groc">📌 Activitat individual · 2 hores</div>
+
+            <!-- DESCRIPCIÓ COMPLETA DE L'ACTIVITAT -->
+            <h2 class="section-title" id="objectius">🔍 Objectius i justificació</h2>
+            <p>Aquesta activitat té com a finalitat que l'alumnat prengui consciència de les característiques del sector professional en què s'insereix el cicle formatiu, identifiqui les principals ocupacions i reflexioni sobre les competències més rellevants per al perfil d'instal·lador electricista. Dona resposta als criteris d'avaluació 1.1, 1.2 i 1.3 del RA1.</p>
+
+            <!-- RÚBRICA VISUAL (NOU ESTIL) -->
+            <div class="rubrica-visual">
+                <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ (per a la teva orientació)</h3>
+                <p>Aquesta rúbrica mostra els criteris amb què es valorarà la teva activitat. Els nivells van de 1 (No assolit) a 4 (Excel·lent).</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criteri</th>
+                            <th>Pes</th>
+                            <th>1 - No assolit</th>
+                            <th>2 - En procés</th>
+                            <th>3 - Assolit</th>
+                            <th>4 - Excel·lent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Identificació d'ocupacions</strong></td>
+                            <td>40%</td>
+                            <td class="nivell-1">Identifica 1 o cap ocupació</td>
+                            <td class="nivell-2">Identifica 2-3 ocupacions sense detall</td>
+                            <td class="nivell-3">Identifica 4 ocupacions amb descripció bàsica</td>
+                            <td class="nivell-4">Identifica 5+ ocupacions amb anàlisi detallada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Anàlisi de competències</strong></td>
+                            <td>30%</td>
+                            <td class="nivell-1">No identifica competències</td>
+                            <td class="nivell-2">Llista genèrica sense diferenciar</td>
+                            <td class="nivell-3">Diferencia tècniques/personals</td>
+                            <td class="nivell-4">Relaciona competències amb ofertes reals</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tendències de futur</strong></td>
+                            <td>20%</td>
+                            <td class="nivell-1">No identifica tendències</td>
+                            <td class="nivell-2">Menciona 1 tendència sense desenvolupar</td>
+                            <td class="nivell-3">Identifica 2-3 tendències coherents</td>
+                            <td class="nivell-4">Projecta l'impacte professional de les tendències</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qualitat de l'informe</strong></td>
+                            <td>10%</td>
+                            <td class="nivell-1">Desestructurat, incomplet</td>
+                            <td class="nivell-2">Funcional però millorable</td>
+                            <td class="nivell-3">Clar i ben organitzat</td>
+                            <td class="nivell-4">Professional, reflexiu, amb aportacions personals</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:10px; font-style:italic;">Aquesta rúbrica és orientativa. El professor la utilitzarà per a la qualificació final.</p>
+            </div>
+
+            <!-- ENLLAÇOS D'INTERÈS (amb nou botó del llibre IOC) -->
+            <div class="info-links">
+                <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
+                <div>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u1-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: El perfil professional (IOC)</a>
+                    <a href="https://observatoritreball.gencat.cat" target="_blank" class="enllac-normativa">Observatori del Treball</a>
+                    <a href="https://www.infojobs.net" target="_blank" class="enllac-normativa">Infojobs</a>
+                    <a href="https://www.linkedin.com" target="_blank" class="enllac-normativa">LinkedIn</a>
+                    <a href="https://www.pimec.org" target="_blank" class="enllac-normativa">PIMEC</a>
+                </div>
+            </div>
+
+            <h2 class="section-title" id="metodologia">🧭 Metodologia i desenvolupament</h2>
+            
+            <div class="info-box">
+                <h3>Fase 1 · Exploració (1 h)</h3>
+                <p>Consulta aquestes fonts:</p>
+                <ul>
+                    <li><strong>Portals d'ocupació:</strong> Infojobs, Indeed, LinkedIn · filtra per “electricista”, “instal·lador”, “tècnic en domòtica”, “energia solar”.</li>
+                    <li><strong>Observatori del Treball:</strong> <a href="https://observatoritreball.gencat.cat" target="_blank">observatoritreball.gencat.cat</a> (s'obre en finestra nova)</li>
+                    <li><strong>Associacions empresarials:</strong> PIMEC Electricitat, FEGICAT.</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>Fase 2 · Anàlisi i reflexió (1 h)</h3>
+                <p>Elabora un informe (1-2 pàgines) que respongui a:</p>
+                <ol>
+                    <li>Quines són les ocupacions més demandades actualment a Catalunya?</li>
+                    <li>Quines competències tècniques i personals es valoren més?</li>
+                    <li>Quines tendències de futur identifiques (digitalització, eficiència energètica, nous perfils professionals)?</li>
+                </ol>
+            </div>
+
+            <h2 class="section-title" id="exemple">📊 Exemple de taula d'anàlisi</h2>
+            <table aria-label="Taula d'exemple amb ocupacions, ofertes, competències i tipus de contracte">
+                <thead>
+                    <tr><th scope="col">Ocupació</th><th scope="col">Ofertes (aprox.)</th><th scope="col">Competències clau</th><th scope="col">Tipus de contracte</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Instal·lador electricista</td><td>150</td><td>Carnet instal·lador, REBT, treball en altura</td><td>Indefinit / Temporal</td></tr>
+                    <tr><td>Tècnic en energies renovables</td><td>45</td><td>Fotovoltaica, disseny, CATEC</td><td>Indefinit</td></tr>
+                    <tr><td>Electricista de manteniment</td><td>80</td><td>Automatismes, PLC, lectura de plànols</td><td>Indefinit / Temporal</td></tr>
+                    <tr><td>Tècnic en domòtica</td><td>30</td><td>Programació, KNX, sistemes IoT</td><td>Temporal / Projectes</td></tr>
+                </tbody>
+            </table>
+
+            <!-- FASE 3: Producte i evidència -->
+            <div class="info-box" style="background: #e6f2ff; border-left-color: #D1222B;">
+                <h3 style="color:#D1222B;">📦 Fase 3 · Producte i evidència d'aprenentatge</h3>
+                <p>En finalitzar l'activitat, hauràs de generar un <strong>informe individual</strong> en format PDF que inclogui:</p>
+                <ul>
+                    <li>Les respostes a les tres preguntes de la Fase 2.</li>
+                    <li>Una breu reflexió personal sobre el procés.</li>
+                    <li>L'enllaç al PDF l'hauràs de penjar a Moodle i incorporar-lo al teu <strong>portafolis digital professional</strong>.</li>
+                </ul>
+                <p style="margin-top:10px;">✅ Aquest informe serà l'evidència principal d'aprenentatge i el document que s'avaluarà.</p>
+            </div>
+
+            <hr>
+
+            <!-- FORMULARI AMB CAMPS OBLIGATORIS -->
+            <h2 class="section-title">📋 Dades de l'estudiant</h2>
+            <label class="required" for="nom">Nom i cognoms</label>
+            <input type="text" id="nom" placeholder="Ex: Maria Garcia" aria-required="true">
+            
+            <label class="required" for="grup">Grup</label>
+            <input type="text" id="grup" placeholder="Ex: Grup A" aria-required="true">
+            
+            <label class="required" for="enllac">Enllaç al PDF de l'activitat</label>
+            <input type="url" id="enllac" placeholder="https://..." aria-required="true">
+            
+            <label for="autovaloracio">Autovaloració ús eines digitals</label>
+            <select id="autovaloracio">
+                <option value="">-- Selecciona --</option>
+                <option value="1">1 - Molt difícil</option>
+                <option value="2">2 - Una mica difícil</option>
+                <option value="3">3 - Neutral</option>
+                <option value="4">4 - Fàcil</option>
+                <option value="5">5 - Molt fàcil i útil</option>
+            </select>
+
+            <!-- BOTÓ DEL BLOC REFLEXIÓ (DESPLEGABLE) -->
+            <div style="text-align:center; margin:20px 0;">
+                <button class="btn btn-primary" id="toggleBlocReflexioBtn" aria-expanded="false">
+                    🧠 Reflexió final de l'estudiant
+                </button>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- BLOC REFLEXIÓ FINAL (DESPLEGABLE) -->
+            <!-- =========================================== -->
+            <div class="bloc-container" id="blocReflexioContainer" aria-hidden="true">
+                <h3 class="bloc-title">🧠 Reflexió final de l'estudiant</h3>
+                
+                <label class="required" for="ocupacions">9. Ocupacions més demandades a Catalunya?</label>
+                <textarea id="ocupacions" required aria-required="true" rows="3"></textarea>
+                
+                <label class="required" for="competencies">10. Competències tècniques i personals més valorades?</label>
+                <textarea id="competencies" required aria-required="true" rows="3"></textarea>
+                
+                <label class="required" for="tendencies">11. Tendències de futur?</label>
+                <textarea id="tendencies" required aria-required="true" rows="3"></textarea>
+                
+                <label for="einautil">13. Eina digital més útil i per què?</label>
+                <textarea id="einautil" rows="2"></textarea>
+            </div>
+
+            <!-- BOTÓ AUTOAVALUACIÓ -->
+            <div style="text-align:center; margin:20px 0;">
+                <button class="btn btn-primary" id="toggleAutoavaluacioBtn" aria-expanded="false">
+                    📝 Autoavaluació prèvia (10 preguntes)
+                </button>
+            </div>
+
+            <!-- AUTOAVALUACIÓ (inicialment oculta) -->
+            <div class="autoavaluacio-container" id="autoavaluacioContainer" aria-hidden="true">
+                <h3 style="color:#D1222B;">Autoavaluació</h3>
+                <p>Respon aquestes 10 preguntes per comprovar si has assolit els objectius de l'activitat.</p>
+
+                <!-- Preguntes 1-10 (es mantenen) -->
+                <div class="quiz-item">
+                    <div class="quiz-question">1. Quina és la finalitat principal d'aquesta activitat?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="a"> Analitzar un conveni col·lectiu</label>
+                        <label><input type="radio" name="q1" value="b"> Identificar ocupacions, competències i tendències del sector elèctric</label>
+                        <label><input type="radio" name="q1" value="c"> Redactar un currículum</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">2. Quines fonts d'informació es recomanen a la fase d'exploració?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="a"> Viquipèdia, blocs personals, fòrums</label>
+                        <label><input type="radio" name="q2" value="b"> Portals d'ocupació, Observatori del Treball, associacions empresarials</label>
+                        <label><input type="radio" name="q2" value="c"> Llibres de text de l'IOC</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">3. Quina extensió orientativa ha de tenir l'informe final?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q3" value="a"> 5-7 pàgines</label>
+                        <label><input type="radio" name="q3" value="b"> 1-2 pàgines</label>
+                        <label><input type="radio" name="q3" value="c"> 10-12 pàgines</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">4. Quines ocupacions són les més demandades al sector elèctric?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q4" value="a"> Metge, infermer, auxiliar</label>
+                        <label><input type="radio" name="q4" value="b"> Instal·lador electricista, tècnic en renovables, electricista de manteniment</label>
+                        <label><input type="radio" name="q4" value="c"> Professor, advocat, enginyer</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">5. Quina competència tècnica és clau per a un instal·lador electricista?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q5" value="a"> Coneixement del REBT</label>
+                        <label><input type="radio" name="q5" value="b"> Programació en Java</label>
+                        <label><input type="radio" name="q5" value="c"> Disseny gràfic</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">6. Quina tendència de futur identifiques al sector?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q6" value="a"> Digitalització i eficiència energètica</label>
+                        <label><input type="radio" name="q6" value="b"> Disminució de la demanda d'electricistes</label>
+                        <label><input type="radio" name="q6" value="c"> Augment de la mà d'obra manual sense tecnologia</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">7. Quina eina pots utilitzar per cercar ofertes de treball?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q7" value="a"> Google Maps</label>
+                        <label><input type="radio" name="q7" value="b"> Infojobs, LinkedIn, Indeed</label>
+                        <label><input type="radio" name="q7" value="c"> Instagram</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">8. Quina associació empresarial és rellevant al sector elèctric català?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q8" value="a"> PIMEC Electricitat</label>
+                        <label><input type="radio" name="q8" value="b"> Col·legi de Metges</label>
+                        <label><input type="radio" name="q8" value="c"> Associació de Bancs</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">9. Quina competència personal és molt valorada en el sector?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q9" value="a"> Treball en equip i autonomia</label>
+                        <label><input type="radio" name="q9" value="b"> Saber cuinar</label>
+                        <label><input type="radio" name="q9" value="c"> Parlar tres idiomes perfectament</label>
+                    </div>
+                </div>
+                <div class="quiz-item">
+                    <div class="quiz-question">10. Què has de fer amb l'informe final?</div>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q10" value="a"> Penjar-lo a Moodle i incorporar-lo al portafolis</label>
+                        <label><input type="radio" name="q10" value="b"> Enviar-lo per correu al professor</label>
+                        <label><input type="radio" name="q10" value="c"> Imprimir-lo i portar-lo a classe</label>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center;">
+                    <button class="btn btn-primary" id="checkQuizBtn">✅ Comprova respostes</button>
+                    <button class="btn btn-outline" id="resetQuizBtn">↻ Tornar a començar</button>
+                </div>
+                <div id="quizFeedback" class="feedback-quiz"></div>
+            </div>
+
+            <!-- Botons d'acció finals -->
+            <div class="buttons">
+                <button class="btn btn-danger" id="resetBtn">🗑️ Esborrar tot</button>
+                <button class="btn btn-primary" id="submitBtn">✅ Preparar per enviar</button>
+            </div>
+
+            <!-- Àrea de resultats -->
+            <div class="results-area" id="resultsArea">
+                <h2 style="color:#D1222B;">📈 Dades per al professor</h2>
+                <p>Prem "Exporta JSON" per generar un fitxer amb les teves respostes.</p>
+                <div class="buttons">
+                    <button class="btn btn-primary" id="pdfBtn">📥 Descarregar PDF (per a Moodle)</button>
+                    <button class="btn btn-success" id="jsonBtn">📊 Exportar JSON</button>
+                    <button class="btn btn-primary" id="copyJsonBtn">📋 Copiar JSON al portapapers</button>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button class="btn btn-secondary" id="explicacioJsonBtn">❓ Com enviar (explicació)</button>
+                </div>
+                <div id="jsonContainer" class="json-container" style="display:none;"></div>
+                <div id="copyStatus" style="display:none; background:#d4edda; padding:10px; border-radius:10px; margin-top:10px;">✅ JSON copiat!</div>
+            </div>
+
+            <!-- Recordatori final millorat -->
+            <div style="background: #e6f2ff; border-radius: 20px; padding: 20px; margin: 30px 0; border-left: 5px solid #D1222B;">
+                <span style="font-size:1.3rem; font-weight:bold;">📁 LLIURAMENT DE L'ACTIVITAT</span>
+                
+                <p style="margin-top:15px;">Abans de tancar aquesta pàgina, assegura't que has completat els següents passos:</p>
+                
+                <div style="background: white; border-radius: 15px; padding: 20px; margin: 15px 0; border: 2px solid #D1222B;">
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">1</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📥 DESA EL TEU TREBALL (OPCIONAL)</strong>
+                            <p style="margin-top:5px;">Totes les respostes es guarden automàticament al teu navegador. Pots tancar i tornar-hi més tard sense perdre res.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">2</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📤 EXPORTA EL FITXER JSON</strong>
+                            <p style="margin-top:5px;">Prem el botó <strong>"📊 Exportar JSON"</strong> (a la secció de resultats). Es generarà un fitxer amb les teves respostes que es desarà a la carpeta <strong>DESCARREGUES</strong>.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">3</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📎 PENJA A MOODLE</strong>
+                            <p style="margin-top:5px;">Puja a Moodle els següents documents:</p>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li><strong>📁 Fitxer JSON</strong> (obligatori - conté totes les respostes)</li>
+                                <li><strong>📄 Informe d'anàlisi ocupacional</strong> (PDF)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">4</div>
+                        <div style="flex: 1;">
+                            <strong style="color: #D1222B;">📁 INCORPORA AL PORTAFOLIS</strong>
+                            <p style="margin-top:5px;">Guarda una còpia de tots els documents al teu <strong>portafolis digital professional</strong>.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div style="background: #FFC72C; border-radius: 15px; padding: 15px; margin-top: 15px; border: 2px solid #D1222B; text-align: center;">
+                    <p style="font-weight:bold; color:#D1222B; font-size: 1.1rem;">⚠️ IMPORTANT: El fitxer JSON és l'única evidència que conté TOTES les teves respostes.</p>
+                    <p style="margin-top:5px;">Sense aquest fitxer, el professor no podrà avaluar correctament la teva activitat.</p>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="footer">Diego Izquierdo · FOL · IOC · Contingut accessible ♿</div>
+    </div>
+
+    <script>
+        // ===========================================
+        // FUNCIONS DEL MODAL
+        // ===========================================
+        var modalPortafolis = document.getElementById('modalPortafolis');
+        var btnPortafolis = document.getElementById('modalPortafolisBtn');
+        var spanPortafolis = document.getElementsByClassName('close-modal')[0];
+        
+        btnPortafolis.onclick = function() {
+            modalPortafolis.style.display = 'block';
+        }
+        
+        spanPortafolis.onclick = function() {
+            modalPortafolis.style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modalPortafolis) {
+                modalPortafolis.style.display = 'none';
+            }
+        }
+
+        // ===========================================
+        // PDF d'instruccions (AMPLIAT AMB TOTES LES PREGUNTES)
+        // ===========================================
+        document.getElementById('pdfInstruccionsBtn').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Títol
+            doc.setFontSize(20);
+            doc.setTextColor(209,34,43);
+            doc.text('RA1 · Coneix el teu sector', 20, 20);
+            
+            // Descripció
+            doc.setFontSize(12);
+            doc.setTextColor(0,0,0);
+            doc.text('DESCRIPCIÓ', 20, 35);
+            doc.setFontSize(10);
+            doc.text('Activitat individual de 2 hores per analitzar el sector professional', 20, 45);
+            
+            // Objectius
+            doc.setFontSize(12);
+            doc.text('OBJECTIUS', 20, 60);
+            doc.setFontSize(10);
+            doc.text('• Identificar ocupacions més demandades', 25, 70);
+            doc.text('• Analitzar competències tècniques i personals', 25, 77);
+            doc.text('• Reflexionar sobre tendències de futur', 25, 84);
+            
+            // Metodologia
+            doc.setFontSize(12);
+            doc.text('METODOLOGIA', 20, 99);
+            doc.setFontSize(10);
+            doc.text('Fase 1 (1h): Exploració (Infojobs, Observatori, associacions)', 25, 109);
+            doc.text('Fase 2 (1h): Informe 1-2 pàgines', 25, 116);
+            doc.text('Fase 3: Lliurament PDF a Moodle + portafolis', 25, 123);
+            
+            // PREGUNTES DE L'ACTIVITAT
+            doc.setFontSize(12);
+            doc.text('PREGUNTES DE L\'ACTIVITAT', 20, 143);
+            doc.setFontSize(10);
+            
+            let y = 153;
+            const preguntes = [
+                'REFLEXIÓ FINAL:',
+                '1. Ocupacions més demandades a Catalunya?',
+                '2. Competències més valorades?',
+                '3. Tendències de futur?',
+                '4. Eina digital més útil?'
+            ];
+            
+            preguntes.forEach(p => {
+                if (p === '') {
+                    y += 3;
+                } else {
+                    doc.text(p, 25, y);
+                    y += 6;
+                }
+            });
+            
+            // Escala de valoració
+            doc.setFontSize(12);
+            doc.text('ESCALA DE VALORACIÓ (1–4)', 20, y+10);
+            doc.setFontSize(10);
+            doc.text('1 - No assolit', 25, y+20);
+            doc.text('2 - En la direcció adequada', 25, y+27);
+            doc.text('3 - Assolit', 25, y+34);
+            doc.text('4 - Excel·lent', 25, y+41);
+            
+            // RÚBRICA EN TAULA
+            doc.addPage();
+            doc.setFontSize(12);
+            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 20);
+            
+            doc.setFontSize(8);
+            doc.text('Criteri', 20, 30);
+            doc.text('Excel·lent (4)', 50, 30);
+            doc.text('Assolit (3)', 85, 30);
+            doc.text('En procés (2)', 120, 30);
+            doc.text('No assolit (1)', 155, 30);
+            doc.text('Pes', 185, 30);
+            
+            doc.line(20, 32, 195, 32);
+            
+            // Criteri 1 - Ocupacions
+            doc.text('C1: Ocupacions', 20, 42);
+            doc.text('5+ ocupacions', 50, 42);
+            doc.text('anàlisi detallada', 50, 47);
+            doc.text('4 ocupacions', 85, 42);
+            doc.text('descripció bàsica', 85, 47);
+            doc.text('2-3 ocupacions', 120, 42);
+            doc.text('sense detall', 120, 47);
+            doc.text('1 o cap', 155, 42);
+            doc.text('ocupació', 155, 47);
+            doc.text('40%', 185, 45);
+            
+            // Criteri 2 - Competències
+            doc.text('C2: Competències', 20, 57);
+            doc.text('Relaciona', 50, 57);
+            doc.text('amb ofertes', 50, 62);
+            doc.text('Diferencia', 85, 57);
+            doc.text('tèc/pers', 85, 62);
+            doc.text('Llista', 120, 57);
+            doc.text('genèrica', 120, 62);
+            doc.text('No', 155, 57);
+            doc.text('identifica', 155, 62);
+            doc.text('30%', 185, 60);
+            
+            // Criteri 3 - Tendències
+            doc.text('C3: Tendències', 20, 72);
+            doc.text('Projecta', 50, 72);
+            doc.text('impacte', 50, 77);
+            doc.text('2-3', 85, 72);
+            doc.text('coherents', 85, 77);
+            doc.text('1 tendència', 120, 72);
+            doc.text('sense desenv.', 120, 77);
+            doc.text('No', 155, 72);
+            doc.text('identifica', 155, 77);
+            doc.text('20%', 185, 75);
+            
+            // Criteri 4 - Qualitat
+            doc.text('C4: Qualitat', 20, 87);
+            doc.text('Professional', 50, 87);
+            doc.text('reflexiu', 50, 92);
+            doc.text('Clar', 85, 87);
+            doc.text('organitzat', 85, 92);
+            doc.text('Funcional', 120, 87);
+            doc.text('millorable', 120, 92);
+            doc.text('Desestruct', 155, 87);
+            doc.text('incomplet', 155, 92);
+            doc.text('10%', 185, 90);
+            
+            doc.save('RA1_instruccions_completes.pdf');
+        });
+
+        // ===========================================
+        // GUARDAT AUTOMÀTIC AMB LOCALSTORAGE (PREFIX ra1_)
+        // ===========================================
+        const PREFIX = 'ra1_';
+        
+        function carregarDadesGuardades() {
+            document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+                let valorGuardat = localStorage.getItem(PREFIX + camp.id);
+                if (valorGuardat) camp.value = valorGuardat;
+            });
+            
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                let nom = radio.name;
+                let valorGuardat = localStorage.getItem(PREFIX + nom);
+                if (valorGuardat === radio.value) radio.checked = true;
+            });
+        }
+        
+        function guardarCamp(camp) {
+            localStorage.setItem(PREFIX + camp.id, camp.value);
+        }
+        
+        function guardarRadio(name, value) {
+            localStorage.setItem(PREFIX + name, value);
+        }
+        
+        window.addEventListener('load', carregarDadesGuardades);
+        
+        document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+            camp.addEventListener('input', function() { guardarCamp(this); });
+        });
+        
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                guardarRadio(this.name, this.value);
+            });
+        });
+
+        // ===========================================
+        // MODAL D'EXPLICACIÓ JSON
+        // ===========================================
+        function obrirModalExplicacio() {
+            document.getElementById('modalExplicacio').style.display = 'block';
+        }
+        
+        document.getElementById('explicacioJsonBtn')?.addEventListener('click', obrirModalExplicacio);
+        
+        document.querySelector('.modal-explicacio-tancar').addEventListener('click', function() {
+            document.getElementById('modalExplicacio').style.display = 'none';
+        });
+        
+        document.getElementById('tancarModalBtn').addEventListener('click', function() {
+            document.getElementById('modalExplicacio').style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(event) {
+            let modal = document.getElementById('modalExplicacio');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // ===========================================
+        // BOTÓ FLOTANT TORNAR A DALT
+        // ===========================================
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // ===========================================
+        // Toggle Bloc Reflexió
+        // ===========================================
+        document.getElementById('toggleBlocReflexioBtn').addEventListener('click', function() {
+            let container = document.getElementById('blocReflexioContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        // ===========================================
+        // Toggle autoavaluació
+        // ===========================================
+        document.getElementById('toggleAutoavaluacioBtn').addEventListener('click', function() {
+            let container = document.getElementById('autoavaluacioContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        // ===========================================
+        // Comprova autoavaluació
+        // ===========================================
+        document.getElementById('checkQuizBtn').addEventListener('click', function() {
+            let correctes = 0;
+            let total = 10;
+            if (document.querySelector('input[name="q1"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="q2"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="q3"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="q4"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="q5"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="q6"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="q7"]:checked')?.value === 'b') correctes++;
+            if (document.querySelector('input[name="q8"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="q9"]:checked')?.value === 'a') correctes++;
+            if (document.querySelector('input[name="q10"]:checked')?.value === 'a') correctes++;
+
+            let feedback = document.getElementById('quizFeedback');
+            feedback.style.display = 'block';
+            
+            if (correctes === total) {
+                feedback.innerHTML = '✅ Excel·lent! Has respost correctament totes les preguntes. Estàs preparat per a l\'activitat.';
+                feedback.style.background = '#d4edda';
+                feedback.style.color = '#155724';
+            } else if (correctes >= 7) {
+                feedback.innerHTML = `✅ Has obtingut ${correctes}/${total}. Molt bé! Revisa els errors abans de continuar.`;
+                feedback.style.background = '#fff3cd';
+                feedback.style.color = '#856404';
+            } else {
+                feedback.innerHTML = `❌ Has obtingut ${correctes}/${total}. Torna a llegir l'activitat amb atenció i torna-ho a intentar abans d'enviar l'avaluació.`;
+                feedback.style.background = '#f8d7da';
+                feedback.style.color = '#721c24';
+            }
+        });
+
+        // Reiniciar autoavaluació
+        document.getElementById('resetQuizBtn').addEventListener('click', function() {
+            document.querySelectorAll('#autoavaluacioContainer input[type="radio"]').forEach(r => r.checked = false);
+            document.getElementById('quizFeedback').style.display = 'none';
+        });
+
+        // ===========================================
+        // BOTÓ RESET MILLORAT (esborra localStorage)
+        // ===========================================
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('⚠️ Això esborrarà TOTES les respostes i les dades guardades. Estàs segur?')) {
+                
+                document.querySelectorAll('input, textarea, select').forEach(camp => camp.value = '');
+                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+                
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    let clau = localStorage.key(i);
+                    if (clau.startsWith(PREFIX)) {
+                        localStorage.removeItem(clau);
+                    }
+                }
+                
+                document.getElementById('resultsArea').style.display = 'none';
+                
+                alert('✅ Totes les respostes s\'han esborrat correctament.');
+            }
+        });
+
+        // ===========================================
+        // SUBMIT (Preparar per enviar)
+        // ===========================================
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            let requiredIds = ['nom', 'grup', 'enllac', 'ocupacions', 'competencies', 'tendencies'];
+            let valid = true;
+            requiredIds.forEach(id => {
+                let field = document.getElementById(id);
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#D1222B';
+                    valid = false;
+                } else {
+                    field.style.borderColor = '#ffd9d9';
+                }
+            });
+
+            if (!valid) { alert('Omple tots els camps obligatoris (*)'); return; }
+
+            window._estudiantData = {
+                nom: document.getElementById('nom').value,
+                grup: document.getElementById('grup').value,
+                enllac: document.getElementById('enllac').value,
+                autoval: document.getElementById('autovaloracio').value,
+                ocupacions: document.getElementById('ocupacions').value,
+                competencies: document.getElementById('competencies').value,
+                tendencies: document.getElementById('tendencies').value,
+                einautil: document.getElementById('einautil').value,
+                data: new Date().toISOString()
+            };
+
+            document.getElementById('resultsArea').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('modalExplicacio').style.display = 'block';
+            }, 500);
+        });
+
+        // ===========================================
+        // PDF (DESCARREGAR PDF PER A MOODLE)
+        // ===========================================
+        document.getElementById('pdfBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { alert('Primer prepara les dades'); return; }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(16);
+            doc.setTextColor(209,34,43);
+            doc.text('INFORME D\'ACTIVITAT - RA1', 20, 20);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(0,0,0);
+            doc.text('Estudiant: ' + (d.nom || ''), 20, 30);
+            doc.text('Grup: ' + (d.grup || ''), 20, 37);
+            doc.text('Data: ' + new Date().toLocaleDateString('ca-ES'), 20, 44);
+            
+            doc.text('REFLEXIONS', 20, 59);
+            let y = 69;
+            
+            let respostes = [
+                'Ocupacions: ' + (d.ocupacions || '-'),
+                'Competències: ' + (d.competencies || '-'),
+                'Tendències: ' + (d.tendencies || '-'),
+                'Eina útil: ' + (d.einautil || '-')
+            ];
+            
+            respostes.forEach(r => {
+                let lines = doc.splitTextToSize(r, 170);
+                doc.text(lines, 20, y);
+                y += lines.length * 5 + 5;
+            });
+            
+            doc.save(`RA1_informe_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.pdf`);
+        });
+
+        // ===========================================
+        // JSON (EXPORTAR)
+        // ===========================================
+        document.getElementById('jsonBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { 
+                alert('Primer has de fer clic a "Preparar per enviar"');
+                return; 
+            }
+            
+            try {
+                let jsonCont = document.getElementById('jsonContainer');
+                let jsonStr = JSON.stringify(d, null, 2);
+                
+                if (jsonCont) {
+                    jsonCont.style.display = 'block';
+                    jsonCont.textContent = jsonStr;
+                }
+                
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `RA1_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.json`;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                alert('✅ Fitxer JSON desat a DESCÀRREGUES');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error en exportar el JSON');
+            }
+        });
+
+        // ===========================================
+        // Copiar JSON al portapapers
+        // ===========================================
+        document.getElementById('copyJsonBtn').addEventListener('click', function() {
+            let d = window._estudiantData;
+            if (!d) { alert('Primer prepara les dades'); return; }
+            
+            let jsonStr = JSON.stringify(d, null, 2);
+            navigator.clipboard.writeText(jsonStr).then(() => {
+                let status = document.getElementById('copyStatus');
+                status.style.display = 'block';
+                setTimeout(() => status.style.display = 'none', 2000);
+            }).catch(() => {
+                alert('❌ No s\'ha pogut copiar');
+            });
+        });
+    </script>
+</body>
+</html>

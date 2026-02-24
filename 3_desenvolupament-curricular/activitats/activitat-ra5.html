@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA5 · La meva identitat digital professional · PLE + Marca personal · Fitxa</title>
+    <style>
+        /* ===== ESTILS COMPARTITS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 30px;
+            color: #212529;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(209,34,43,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: #D1222B;
+            padding: 25px 35px;
+            color: white;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+        .header .subtitol {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 50px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #D1222B;
+            border-left: 8px solid #FFC72C;
+            padding-left: 18px;
+            margin: 40px 0 20px;
+        }
+        .subsection-title {
+            font-size: 1.4rem;
+            color: #D1222B;
+            margin: 30px 0 15px;
+        }
+        .info-box {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #D1222B;
+        }
+        .btn {
+            background: white;
+            border: 2px solid #D1222B;
+            color: #D1222B;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover, .btn:focus {
+            background: #D1222B;
+            color: white;
+            outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #b01e25;
+        }
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-flotant:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+        }
+        .footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+        .footer a {
+            color: #FFC72C;
+            text-decoration: none;
+        }
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #FFC72C;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .nav-centre {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex: 1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+        }
+        .rubrica-visual {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .rubrica-visual table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .rubrica-visual th {
+            background: #D1222B;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        .rubrica-visual td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        .rubrica-visual .nivell-1 { background: #f8d7da; }
+        .rubrica-visual .nivell-2 { background: #fff3cd; }
+        .rubrica-visual .nivell-3 { background: #d4edda; }
+        .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        .bloc-exemple {
+            background: #f0f7ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #FFC72C;
+        }
+        .bloc-exemple h4 {
+            color: #D1222B;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- BOTÓ FLOTANT TORNAR A DALT -->
+    <button class="btn-flotant" id="tornarDaltBtn" title="Tornar a dalt" aria-label="Tornar a dalt">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
+
+    <div class="container">
+        <!-- CAPÇALERA -->
+        <div class="header">
+            <h1>💻 RA5 · La meva identitat digital professional · PLE + Marca personal</h1>
+            <div class="subtitol">Fitxa de l'activitat · 4 hores</div>
+        </div>
+
+        <!-- CONTINGUT -->
+        <div class="content">
+            <!-- OBJECTIUS I JUSTIFICACIÓ -->
+            <h2 class="section-title">🔍 Objectius i justificació</h2>
+            <p>Aquesta activitat té com a finalitat que l'alumnat sigui capaç de dissenyar el seu propi Entorn Personal d'Aprenentatge (PLE), reflexionar sobre la seva identitat digital i construir una marca personal coherent amb els seus objectius professionals. Dona resposta als criteris d'avaluació 5.3, 5.4, 5.6 i 5.8 del RA5.</p>
+
+            <!-- ENLLAÇOS D'INTERÈS -->
+            <div class="info-links">
+                <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
+                <div>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u5-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: Entorn personal d'aprenentatge (IOC)</a>
+                    <a href="https://www.linkedin.com" target="_blank" class="enllac-normativa">LinkedIn</a>
+                    <a href="https://www.canva.com" target="_blank" class="enllac-normativa">Canva (per al CV)</a>
+                    <a href="https://visualcv.com" target="_blank" class="enllac-normativa">VisualCV</a>
+                </div>
+            </div>
+
+            <!-- METODOLOGIA - BLOC 1 -->
+            <h2 class="section-title">🧭 Metodologia i desenvolupament</h2>
+            
+            <div class="info-box">
+                <h3>📌 Bloc 1 · El meu PLE (1,5 hores)</h3>
+                <p><strong>Objectiu:</strong> Identificar i representar el teu Entorn Personal d'Aprenentatge.</p>
+                <ol>
+                    <li>Identifica fonts d'informació, eines digitals i xarxes de contacte que utilitzes habitualment per aprendre.</li>
+                    <li>Representa gràficament el teu PLE actual (Canva, Genially, Miro, etc.).</li>
+                    <li>Proposa millores per optimitzar el teu PLE.</li>
+                </ol>
+            </div>
+
+            <!-- EXEMPLE PLE -->
+            <div class="bloc-exemple">
+                <h4>📘 Exemple de PLE</h4>
+                <p><strong>Fonts d'informació:</strong> Blogs tècnics (REBT Blog), YouTube (ElectroBot), webs de fabricants (Schneider Electric)</p>
+                <p><strong>Eines digitals:</strong> Canva, LinkedIn, Google Drive, Trello</p>
+                <p><strong>Xarxes de contacte:</strong> LinkedIn, grups d'electricistes, fòrum IOC</p>
+                <p><strong>Millores proposades:</strong> Afegir fonts internacionals, crear butlletins setmanals</p>
+            </div>
+
+            <!-- METODOLOGIA - BLOC 2 -->
+            <div class="info-box">
+                <h3>🎯 Bloc 2 · Identitat digital i marca personal (1,5 hores)</h3>
+                <p><strong>Objectiu:</strong> Reflexionar sobre la teva presència digital i definir la teva marca personal.</p>
+                <ol>
+                    <li>Realitza una cerca del teu nom a Google i analitza els resultats.</li>
+                    <li>Reflexiona sobre la imatge que projectes i la imatge que vols projectar.</li>
+                    <li>Defineix els tres pilars de la teva marca personal (ex: "expert en instal·lacions fotovoltaiques", "compromès amb la prevenció", "especialista en domòtica").</li>
+                </ol>
+            </div>
+
+            <!-- EXEMPLE IDENTITAT DIGITAL -->
+            <div class="bloc-exemple">
+                <h4>🎯 Exemple d'identitat digital</h4>
+                <p><strong>Cerca a Google:</strong> Apareix perfil de LinkedIn, comentaris en fòrums</p>
+                <p><strong>Imatge actual:</strong> Perfil LinkedIn incomplet, foto no professional</p>
+                <p><strong>Imatge desitjada:</strong> Tècnica especialista en fotovoltaica, compromesa amb la prevenció</p>
+                <p><strong>Pilars marca personal:</strong> "Expert en fotovoltaica", "Compromès amb la prevenció", "Especialista en domòtica"</p>
+            </div>
+
+            <!-- METODOLOGIA - BLOC 3 -->
+            <div class="info-box">
+                <h3>💼 Bloc 3 · CV digital (1 hora)</h3>
+                <p><strong>Objectiu:</strong> Crear o actualitzar el teu perfil professional digital.</p>
+                <ol>
+                    <li>Crea o actualitza el teu perfil de LinkedIn incorporant els elements de marca personal.</li>
+                    <li>Elabora un currículum digital en format visual (Canva, VisualCV) que integri el teu PLE i el teu full de ruta (RA4).</li>
+                </ol>
+            </div>
+
+            <!-- EXEMPLE CV DIGITAL -->
+            <div class="bloc-exemple">
+                <h4>💼 Exemple de CV digital</h4>
+                <p><strong>LinkedIn:</strong> linkedin.com/in/maria-garcia-electricista</p>
+                <p><strong>CV digital:</strong> canva.com/design/RA5-cv-maria</p>
+                <p><strong>Descripció:</strong> CV visual amb infografia que inclou formació, experiència, DAFO i full de ruta</p>
+            </div>
+
+            <!-- PRODUCTE I EVIDÈNCIA -->
+            <h2 class="section-title">📦 Producte i evidència d'aprenentatge</h2>
+            <div class="info-box" style="background: #e6f2ff;">
+                <p>En finalitzar l'activitat, l'alumnat haurà de generar:</p>
+                <ul>
+                    <li><strong>Representació visual del PLE (PDF o enllaç).</strong></li>
+                    <li><strong>Document de reflexió sobre identitat digital i marca personal (PDF).</strong></li>
+                    <li><strong>Enllaç al perfil de LinkedIn (URL) i arxiu del CV digital (PDF).</strong></li>
+                </ul>
+                <p style="margin-top:10px;">✅ Aquests documents són les evidències principals d'aprenentatge. S'han de penjar a Moodle i incorporar al portafolis digital.</p>
+            </div>
+
+            <!-- RÚBRICA D'AVALUACIÓ -->
+            <h2 class="section-title">📊 Rúbrica d'avaluació</h2>
+            <div class="rubrica-visual">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criteri</th>
+                            <th>Pes</th>
+                            <th>1 - No assolit</th>
+                            <th>2 - En procés</th>
+                            <th>3 - Assolit</th>
+                            <th>4 - Excel·lent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>PLE</strong></td>
+                            <td>30%</td>
+                            <td class="nivell-1">No identifica o incomplet</td>
+                            <td class="nivell-2">Identifica elements bàsics sense millores</td>
+                            <td class="nivell-3">PLE complet amb proposta de millora</td>
+                            <td class="nivell-4">PLE molt complet, ben estructurat i millores innovadores</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Identitat digital i marca personal</strong></td>
+                            <td>30%</td>
+                            <td class="nivell-1">No analitza o reflexió superficial</td>
+                            <td class="nivell-2">Cerca bàsica sense definir pilars</td>
+                            <td class="nivell-3">Analitza resultats i defineix 3 pilars</td>
+                            <td class="nivell-4">Anàlisi profund, pilars coherents i visió estratègica</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CV digital</strong></td>
+                            <td>30%</td>
+                            <td class="nivell-1">No inclou LinkedIn ni CV</td>
+                            <td class="nivell-2">LinkedIn o CV poc elaborats</td>
+                            <td class="nivell-3">LinkedIn actualitzat + CV visual</td>
+                            <td class="nivell-4">Perfils professionals, integrats amb PLE i full de ruta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qualitat formal</strong></td>
+                            <td>10%</td>
+                            <td class="nivell-1">Incomplet o inintel·ligible</td>
+                            <td class="nivell-2">Confús o errors significatius</td>
+                            <td class="nivell-3">Clar i organitzat</td>
+                            <td class="nivell-4">Professional, ben estructurat</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ENLLAÇ A L'HTML COMPLET DE L'ALUMNE -->
+            <div style="text-align: center; margin: 40px 0 20px;">
+                <a href="#" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">
+                    🔍 Veure activitat completa per a alumnes
+                </a>
+            </div>
+
+            <!-- NAVEGACIÓ -->
+            <div class="nav-footer">
+                <!-- Botó esquerre: RA4 -->
+                <a href="activitat-ra4.html" class="btn">⬅️ RA4</a>
+                
+                <!-- Botó central: Tornar a Desenvolupament curricular -->
+                <div class="nav-centre">
+                    <a href="../index.html" class="btn btn-primary">
+                        ⬆️ Tornar a Desenvolupament curricular
+                    </a>
+                </div>
+                
+                <!-- Botó dret: (buit, és l'últim) -->
+                <div style="width: 80px;"></div>
+            </div>
+        </div>
+
+        <!-- PEU -->
+        <div class="footer">
+            Diego Izquierdo Perán · FOL · IOC · 
+            <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
+        </div>
+    </div>
+
+    <script>
+        // TORNAR A DALT
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+        document.getElementById('accesibilitatInfo').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Aquest lloc compleix les pautes d\'accessibilitat WCAG 2.1 (nivell AA).');
+        });
+    </script>
+</body>
+</html>
