@@ -25,16 +25,47 @@
             border-radius: 30px;
             box-shadow: 0 20px 40px rgba(209,34,43,0.2);
             overflow: hidden;
+            position: relative;
         }
         .header {
             background: #D1222B;
             padding: 25px 35px;
             color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .header h1 {
             font-size: 2.2rem;
             margin-bottom: 5px;
         }
+
+        /* ===== BOTÓ PER TORNAR A LA PORTADA (NOU) ===== */
+        .btn-tornar-portada {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            z-index: 1001;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-tornar-portada:hover {
+            background: #D1222B;
+            color: white;
+            transform: scale(1.05);
+        }
+
         .content {
             padding: 40px 50px;
         }
@@ -64,6 +95,13 @@
             background: #D1222B;
             color: white;
             outline: 3px solid #FFC72C;
+        }
+        .btn-primary {
+            background: #D1222B;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #b01e25;
         }
         .btn-flotant {
             position: fixed;
@@ -133,6 +171,16 @@
             background: #D1222B;
             color: white;
         }
+        @media (max-width: 768px) {
+            .btn-tornar-portada {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+                top: 15px;
+                left: 15px;
+            }
+            .header h1 { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
@@ -142,8 +190,11 @@
     </button>
 
     <div class="container">
-        <!-- CAPÇALERA -->
+        <!-- CAPÇALERA AMB BOTÓ DE RETORN -->
         <div class="header">
+            <a href="1_presentacio.html" class="btn-tornar-portada" title="Tornar a la portada del projecte" aria-label="Tornar a la portada del projecte">
+                🏠
+            </a>
             <h1>📖 Bibliografia i referències normatives</h1>
         </div>
 
