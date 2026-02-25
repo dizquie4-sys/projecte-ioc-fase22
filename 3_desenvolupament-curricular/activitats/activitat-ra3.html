@@ -3,108 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RA3 · De l'oferta al conveni · Anàlisi laboral</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <title>RA3 · De l'oferta al conveni · Fitxa</title>
     <style>
-        /* ===== ESTILS COMPLETS (exactament igual que l'original) ===== */
+        /* ===== ESTILS COMPARTITS ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
         }
         body {
+            font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
             padding: 30px;
             color: #212529;
+            line-height: 1.6;
         }
         .container {
             max-width: 1100px;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(209,34,43,0.15);
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(209,34,43,0.2);
             overflow: hidden;
+            position: relative;
         }
         .header {
             background: #D1222B;
-            padding: 25px;
+            padding: 25px 35px;
             color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .header h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 5px;
         }
-        .header .accessibility-icon {
-            background: rgba(255,255,255,0.2);
+        .header .subtitol {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* ===== BOTÓ PER TORNAR A LA PORTADA ===== */
+        .btn-tornar-portada {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #FFC72C;
+            color: #D1222B;
+            border: 2px solid #D1222B;
             border-radius: 50%;
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.8rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            z-index: 1001;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-tornar-portada:hover {
+            background: #D1222B;
             color: white;
-            border: 2px solid white;
+            transform: scale(1.05);
         }
+        
         .content {
-            padding: 30px 35px;
-        }
-        .badge-groc {
-            background: #FFC72C;
-            color: #1e293b;
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 1rem;
-            display: inline-block;
-            margin-bottom: 20px;
-            border: 2px solid #D1222B;
+            padding: 40px 50px;
         }
         .section-title {
             font-size: 1.8rem;
             color: #D1222B;
             border-left: 8px solid #FFC72C;
             padding-left: 18px;
-            margin: 30px 0 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            margin: 40px 0 20px;
         }
-        .section-title .help-btn {
-            background: #FFC72C;
+        .subsection-title {
+            font-size: 1.4rem;
             color: #D1222B;
-            border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        .section-title .help-btn:hover {
-            background: #D1222B;
-            color: white;
+            margin: 30px 0 15px;
         }
         .info-box {
-            background: #fff1f0;
+            background: #f8fafc;
             border-radius: 15px;
             padding: 20px;
-            margin: 15px 0;
+            margin: 20px 0;
             border-left: 5px solid #D1222B;
-        }
-        .info-box h3 {
-            color: #D1222B;
-            margin-bottom: 10px;
         }
         .btn {
             background: white;
@@ -130,99 +116,27 @@
             background: #D1222B;
             color: white;
         }
-        .btn-primary:hover, .btn-primary:focus {
+        .btn-primary:hover {
             background: #b01e25;
-            border-color: #b01e25;
         }
-        .btn-danger {
-            background: #6c757d;
-            color: white;
-            border: none;
-        }
-        .btn-success {
-            background: #28a745;
-            color: white;
-            border: none;
-        }
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-            border: none;
-        }
-        .btn-close {
-            background: #6c757d;
-            color: white;
-            border: none;
-        }
-        .btn-close:hover {
-            background: #5a6268;
-        }
-        .btn-up {
+        .btn-flotant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
             background: #FFC72C;
             color: #D1222B;
-            border: none;
+            border: 2px solid #D1222B;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        .btn-up:hover {
+        .btn-flotant:hover {
             background: #D1222B;
             color: white;
-        }
-        .buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 20px 0;
-            justify-content: center;
-        }
-        textarea, input, select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ffd9d9;
-            border-radius: 12px;
-            margin: 8px 0 15px;
-            font-size: 1rem;
-        }
-        textarea:focus, input:focus, select:focus {
-            outline: 3px solid #FFC72C;
-            border-color: #D1222B;
-        }
-        .required::after {
-            content: " *";
-            color: #D1222B;
-            font-weight: bold;
-        }
-        .results-area {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 25px;
-            margin: 30px 0;
-            border: 2px solid #D1222B;
-            display: none;
-        }
-        .score-badge {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #2c3e50;
-        }
-        .json-container {
-            max-height: 200px;
-            overflow-y: auto;
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            margin: 10px 0;
-        }
-        .footer {
-            background: #f1f5f9;
-            padding: 20px;
-            text-align: center;
-        }
-        hr {
-            border: 2px dashed #FFC72C;
-            margin: 30px 0;
         }
         .sr-only {
             position: absolute;
@@ -231,68 +145,46 @@
             padding: 0;
             margin: -1px;
             overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
         }
-        .autoavaluacio-container {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 2px solid #FFC72C;
-            display: none;
+        .footer {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 25px;
         }
-        .quiz-item {
-            margin-bottom: 20px;
-        }
-        .quiz-question {
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .quiz-options {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .quiz-options label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
-        .quiz-options input[type="radio"] {
-            width: auto;
-            margin: 0;
-        }
-        .feedback-quiz {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 10px;
-            display: none;
-        }
-        .enllac-normativa {
-            display: inline-block;
-            background: #f0f7ff;
-            border: 1px solid #D1222B;
-            border-radius: 20px;
-            padding: 5px 15px;
-            margin: 5px;
-            color: #D1222B;
+        .footer a {
+            color: #FFC72C;
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s;
         }
-        .enllac-normativa:hover {
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #FFC72C;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .nav-centre {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex: 1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
             background: #D1222B;
             color: white;
-            text-decoration: none;
+            padding: 10px;
         }
-        .info-links {
-            margin: 15px 0;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border: 1px solid #e9ecef;
+        td {
+            border: 1px solid #ffd9d9;
+            padding: 8px;
         }
         .rubrica-visual {
             background: #f8fafc;
@@ -322,74 +214,37 @@
         .rubrica-visual .nivell-3 { background: #d4edda; }
         .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
         
-        .examen-container {
-            background: #f0f7ff;
-            border-radius: 20px;
-            padding: 25px;
-            margin: 20px 0;
-            border: 3px solid #D1222B;
-            display: none;
-        }
-        .examen-pregunta {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 5px solid #FFC72C;
-        }
-        .examen-pregunta p {
-            margin-bottom: 10px;
-        }
-        .examen-opcions {
+        .buttons-parell {
             display: flex;
-            gap: 20px;
+            gap: 15px;
+            justify-content: center;
             flex-wrap: wrap;
-            margin: 10px 0;
-        }
-        .examen-opcions label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
-        .examen-opcions input[type="radio"] {
-            width: auto;
-            margin: 0;
-        }
-        .examen-feedback {
-            margin-top: 8px;
-            padding: 8px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            display: none;
-        }
-        .examen-correcte {
-            background: #d4edda;
-            color: #155724;
-        }
-        .examen-incorrecte {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        .examen-resultat {
-            background: #fff3cd;
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px 0;
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-        .examen-superat {
-            background: #d4edda;
-            color: #155724;
-        }
-        .examen-no-superat {
-            background: #f8d7da;
-            color: #721c24;
+            margin: 30px 0;
         }
         
-        /* ESTILS PER ALS MODALS */
+        .enllac-normativa {
+            display: inline-block;
+            background: #f0f7ff;
+            border: 1px solid #D1222B;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            color: #D1222B;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .enllac-normativa:hover {
+            background: #D1222B;
+            color: white;
+        }
+        .info-links {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
         .modal {
             display: none;
             position: fixed;
@@ -418,213 +273,103 @@
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
-            position: sticky;
-            top: 0;
-            background: white;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 2px solid #D1222B;
         }
         .close-modal:hover {
-            background: #D1222B;
             color: white;
-        }
-        .modal h2 {
-            color: #D1222B;
-            margin-bottom: 20px;
-        }
-        .modal h3 {
-            color: #D1222B;
-            margin: 20px 0 10px;
-        }
-        .modal ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-        .modal li {
-            margin-bottom: 5px;
-        }
-
-        /* ESTILS PER ALS BLOCS DESPLEGABLES */
-        .bloc-container {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 2px solid #FFC72C;
-            display: none;
-        }
-        .bloc-title {
-            color: #D1222B;
-            margin-bottom: 15px;
-        }
-        
-        /* MODAL D'EXPLICACIÓ JSON */
-        .modal-explicacio {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        .modal-explicacio-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 600px;
-            border: 3px solid #D1222B;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .modal-explicacio-tancar {
-            color: #D1222B;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 2px solid #D1222B;
-        }
-        .modal-explicacio-tancar:hover {
-            background: #D1222B;
-            color: white;
-        }
-        
-        /* BOTÓ FLOTANT ACCESSIBLE */
-        .btn-flotant {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 9999;
-            background: #FFC72C;
-            color: #D1222B;
-            border: 2px solid #D1222B;
-            border-radius: 50px;
-            padding: 12px 20px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            min-width: 60px;
-            min-height: 60px;
-            line-height: 1;
-        }
-        .btn-flotant:hover,
-        .btn-flotant:focus {
-            background: #D1222B;
-            color: white;
-            outline: 3px solid #FFC72C;
-            outline-offset: 2px;
-            transform: scale(1.05);
-        }
-        .btn-flotant:focus-visible {
-            outline: 3px solid #FFC72C;
-            box-shadow: 0 0 0 5px rgba(209,34,43,0.3);
         }
     </style>
 </head>
 <body>
-    <!-- MODAL D'EXPLICACIÓ DEL JSON -->
-    <div id="modalExplicacio" class="modal-explicacio">
-        <div class="modal-explicacio-content">
-            <span class="modal-explicacio-tancar">&times;</span>
-            <h2 style="color:#D1222B; margin-bottom:20px;">📤 Com enviar el teu treball</h2>
-            
-            <div style="margin:20px 0; padding:15px; background:#f0f7ff; border-radius:10px; border-left:5px solid #D1222B;">
-                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📁 Què és un fitxer JSON?</strong></p>
-                <p>És un format que conté TOTES les teves respostes en un sol fitxer. El professor el podrà llegir fàcilment.</p>
-            </div>
-            
-            <div style="margin:20px 0; padding:15px; background:#fff3cd; border-radius:10px; border-left:5px solid #FFC72C;">
-                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📥 Com el guardes?</strong></p>
-                <ol style="margin-left:20px;">
-                    <li>Omple totes les preguntes</li>
-                    <li>Prem el botó <strong>"Preparar per enviar"</strong></li>
-                    <li>Prem <strong>"📊 Exportar JSON"</strong></li>
-                    <li>El fitxer es desarà a la carpeta <strong>Descàrregues</strong></li>
-                </ol>
-            </div>
-            
-            <div style="margin:20px 0; padding:15px; background:#d4edda; border-radius:10px; border-left:5px solid #28a745;">
-                <p style="font-size:1.1rem; margin-bottom:10px;"><strong>📤 Com l'envies al professor?</strong></p>
-                <ul style="margin-left:20px;">
-                    <li><strong>Moodle:</strong> Puja'l com a tasca</li>
-                    <li><strong>Correu:</strong> Adjunta'l a un missatge</li>
-                    <li><strong>Drive:</strong> Comparteix l'enllaç</li>
-                </ul>
-            </div>
-            
-            <div style="text-align:center; margin-top:25px;">
-                <button class="btn btn-primary" id="tancarModalBtn">Entès</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL D'AJUDA PER A LA TAULA DE CONTRAST -->
-    <div id="modalAjudaTaula" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>❓ Com omplir la Taula de contrast</h2>
-            
-            <h3>📝 Què has de fer?</h3>
-            <p>En aquesta secció has d'omplir les condicions laborals que has analitzat de l'oferta de treball.</p>
-            
-            <h3>📌 Instruccions:</h3>
-            <ul>
-                <li>Omple <strong>com a mínim 5 condicions</strong> (les 5 primeres són obligatòries).</li>
-                <li>Per a cada condició, descriu:
-                    <ul>
-                        <li>Què diu l'oferta de treball</li>
-                        <li>Què estableix el conveni col·lectiu</li>
-                        <li>La teva avaluació (ajustat / millorable / incompliment)</li>
-                    </ul>
-                </li>
-                <li>Pots afegir fins a 7 condicions (les 2 últimes són opcionals).</li>
-            </ul>
-            
-            <div style="text-align:center; margin-top:20px;">
-                <button class="btn btn-primary" onclick="tancarModalAjuda()">Entès</button>
-            </div>
-        </div>
-    </div>
+    <!-- BOTÓ FLOTANT TORNAR A DALT -->
+    <button class="btn-flotant" id="tornarDaltBtn" title="Tornar a dalt" aria-label="Tornar a dalt">
+        ⬆️ <span class="sr-only">Tornar a dalt</span>
+    </button>
 
     <div class="container">
+        <!-- CAPÇALERA -->
         <div class="header">
-            <div>
-                <h1 id="main-title">⚡ RA3 · De l'oferta al conveni · Anàlisi laboral</h1>
-                <p>FOL – IPO I · CFGM Instal·lacions Elèctriques</p>
-            </div>
-            <div class="accessibility-icon" role="img" aria-label="Presentació accessible" title="Aquest contingut compleix criteris d'accessibilitat WCAG 2.1">
-                ♿
-            </div>
+            <a href="../../1_presentacio.html" class="btn-tornar-portada" title="Tornar a la portada del projecte">
+                🏠
+            </a>
+            <h1>⚖️ RA3 · De l'oferta al conveni</h1>
+            <div class="subtitol">Fitxa de l'activitat · 4 hores</div>
         </div>
+
+        <!-- CONTINGUT -->
         <div class="content">
-            <!-- Distintiu groc -->
-            <div class="badge-groc">📌 Activitat · 4 hores</div>
-
             <!-- OBJECTIUS I JUSTIFICACIÓ -->
-            <h2 class="section-title" id="objectius">🔍 Objectius i justificació</h2>
-            <p>Aquesta activitat té com a objectiu que l'alumnat sigui capaç d'analitzar críticament una oferta de treball real del sector de les instal·lacions elèctriques, identificant les condicions laborals pactades i contrastant-les amb el conveni col·lectiu aplicable. Es treballen específicament els criteris d'avaluació 3.1, 3.2, 3.4 i 3.7 del RA3.</p>
+            <h2 class="section-title">🔍 Objectius i justificació</h2>
+            <p>Aquesta activitat té com a finalitat que l'alumnat sigui capaç d'analitzar críticament una oferta de treball real del sector de les instal·lacions elèctriques, identificant les condicions laborals pactades i contrastant-les amb el conveni col·lectiu aplicable. Es treballen específicament els criteris d'avaluació 3.1, 3.2, 3.4 i 3.7 del RA3.</p>
 
-            <!-- RÚBRICA VISIBLE (PER A L'ALUMNAT) -->
+            <!-- ENLLAÇOS D'INTERÈS -->
+            <div class="info-links">
+                <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
+                <div>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u3-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: Condicions laborals (IOC)</a>
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430" target="_blank" class="enllac-normativa">Estatut dels Treballadors</a>
+                    <a href="https://treball.gencat.cat/ca/consell_relacions_laborals/convenis_colectius/cercador_de_convenis/" target="_blank" class="enllac-normativa">Cerca de convenis (Generalitat)</a>
+                    <a href="https://www.boe.es/biblioteca_juridica/index.php?tipo=C" target="_blank" class="enllac-normativa">Codi de Treball (BOE)</a>
+                </div>
+                <div style="margin-top:10px;">
+                    <p><strong>🔍 Mètode VERIFICA per al pensament crític:</strong></p>
+                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/mini-campanya%20digital.html" target="_blank" class="enllac-normativa">Campanya VERIFICA.TE</a>
+                </div>
+            </div>
+
+            <!-- METODOLOGIA -->
+            <h2 class="section-title">🧭 Metodologia i desenvolupament</h2>
+            
+            <div class="info-box">
+                <h3>🔍 Fase 1 · Anàlisi individual (2 hores)</h3>
+                <p><strong>Oferta de treball simulada:</strong> "Instal·lador electricista per a manteniment industrial. Contracte temporal de 6 mesos, jornada completa de 40 hores setmanals, salari base de 1.200 € mensuals + plus de perillositat. Període de prova de 3 mesos. Horari de dilluns a divendres de 8 a 17 h amb possibilitat de realitzar hores extraordinàries."</p>
+                <p><strong>Tasques:</strong></p>
+                <ol>
+                    <li>Identifica els elements clau de l'oferta: tipus de contracte, jornada, salari, període de prova, etc.</li>
+                    <li>Localitza el conveni col·lectiu aplicable (sector metal·lúrgic o conveni d'empresa).</li>
+                    <li>Contrasta, com a mínim, cinc condicions laborals (salari base, complements, jornada, hores extraordinàries, període de prova).</li>
+                    <li>Emplena una taula de contrast amb tres columnes: Condició pactada a l'oferta / Condició segons conveni / Avaluació (ajustat/millorable/incompliment).</li>
+                </ol>
+            </div>
+
+            <div class="info-box">
+                <h3>👥 Fase 2 · Treball col·laboratiu (2 hores)</h3>
+                <p>En grups de 3-4 persones, mitjançant un document compartit (Canva Docs, Google Docs), haureu de:</p>
+                <ol>
+                    <li>Compartir les taules individuals i identificar elements comuns i discrepàncies.</li>
+                    <li>Redactar una conclusió conjunta sobre les condicions laborals més rellevants del sector.</li>
+                    <li>Penjar l'enllaç del document a l'aula virtual i comentar almenys dues aportacions d'altres grups.</li>
+                </ol>
+            </div>
+
+            <!-- EXEMPLE DE TAULA -->
+            <h2 class="section-title">📊 Exemple de taula de contrast</h2>
+            <table>
+                <thead>
+                    <tr><th>Condició</th><th>Oferta</th><th>Conveni</th><th>Avaluació</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tipus de contracte</td><td>Temporal 6 mesos</td><td>Per obra o servei</td><td>Millorable</td></tr>
+                    <tr><td>Jornada</td><td>40 h/set</td><td>40 h/set</td><td>Ajustat</td></tr>
+                    <tr><td>Salari base</td><td>1.200 €</td><td>1.350 €</td><td>Incompliment</td></tr>
+                    <tr><td>Període de prova</td><td>3 mesos</td><td>2 mesos</td><td>Incompliment</td></tr>
+                    <tr><td>Hores extraordinàries</td><td>No especifica</td><td>80 h/any</td><td>Incompliment</td></tr>
+                </tbody>
+            </table>
+
+            <!-- PRODUCTE -->
+            <h2 class="section-title">📦 Producte i evidència d'aprenentatge</h2>
+            <div class="info-box" style="background: #e6f2ff;">
+                <p>En finalitzar l'activitat, l'alumnat haurà de generar:</p>
+                <ul>
+                    <li><strong>Taula de contrast individual (PDF o enllaç).</strong></li>
+                    <li><strong>Document col·laboratiu amb anàlisi comparada i conclusions (enllaç).</strong></li>
+                </ul>
+                <p style="margin-top:10px;">✅ Aquests documents són les evidències principals d'aprenentatge.</p>
+            </div>
+
+            <!-- RÚBRICA -->
+            <h2 class="section-title">📊 Rúbrica d'avaluació</h2>
             <div class="rubrica-visual">
-                <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ (per a la teva orientació)</h3>
-                <p>Aquesta rúbrica mostra els criteris amb què es valorarà la teva activitat. Els nivells van de 1 (No assolit) a 4 (Excel·lent).</p>
                 <table>
                     <thead>
                         <tr>
@@ -671,490 +416,47 @@
                         </tr>
                     </tbody>
                 </table>
-                <p style="margin-top:10px; font-style:italic;">Aquesta rúbrica és orientativa. El professor la utilitzarà per a la qualificació final.</p>
             </div>
 
-            <!-- ENLLAÇOS D'INTERÈS -->
-            <div class="info-links">
-                <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
-                <div>
-                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u3-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: Condicions laborals (IOC)</a>
-                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430" target="_blank" class="enllac-normativa">Estatut dels Treballadors</a>
-                    <a href="https://treball.gencat.cat/ca/consell_relacions_laborals/convenis_colectius/cercador_de_convenis/" target="_blank" class="enllac-normativa">Cerca de convenis (Generalitat)</a>
-                    <a href="https://www.boe.es/biblioteca_juridica/index.php?tipo=C" target="_blank" class="enllac-normativa">Codi de Treball (BOE)</a>
+            <!-- BOTONS D'ALUMNE I PROFESSOR -->
+            <div class="buttons-parell">
+                <a href="../alumnes/ra3-alumne.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">
+                    👤 Veure activitat completa per a alumnes
+                </a>
+                <a href="../professor/ra3-professor.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px; background: #6c757d; border-color: #6c757d;">
+                    👨‍🏫 Corrector per al professor
+                </a>
+            </div>
+
+            <!-- NAVEGACIÓ -->
+            <div class="nav-footer">
+                <a href="activitat-ra2.html" class="btn">⬅️ RA2</a>
+                <div class="nav-centre">
+                    <a href="../index.html" class="btn btn-primary">⬆️ Tornar a Desenvolupament curricular</a>
                 </div>
-                <div style="margin-top:10px;">
-                    <p><strong>🔍 Mètode VERIFICA per al pensament crític:</strong></p>
-                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/mini-campanya%20digital.html" target="_blank" class="enllac-normativa">Campanya VERIFICA.TE (consulta-la)</a>
-                    <p style="background:#fff3cd; padding:10px; border-radius:5px; margin-top:10px;">
-                        <strong>V</strong>erifica la font · <strong>E</strong>scepticisme saludable · <strong>R</strong>astreja l'evidència · <strong>I</strong>dentifica biaixos · <strong>F</strong>onts alternatives · <strong>I</strong>nterpreta amb context · <strong>C</strong>ontrasta amb experts · <strong>A</strong>plica el criteri propi
-                    </p>
-                </div>
+                <a href="activitat-ra4.html" class="btn">RA4 ➡️</a>
             </div>
-
-            <!-- METODOLOGIA I DESENVOLUPAMENT -->
-            <h2 class="section-title" id="metodologia">🧭 Metodologia i desenvolupament</h2>
-            
-            <!-- FASE 1: Anàlisi individual -->
-            <div class="info-box">
-                <h3>🔍 Fase 1 · Anàlisi individual (2 hores)</h3>
-                <p><strong>Oferta de treball simulada:</strong> "Instal·lador electricista per a manteniment industrial. Contracte temporal de 6 mesos, jornada completa de 40 hores setmanals, salari base de 1.200 € mensuals + plus de perillositat. Període de prova de 3 mesos. Horari de dilluns a divendres de 8 a 17 h amb possibilitat de realitzar hores extraordinàries."</p>
-                <p><strong>Tasques (consulta el <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u3-pdfindex.pdf#page=54" target="_blank">llibre digital (pàg. 54)</a> per al període de prova, <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u3-pdfindex.pdf#page=21" target="_blank">pàg. 21-23</a> per a jornada i hores extres):</strong></p>
-                <ol>
-                    <li>Identifica els elements clau de l'oferta: tipus de contracte, jornada, salari, període de prova, etc.</li>
-                    <li>Localitza el conveni col·lectiu aplicable (sector metal·lúrgic o conveni d'empresa).</li>
-                    <li>Contrasta, com a mínim, cinc condicions laborals (salari base, complements, jornada, hores extraordinàries, període de prova).</li>
-                    <li>Emplena una taula de contrast amb tres columnes: Condició pactada a l'oferta / Condició segons conveni / Avaluació (ajustat/millorable/incompliment).</li>
-                </ol>
-                <p><strong>Aplica el <a href="https://dizquie4-sys.github.io/CURSO-CDD/mini-campanya%20digital.html" target="_blank">mètode VERIFICA</a> per analitzar la informació.</strong></p>
-            </div>
-
-            <!-- FASE 2: Treball col·laboratiu -->
-            <div class="info-box">
-                <h3>👥 Fase 2 · Treball col·laboratiu (2 hores)</h3>
-                <p>En grups de 3-4 persones, mitjançant un document compartit (Canva Docs, Google Docs), haureu de:</p>
-                <ol>
-                    <li>Compartir les taules individuals i identificar elements comuns i discrepàncies.</li>
-                    <li>Redactar una conclusió conjunta sobre les condicions laborals més rellevants del sector.</li>
-                    <li>Penjar l'enllaç del document a l'aula virtual i comentar almenys dues aportacions d'altres grups.</li>
-                </ol>
-            </div>
-
-            <!-- FASE 3: Producte i evidència -->
-            <div class="info-box" style="background: #e6f2ff; border-left-color: #D1222B;">
-                <h3 style="color:#D1222B;">📦 Fase 3 · Producte i evidència d'aprenentatge</h3>
-                <p>En finalitzar l'activitat, hauràs de generar:</p>
-                <ul>
-                    <li><strong>Taula de contrast individual (PDF o enllaç).</strong> S'incorpora al portafolis.</li>
-                    <li><strong>Document col·laboratiu amb anàlisi comparada i conclusions (enllaç).</strong> S'incorpora al portafolis.</li>
-                </ul>
-                <p style="margin-top:10px;">✅ Aquests documents seran les evidències principals d'aprenentatge.</p>
-            </div>
-
-            <hr>
-
-            <!-- FORMULARI PER A L'ESTUDIANT -->
-            <h2 class="section-title">📋 Dades de l'estudiant</h2>
-            <label class="required" for="nom">Nom i cognoms</label>
-            <input type="text" id="nom" placeholder="Ex: Maria Garcia" aria-required="true">
-            
-            <label class="required" for="grup">Grup</label>
-            <input type="text" id="grup" placeholder="Ex: Grup A" aria-required="true">
-            
-            <label class="required" for="enllac">Enllaç al document col·laboratiu (Canva, Google Docs...)</label>
-            <input type="url" id="enllac" placeholder="https://..." aria-required="true">
-            
-            <label for="autovaloracio">Autovaloració de l'activitat (dificultat, utilitat...)</label>
-            <select id="autovaloracio">
-                <option value="">-- Selecciona --</option>
-                <option value="1">1 - Molt difícil</option>
-                <option value="2">2 - Una mica difícil</option>
-                <option value="3">3 - Neutral</option>
-                <option value="4">4 - Fàcil</option>
-                <option value="5">5 - Molt fàcil i útil</option>
-            </select>
-
-            <!-- BOTONS DELS BLOCS (DESPLEGABLES) -->
-            <div style="text-align:center; margin:20px 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                <button class="btn btn-primary" id="toggleBlocTaulaBtn" aria-expanded="false">
-                    📊 Taula de contrast individual
-                </button>
-                <button class="btn btn-primary" id="toggleBlocConclusionsBtn" aria-expanded="false">
-                    🧠 Conclusions individuals
-                </button>
-            </div>
-
-            <!-- BLOC TAULA DE CONTRAST -->
-            <div class="bloc-container" id="blocTaulaContainer" aria-hidden="true">
-                <h3 class="bloc-title">📊 Taula de contrast individual</h3>
-                <p>Omple la taula amb com a mínim 5 condicions laborals.</p>
-                
-                <label class="required" for="condicio1">Condició 1 (ex: tipus de contracte)</label>
-                <textarea id="condicio1" required aria-required="true" rows="2" placeholder="Què diu l'oferta? Què diu el conveni? Avaluació"></textarea>
-                
-                <label class="required" for="condicio2">Condició 2 (ex: jornada laboral)</label>
-                <textarea id="condicio2" required aria-required="true" rows="2"></textarea>
-                
-                <label class="required" for="condicio3">Condició 3 (ex: salari base)</label>
-                <textarea id="condicio3" required aria-required="true" rows="2"></textarea>
-                
-                <label class="required" for="condicio4">Condició 4 (ex: període de prova)</label>
-                <textarea id="condicio4" required aria-required="true" rows="2"></textarea>
-                
-                <label class="required" for="condicio5">Condició 5 (ex: hores extraordinàries)</label>
-                <textarea id="condicio5" required aria-required="true" rows="2"></textarea>
-                
-                <label for="condicio6">Condició 6 (opcional)</label>
-                <textarea id="condicio6" rows="2"></textarea>
-                
-                <label for="condicio7">Condició 7 (opcional)</label>
-                <textarea id="condicio7" rows="2"></textarea>
-            </div>
-
-            <!-- BLOC CONCLUSIONS -->
-            <div class="bloc-container" id="blocConclusionsContainer" aria-hidden="true">
-                <h3 class="bloc-title">🧠 Conclusions individuals</h3>
-                <label class="required" for="conclusio">Quines conclusions extreus d'aquest contrast? Quins riscos legals has identificat?</label>
-                <textarea id="conclusio" required aria-required="true" rows="4"></textarea>
-            </div>
-
-            <!-- Botons d'acció finals -->
-            <div class="buttons">
-                <button class="btn btn-danger" id="resetBtn">🗑️ Esborrar tot</button>
-                <button class="btn btn-primary" id="submitBtn">✅ Preparar per enviar</button>
-            </div>
-
-            <!-- Àrea de resultats -->
-            <div class="results-area" id="resultsArea">
-                <h2 style="color:#D1222B;">📈 Dades per al professor</h2>
-                <p>Prem "Exporta JSON" per generar un fitxer amb les teves respostes.</p>
-                <div class="buttons">
-                    <button class="btn btn-primary" id="pdfBtn">📥 Descarregar PDF (per a Moodle)</button>
-                    <button class="btn btn-success" id="jsonBtn">📊 Exportar JSON</button>
-                    <button class="btn btn-primary" id="copyJsonBtn">📋 Copiar JSON al portapapers</button>
-                </div>
-                <div style="text-align: center; margin-top: 10px;">
-                    <button class="btn btn-secondary" id="explicacioJsonBtn">❓ Com enviar (explicació)</button>
-                </div>
-                <div id="jsonContainer" class="json-container" style="display:none;"></div>
-                <div id="copyStatus" style="display:none; background:#d4edda; padding:10px; border-radius:10px; margin-top:10px;">✅ JSON copiat!</div>
-            </div>
-
-            <!-- Recordatori final millorat -->
-            <div style="background: #e6f2ff; border-radius: 20px; padding: 20px; margin: 30px 0; border-left: 5px solid #D1222B;">
-                <span style="font-size:1.3rem; font-weight:bold;">📁 LLIURAMENT DE L'ACTIVITAT</span>
-                
-                <p style="margin-top:15px;">Abans de tancar aquesta pàgina, assegura't que has completat els següents passos:</p>
-                
-                <div style="background: white; border-radius: 15px; padding: 20px; margin: 15px 0; border: 2px solid #D1222B;">
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">1</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📥 DESA EL TEU TREBALL (OPCIONAL)</strong>
-                            <p style="margin-top:5px;">Totes les respostes es guarden automàticament al teu navegador. Pots tancar i tornar-hi més tard sense perdre res.</p>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">2</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📤 EXPORTA EL FITXER JSON</strong>
-                            <p style="margin-top:5px;">Prem el botó <strong>"📊 Exportar JSON"</strong> (a la secció de resultats). Es generarà un fitxer amb les teves respostes que es desarà a la carpeta <strong>DESCARREGUES</strong>.</p>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">3</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📎 PENJA A MOODLE</strong>
-                            <p style="margin-top:5px;">Puja a Moodle els següents documents:</p>
-                            <ul style="margin-left: 20px; margin-top: 5px;">
-                                <li><strong>📁 Fitxer JSON</strong> (obligatori - conté totes les respostes)</li>
-                                <li><strong>📊 Taula de contrast individual</strong> (PDF o enllaç)</li>
-                                <li><strong>👥 Document col·laboratiu</strong> (enllaç)</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">4</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📁 INCORPORA AL PORTAFOLIS</strong>
-                            <p style="margin-top:5px;">Guarda una còpia de tots els documents al teu <strong>portafolis digital professional</strong>.</p>
-                        </div>
-                    </div>
-                    
-                </div>
-                
-                <div style="background: #FFC72C; border-radius: 15px; padding: 15px; margin-top: 15px; border: 2px solid #D1222B; text-align: center;">
-                    <p style="font-weight:bold; color:#D1222B; font-size: 1.1rem;">⚠️ IMPORTANT: El fitxer JSON és l'única evidència que conté TOTES les teves respostes.</p>
-                    <p style="margin-top:5px;">Sense aquest fitxer, el professor no podrà avaluar correctament la teva activitat.</p>
-                </div>
-            </div>
-            <hr>
         </div>
-        <div class="footer">Diego Izquierdo · FOL · IOC · Contingut accessible ♿</div>
+
+        <div class="footer">
+            Diego Izquierdo Perán · FOL · IOC · 
+            <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
+        </div>
     </div>
 
     <script>
-        // FUNCIONS DELS MODALS
-        var modalAjuda = document.getElementById('modalAjudaTaula');
-        
-        function mostrarAjudaTaula() {
-            modalAjuda.style.display = 'block';
-        }
-
-        function tancarModalAjuda() {
-            modalAjuda.style.display = 'none';
-        }
-
-        window.mostrarAjudaTaula = mostrarAjudaTaula;
-        window.tancarModalAjuda = tancarModalAjuda;
-
-        // Tancar modal fent clic a la X o fora
-        document.querySelector('.close-modal').addEventListener('click', function() {
-            modalAjuda.style.display = 'none';
+        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
-        window.onclick = function(event) {
-            if (event.target == modalAjuda) {
-                modalAjuda.style.display = 'none';
-            }
-        };
-
-        // ===========================================
-        // GUARDAT AUTOMÀTIC AMB LOCALSTORAGE (PREFIX ra3_)
-        // ===========================================
-        const PREFIX = 'ra3_';
-        
-        function carregarDadesGuardades() {
-            document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
-                let valorGuardat = localStorage.getItem(PREFIX + camp.id);
-                if (valorGuardat) camp.value = valorGuardat;
-            });
-            
-            document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                let nom = radio.name;
-                let valorGuardat = localStorage.getItem(PREFIX + nom);
-                if (valorGuardat === radio.value) radio.checked = true;
-            });
-        }
-        
-        function guardarCamp(camp) {
-            localStorage.setItem(PREFIX + camp.id, camp.value);
-        }
-        
-        function guardarRadio(name, value) {
-            localStorage.setItem(PREFIX + name, value);
-        }
-        
-        window.addEventListener('load', carregarDadesGuardades);
-        
-        document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
-            camp.addEventListener('input', function() { guardarCamp(this); });
-        });
-        
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                guardarRadio(this.name, this.value);
-            });
-        });
-
-        // ===========================================
-        // MODAL D'EXPLICACIÓ JSON
-        // ===========================================
-        function obrirModalExplicacio() {
-            document.getElementById('modalExplicacio').style.display = 'block';
-        }
-        
-        document.getElementById('explicacioJsonBtn')?.addEventListener('click', obrirModalExplicacio);
-        
-        document.querySelector('.modal-explicacio-tancar').addEventListener('click', function() {
-            document.getElementById('modalExplicacio').style.display = 'none';
-        });
-        
-        document.getElementById('tancarModalBtn').addEventListener('click', function() {
-            document.getElementById('modalExplicacio').style.display = 'none';
-        });
-        
-        window.addEventListener('click', function(event) {
-            let modal = document.getElementById('modalExplicacio');
-            if (event.target == modal) {
-                modal.style.display = 'none';
+        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         });
-
-        // ===========================================
-        // Toggle Blocs (Taula i Conclusions)
-        // ===========================================
-        document.getElementById('toggleBlocTaulaBtn').addEventListener('click', function() {
-            let container = document.getElementById('blocTaulaContainer');
-            let isHidden = container.style.display === 'none' || container.style.display === '';
-            container.style.display = isHidden ? 'block' : 'none';
-            this.setAttribute('aria-expanded', isHidden);
-            container.setAttribute('aria-hidden', !isHidden);
-        });
-
-        document.getElementById('toggleBlocConclusionsBtn').addEventListener('click', function() {
-            let container = document.getElementById('blocConclusionsContainer');
-            let isHidden = container.style.display === 'none' || container.style.display === '';
-            container.style.display = isHidden ? 'block' : 'none';
-            this.setAttribute('aria-expanded', isHidden);
-            container.setAttribute('aria-hidden', !isHidden);
-        });
-
-        // ===========================================
-        // BOTÓ RESET MILLORAT (esborra localStorage)
-        // ===========================================
-        document.getElementById('resetBtn').addEventListener('click', function() {
-            if (confirm('⚠️ Això esborrarà TOTES les respostes i les dades guardades. Estàs segur?')) {
-                
-                document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
-                    camp.value = '';
-                });
-                
-                document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                    radio.checked = false;
-                });
-                
-                for (let i = localStorage.length - 1; i >= 0; i--) {
-                    let clau = localStorage.key(i);
-                    if (clau.startsWith(PREFIX)) {
-                        localStorage.removeItem(clau);
-                    }
-                }
-                
-                document.getElementById('resultsArea').style.display = 'none';
-                
-                alert('✅ Totes les respostes s\'han esborrat correctament.');
-            }
-        });
-
-        // ===========================================
-        // SUBMIT (Preparar per enviar)
-        // ===========================================
-        document.getElementById('submitBtn').addEventListener('click', function() {
-            let requiredIds = ['nom', 'grup', 'condicio1', 'condicio2', 'condicio3', 'condicio4', 'condicio5', 'conclusio'];
-            let valid = true;
-            requiredIds.forEach(id => {
-                let field = document.getElementById(id);
-                if (!field.value.trim()) {
-                    field.style.borderColor = '#D1222B';
-                    valid = false;
-                } else {
-                    field.style.borderColor = '#ffd9d9';
-                }
-            });
-
-            if (!valid) { alert('Omple tots els camps obligatoris (*)'); return; }
-
-            window._estudiantData = {
-                nom: document.getElementById('nom').value,
-                grup: document.getElementById('grup').value,
-                enllac: document.getElementById('enllac').value,
-                autoval: document.getElementById('autovaloracio').value,
-                condicio1: document.getElementById('condicio1').value,
-                condicio2: document.getElementById('condicio2').value,
-                condicio3: document.getElementById('condicio3').value,
-                condicio4: document.getElementById('condicio4').value,
-                condicio5: document.getElementById('condicio5').value,
-                condicio6: document.getElementById('condicio6').value,
-                condicio7: document.getElementById('condicio7').value,
-                conclusio: document.getElementById('conclusio').value,
-                data: new Date().toISOString()
-            };
-
-            document.getElementById('resultsArea').style.display = 'block';
-            
-            setTimeout(() => {
-                document.getElementById('modalExplicacio').style.display = 'block';
-            }, 500);
-        });
-
-        // ===========================================
-        // PDF (DESCARREGAR PDF PER A MOODLE)
-        // ===========================================
-        document.getElementById('pdfBtn').addEventListener('click', function() {
-            let d = window._estudiantData;
-            if (!d) { alert('Primer prepara les dades'); return; }
-            
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            doc.setFontSize(16);
-            doc.setTextColor(209,34,43);
-            doc.text('INFORME D\'ACTIVITAT - RA3', 20, 20);
-            
-            doc.setFontSize(10);
-            doc.setTextColor(0,0,0);
-            doc.text('Estudiant: ' + (d.nom || ''), 20, 30);
-            doc.text('Grup: ' + (d.grup || ''), 20, 37);
-            doc.text('Data: ' + new Date().toLocaleDateString('ca-ES'), 20, 44);
-            
-            doc.text('TAULA DE CONTRAST', 20, 54);
-            let y = 64;
-            
-            let condicions = [
-                '1. ' + (d.condicio1 || '-'),
-                '2. ' + (d.condicio2 || '-'),
-                '3. ' + (d.condicio3 || '-'),
-                '4. ' + (d.condicio4 || '-'),
-                '5. ' + (d.condicio5 || '-')
-            ];
-            
-            if (d.condicio6) condicions.push('6. ' + d.condicio6);
-            if (d.condicio7) condicions.push('7. ' + d.condicio7);
-            
-            condicions.forEach(r => {
-                let lines = doc.splitTextToSize(r, 170);
-                doc.text(lines, 20, y);
-                y += lines.length * 5 + 5;
-            });
-            
-            doc.text('CONCLUSIONS', 20, y);
-            let conclLines = doc.splitTextToSize(d.conclusio || '-', 170);
-            doc.text(conclLines, 20, y + 10);
-            
-            doc.save(`RA3_informe_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.pdf`);
-        });
-
-        // ===========================================
-        // JSON (EXPORTAR)
-        // ===========================================
-        document.getElementById('jsonBtn').addEventListener('click', function() {
-            let d = window._estudiantData;
-            if (!d) { 
-                alert('Primer has de fer clic a "Preparar per enviar"');
-                return; 
-            }
-            
-            try {
-                let jsonCont = document.getElementById('jsonContainer');
-                let jsonStr = JSON.stringify(d, null, 2);
-                
-                if (jsonCont) {
-                    jsonCont.style.display = 'block';
-                    jsonCont.textContent = jsonStr;
-                }
-                
-                const blob = new Blob([jsonStr], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `RA3_${d.nom?.replace(/\s+/g, '_') || 'estudiant'}.json`;
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                alert('✅ Fitxer JSON desat a DESCÀRREGUES');
-                
-            } catch (error) {
-                console.error('Error:', error);
-                alert('❌ Error en exportar el JSON');
-            }
-        });
-
-        // ===========================================
-        // Copiar JSON al portapapers
-        // ===========================================
-        document.getElementById('copyJsonBtn').addEventListener('click', function() {
-            let d = window._estudiantData;
-            if (!d) { alert('Primer prepara les dades'); return; }
-            
-            let jsonStr = JSON.stringify(d, null, 2);
-            navigator.clipboard.writeText(jsonStr).then(() => {
-                let status = document.getElementById('copyStatus');
-                status.style.display = 'block';
-                setTimeout(() => status.style.display = 'none', 2000);
-            }).catch(() => {
-                alert('❌ No s\'ha pogut copiar');
-            });
+        document.getElementById('accesibilitatInfo').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Aquest lloc compleix les pautes d\'accessibilitat WCAG 2.1 (nivell AA).');
         });
     </script>
 </body>
