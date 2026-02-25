@@ -80,11 +80,6 @@
             padding-left: 18px;
             margin: 40px 0 20px;
         }
-        .subsection-title {
-            font-size: 1.4rem;
-            color: #D1222B;
-            margin: 30px 0 15px;
-        }
         .info-box {
             background: #f8fafc;
             border-radius: 15px;
@@ -245,38 +240,6 @@
             border-radius: 10px;
             border: 1px solid #e9ecef;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 20px;
-            width: 80%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: 3px solid #D1222B;
-            position: relative;
-        }
-        .close-modal {
-            color: #D1222B;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close-modal:hover {
-            color: white;
-        }
     </style>
 </head>
 <body>
@@ -288,7 +251,7 @@
     <div class="container">
         <!-- CAPÇALERA -->
         <div class="header">
-            <a href="../../1_presentacio.html" class="btn-tornar-portada" title="Tornar a la portada del projecte">
+            <a href="../../1_presentacio.html" class="btn-tornar-portada" title="Tornar a la portada del projecte" aria-label="Tornar a la portada del projecte">
                 🏠
             </a>
             <h1>⚖️ RA3 · De l'oferta al conveni</h1>
@@ -420,9 +383,12 @@
 
             <!-- BOTONS D'ALUMNE I PROFESSOR -->
             <div class="buttons-parell">
+                <!-- Botó per a l'alumne -->
                 <a href="../alumnes/ra3-alumne.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">
                     👤 Veure activitat completa per a alumnes
                 </a>
+                
+                <!-- Botó per al professor -->
                 <a href="../professor/ra3-professor.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 30px; background: #6c757d; border-color: #6c757d;">
                     👨‍🏫 Corrector per al professor
                 </a>
@@ -430,14 +396,22 @@
 
             <!-- NAVEGACIÓ -->
             <div class="nav-footer">
+                <!-- Botó esquerre: RA2 -->
                 <a href="activitat-ra2.html" class="btn">⬅️ RA2</a>
+                
+                <!-- Botó central: Tornar a Desenvolupament curricular -->
                 <div class="nav-centre">
-                    <a href="../index.html" class="btn btn-primary">⬆️ Tornar a Desenvolupament curricular</a>
+                    <a href="../index.html" class="btn btn-primary">
+                        ⬆️ Tornar a Desenvolupament curricular
+                    </a>
                 </div>
+                
+                <!-- Botó dret: RA4 -->
                 <a href="activitat-ra4.html" class="btn">RA4 ➡️</a>
             </div>
         </div>
 
+        <!-- PEU -->
         <div class="footer">
             Diego Izquierdo Perán · FOL · IOC · 
             <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
@@ -445,6 +419,7 @@
     </div>
 
     <script>
+        // TORNAR A DALT
         document.getElementById('tornarDaltBtn').addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
