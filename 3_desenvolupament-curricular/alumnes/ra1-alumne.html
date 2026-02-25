@@ -6,9 +6,7 @@
     <title>RA1 · Coneix el teu sector · Activitat completa</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        /* =========================================== */
-        /* ESTILS UNIFICATS (exactament com els RA2-RA5) */
-        /* =========================================== */
+        /* ===== ESTILS COMPLETS (exactament igual que l'original) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -73,6 +71,29 @@
             border-left: 8px solid #FFC72C;
             padding-left: 18px;
             margin: 30px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .section-title .help-btn {
+            background: #FFC72C;
+            color: #D1222B;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .section-title .help-btn:hover {
+            background: #D1222B;
+            color: white;
         }
         .info-box {
             background: #fff1f0;
@@ -98,6 +119,7 @@
             gap: 8px;
             margin: 5px;
             transition: all 0.2s;
+            text-decoration: none;
         }
         .btn:hover, .btn:focus {
             background: #D1222B;
@@ -127,6 +149,23 @@
             color: white;
             border: none;
         }
+        .btn-close {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-close:hover {
+            background: #5a6268;
+        }
+        .btn-up {
+            background: #FFC72C;
+            color: #D1222B;
+            border: none;
+        }
+        .btn-up:hover {
+            background: #D1222B;
+            color: white;
+        }
         .buttons {
             display: flex;
             gap: 10px;
@@ -151,46 +190,6 @@
             color: #D1222B;
             font-weight: bold;
         }
-        .scale-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
-        }
-        .scale-item {
-            flex: 1;
-            min-width: 180px;
-            padding: 15px;
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .scale-item:hover, .scale-item:focus {
-            background: #fff1f0;
-            border-color: #D1222B;
-            outline: none;
-        }
-        .scale-item.selected {
-            background: #fff1f0;
-            border-color: #D1222B;
-            box-shadow: 0 0 0 3px rgba(209,34,43,0.2);
-        }
-        .level-icon {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            margin-right: 10px;
-            font-weight: bold;
-        }
-        .level-1 { background: #e74c3c; }
-        .level-2 { background: #f39c12; }
-        .level-3 { background: #2ecc71; }
-        .level-4 { background: #D1222B; }
         .results-area {
             background: #f8fafc;
             border-radius: 20px;
@@ -224,20 +223,6 @@
         hr {
             border: 2px dashed #FFC72C;
             margin: 30px 0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th {
-            background: #D1222B;
-            color: white;
-            padding: 10px;
-        }
-        td {
-            border: 1px solid #ffd9d9;
-            padding: 8px;
         }
         .sr-only {
             position: absolute;
@@ -337,6 +322,7 @@
         .rubrica-visual .nivell-3 { background: #d4edda; }
         .rubrica-visual .nivell-4 { background: #D1222B; color: white; }
         
+        /* ESTILS PER A L'EXAMEN (20 PREGUNTES) */
         .examen-container {
             background: #f0f7ff;
             border-radius: 20px;
@@ -554,14 +540,8 @@
     </style>
 </head>
 <body>
-    <!-- BOTÓ FLOTANT ACCESSIBLE PER TORNAR A DALT -->
-    <button 
-        class="btn-flotant" 
-        id="tornarDaltBtn" 
-        title="Tornar a l'inici de la pàgina"
-        aria-label="Tornar a dalt"
-        role="button"
-        tabindex="0">
+    <!-- BOTÓ FLOTANT TORNAR A DALT -->
+    <button class="btn-flotant" id="tornarDaltBtn" title="Tornar a dalt" aria-label="Tornar a dalt">
         ⬆️ <span class="sr-only">Tornar a dalt</span>
     </button>
 
@@ -601,6 +581,43 @@
         </div>
     </div>
 
+    <!-- MODAL INSTRUCCIONS PORTAFOLIS -->
+    <div id="modalPortafolis" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>📋 INSTRUCCIONS DEL PORTAFOLIS DIGITAL PROFESSIONAL</h2>
+            
+            <h3>Què és el portafolis?</h3>
+            <p>El portafolis digital és una recopilació de les teves evidències d'aprenentatge al llarg del mòdul. Ha de mostrar la teva evolució i les teves competències professionals.</p>
+            
+            <h3>Contingut obligatori:</h3>
+            <ul>
+                <li><strong>RA1 (Coneix el teu sector):</strong> Informe d'anàlisi ocupacional</li>
+                <li><strong>RA2 (Investigació d'accidents):</strong> Informe d'investigació + Avaluació de riscos</li>
+                <li><strong>RA3 (De l'oferta al conveni):</strong> Taula de contrast + conclusions grupals</li>
+                <li><strong>RA4 (El meu perfil professional):</strong> DAFO + Full de ruta</li>
+                <li><strong>RA5 (Identitat digital):</strong> PLE + Reflexió identitat digital + CV digital</li>
+                <li><strong>Reflexió global:</strong> Connexions entre els RA i aprenentatges</li>
+            </ul>
+            
+            <h3>Criteris d'avaluació del portafolis:</h3>
+            <ul>
+                <li><strong>Completesa (30%):</strong> Hi són totes les evidències?</li>
+                <li><strong>Reflexió (30%):</strong> Qualitat de la reflexió global i connexions</li>
+                <li><strong>Organització (20%):</strong> Estructura clara i professional</li>
+                <li><strong>Accessibilitat (20%):</strong> El portafolis és usable per a tothom?</li>
+            </ul>
+            
+            <h3>Dates clau:</h3>
+            <ul>
+                <li><strong>Lliurament final:</strong> [Data a determinar]</li>
+                <li><strong>Revisió intermèdia:</strong> [Data a determinar]</li>
+            </ul>
+            
+            <p style="margin-top:20px; font-style:italic;">Aquestes instruccions estan subjectes a possibles modificacions. Consulta sempre l'aula virtual per a la versió actualitzada.</p>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <div>
@@ -622,43 +639,6 @@
                 </button>
             </div>
 
-            <!-- MODAL INSTRUCCIONS PORTAFOLIS -->
-            <div id="modalPortafolis" class="modal">
-                <div class="modal-content">
-                    <span class="close-modal">&times;</span>
-                    <h2>📋 INSTRUCCIONS DEL PORTAFOLIS DIGITAL PROFESSIONAL</h2>
-                    
-                    <h3>Què és el portafolis?</h3>
-                    <p>El portafolis digital és una recopilació de les teves evidències d'aprenentatge al llarg del mòdul. Ha de mostrar la teva evolució i les teves competències professionals.</p>
-                    
-                    <h3>Contingut obligatori:</h3>
-                    <ul>
-                        <li><strong>RA1 (Coneix el teu sector):</strong> Informe d'anàlisi ocupacional</li>
-                        <li><strong>RA2 (Investigació d'accidents):</strong> Informe d'investigació + Avaluació de riscos</li>
-                        <li><strong>RA3 (De l'oferta al conveni):</strong> Taula de contrast + conclusions grupals</li>
-                        <li><strong>RA4 (El meu perfil professional):</strong> DAFO + Full de ruta</li>
-                        <li><strong>RA5 (Identitat digital):</strong> PLE + Reflexió identitat digital + CV digital</li>
-                        <li><strong>Reflexió global:</strong> Connexions entre els RA i aprenentatges</li>
-                    </ul>
-                    
-                    <h3>Criteris d'avaluació del portafolis:</h3>
-                    <ul>
-                        <li><strong>Completesa (30%):</strong> Hi són totes les evidències?</li>
-                        <li><strong>Reflexió (30%):</strong> Qualitat de la reflexió global i connexions</li>
-                        <li><strong>Organització (20%):</strong> Estructura clara i professional</li>
-                        <li><strong>Accessibilitat (20%):</strong> El portafolis és usable per a tothom?</li>
-                    </ul>
-                    
-                    <h3>Dates clau:</h3>
-                    <ul>
-                        <li><strong>Lliurament final:</strong> [Data a determinar]</li>
-                        <li><strong>Revisió intermèdia:</strong> [Data a determinar]</li>
-                    </ul>
-                    
-                    <p style="margin-top:20px; font-style:italic;">Aquestes instruccions estan subjectes a possibles modificacions. Consulta sempre l'aula virtual per a la versió actualitzada.</p>
-                </div>
-            </div>
-
             <!-- Distintiu groc -->
             <div class="badge-groc">📌 Activitat individual · 2 hores</div>
 
@@ -666,7 +646,7 @@
             <h2 class="section-title" id="objectius">🔍 Objectius i justificació</h2>
             <p>Aquesta activitat té com a finalitat que l'alumnat prengui consciència de les característiques del sector professional en què s'insereix el cicle formatiu, identifiqui les principals ocupacions i reflexioni sobre les competències més rellevants per al perfil d'instal·lador electricista. Dona resposta als criteris d'avaluació 1.1, 1.2 i 1.3 del RA1.</p>
 
-            <!-- RÚBRICA VISUAL (NOU ESTIL) -->
+            <!-- RÚBRICA VISUAL -->
             <div class="rubrica-visual">
                 <h3 style="color:#D1222B; margin-bottom:15px;">📊 RÚBRICA D'AVALUACIÓ (per a la teva orientació)</h3>
                 <p>Aquesta rúbrica mostra els criteris amb què es valorarà la teva activitat. Els nivells van de 1 (No assolit) a 4 (Excel·lent).</p>
@@ -719,11 +699,10 @@
                 <p style="margin-top:10px; font-style:italic;">Aquesta rúbrica és orientativa. El professor la utilitzarà per a la qualificació final.</p>
             </div>
 
-            <!-- ENLLAÇOS D'INTERÈS (amb nou botó del llibre IOC) -->
+            <!-- ENLLAÇOS D'INTERÈS -->
             <div class="info-links">
                 <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
                 <div>
-                    <a href="https://dizquie4-sys.github.io/CURSO-CDD/fp-trs-ipo-i-u1-pdfindex.pdf" target="_blank" class="enllac-normativa">📖 Llibre: El perfil professional (IOC)</a>
                     <a href="https://observatoritreball.gencat.cat" target="_blank" class="enllac-normativa">Observatori del Treball</a>
                     <a href="https://www.infojobs.net" target="_blank" class="enllac-normativa">Infojobs</a>
                     <a href="https://www.linkedin.com" target="_blank" class="enllac-normativa">LinkedIn</a>
@@ -731,6 +710,7 @@
                 </div>
             </div>
 
+            <!-- METODOLOGIA I DESENVOLUPAMENT -->
             <h2 class="section-title" id="metodologia">🧭 Metodologia i desenvolupament</h2>
             
             <div class="info-box">
@@ -738,7 +718,7 @@
                 <p>Consulta aquestes fonts:</p>
                 <ul>
                     <li><strong>Portals d'ocupació:</strong> Infojobs, Indeed, LinkedIn · filtra per “electricista”, “instal·lador”, “tècnic en domòtica”, “energia solar”.</li>
-                    <li><strong>Observatori del Treball:</strong> <a href="https://observatoritreball.gencat.cat" target="_blank">observatoritreball.gencat.cat</a> (s'obre en finestra nova)</li>
+                    <li><strong>Observatori del Treball:</strong> <a href="https://observatoritreball.gencat.cat" target="_blank">observatoritreball.gencat.cat</a></li>
                     <li><strong>Associacions empresarials:</strong> PIMEC Electricitat, FEGICAT.</li>
                 </ul>
             </div>
@@ -775,7 +755,7 @@
                     <li>Una breu reflexió personal sobre el procés.</li>
                     <li>L'enllaç al PDF l'hauràs de penjar a Moodle i incorporar-lo al teu <strong>portafolis digital professional</strong>.</li>
                 </ul>
-                <p style="margin-top:10px;">✅ Aquest informe serà l'evidència principal d'aprenentatge i el document que s'avaluarà.</p>
+                <p style="margin-top:10px;">✅ Aquest informe serà l'evidència principal d'aprenentatge.</p>
             </div>
 
             <hr>
@@ -801,16 +781,14 @@
                 <option value="5">5 - Molt fàcil i útil</option>
             </select>
 
-            <!-- BOTÓ DEL BLOC REFLEXIÓ (DESPLEGABLE) -->
+            <!-- BOTÓ REFLEXIÓ -->
             <div style="text-align:center; margin:20px 0;">
                 <button class="btn btn-primary" id="toggleBlocReflexioBtn" aria-expanded="false">
                     🧠 Reflexió final de l'estudiant
                 </button>
             </div>
 
-            <!-- =========================================== -->
-            <!-- BLOC REFLEXIÓ FINAL (DESPLEGABLE) -->
-            <!-- =========================================== -->
+            <!-- BLOC REFLEXIÓ -->
             <div class="bloc-container" id="blocReflexioContainer" aria-hidden="true">
                 <h3 class="bloc-title">🧠 Reflexió final de l'estudiant</h3>
                 
@@ -827,19 +805,18 @@
                 <textarea id="einautil" rows="2"></textarea>
             </div>
 
-            <!-- BOTÓ AUTOAVALUACIÓ -->
+            <!-- BOTÓ AUTOAVALUACIÓ 10 PREGUNTES -->
             <div style="text-align:center; margin:20px 0;">
                 <button class="btn btn-primary" id="toggleAutoavaluacioBtn" aria-expanded="false">
                     📝 Autoavaluació prèvia (10 preguntes)
                 </button>
             </div>
 
-            <!-- AUTOAVALUACIÓ (inicialment oculta) -->
+            <!-- AUTOAVALUACIÓ 10 PREGUNTES -->
             <div class="autoavaluacio-container" id="autoavaluacioContainer" aria-hidden="true">
-                <h3 style="color:#D1222B;">Autoavaluació</h3>
+                <h3 style="color:#D1222B;">Autoavaluació (10 preguntes)</h3>
                 <p>Respon aquestes 10 preguntes per comprovar si has assolit els objectius de l'activitat.</p>
 
-                <!-- Preguntes 1-10 (es mantenen) -->
                 <div class="quiz-item">
                     <div class="quiz-question">1. Quina és la finalitat principal d'aquesta activitat?</div>
                     <div class="quiz-options">
@@ -924,8 +901,35 @@
                 <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center;">
                     <button class="btn btn-primary" id="checkQuizBtn">✅ Comprova respostes</button>
                     <button class="btn btn-outline" id="resetQuizBtn">↻ Tornar a començar</button>
+                    <button class="btn btn-close" id="closeQuizBtn">✖ Tancar</button>
                 </div>
                 <div id="quizFeedback" class="feedback-quiz"></div>
+            </div>
+
+            <!-- =========================================== -->
+            <!-- NOU: AUTOAVALUACIÓ 20 PREGUNTES (EXAMEN FINAL) -->
+            <!-- =========================================== -->
+            <div style="text-align:center; margin:20px 0;">
+                <button class="btn btn-primary" id="toggleExamenBtn" aria-expanded="false">
+                    📝 AUTOAVALUACIÓ PER A L'EXAMEN FINAL (20 preguntes)
+                </button>
+            </div>
+
+            <div class="examen-container" id="examenContainer" aria-hidden="true">
+                <h2 style="color:#D1222B; margin-bottom:20px;">📝 AUTOAVALUACIÓ PER A L'EXAMEN FINAL (20 preguntes)</h2>
+                <p style="margin-bottom:20px;">Aquestes preguntes són representatives del que trobaràs a l'examen final. 
+                Has d'obtenir un mínim del <strong>70% (14/20)</strong> per considerar que has assolit els continguts.</p>
+
+                <div id="examen-preguntes"></div>
+
+                <div style="text-align:center; margin:20px 0;">
+                    <button class="btn btn-primary" id="comprovarExamenBtn">✅ Comprova respostes</button>
+                    <button class="btn btn-secondary" id="reiniciarExamenBtn">↻ Reiniciar examen</button>
+                    <button class="btn btn-close" id="closeExamenBtn">✖ Tancar</button>
+                </div>
+
+                <div id="examen-resultat" class="examen-resultat"></div>
+                <div id="examen-feedback-global" style="margin-top:15px;"></div>
             </div>
 
             <!-- Botons d'acció finals -->
@@ -950,56 +954,10 @@
                 <div id="copyStatus" style="display:none; background:#d4edda; padding:10px; border-radius:10px; margin-top:10px;">✅ JSON copiat!</div>
             </div>
 
-            <!-- Recordatori final millorat -->
+            <!-- Recordatori final -->
             <div style="background: #e6f2ff; border-radius: 20px; padding: 20px; margin: 30px 0; border-left: 5px solid #D1222B;">
-                <span style="font-size:1.3rem; font-weight:bold;">📁 LLIURAMENT DE L'ACTIVITAT</span>
-                
-                <p style="margin-top:15px;">Abans de tancar aquesta pàgina, assegura't que has completat els següents passos:</p>
-                
-                <div style="background: white; border-radius: 15px; padding: 20px; margin: 15px 0; border: 2px solid #D1222B;">
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">1</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📥 DESA EL TEU TREBALL (OPCIONAL)</strong>
-                            <p style="margin-top:5px;">Totes les respostes es guarden automàticament al teu navegador. Pots tancar i tornar-hi més tard sense perdre res.</p>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">2</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📤 EXPORTA EL FITXER JSON</strong>
-                            <p style="margin-top:5px;">Prem el botó <strong>"📊 Exportar JSON"</strong> (a la secció de resultats). Es generarà un fitxer amb les teves respostes que es desarà a la carpeta <strong>DESCARREGUES</strong>.</p>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">3</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📎 PENJA A MOODLE</strong>
-                            <p style="margin-top:5px;">Puja a Moodle els següents documents:</p>
-                            <ul style="margin-left: 20px; margin-top: 5px;">
-                                <li><strong>📁 Fitxer JSON</strong> (obligatori - conté totes les respostes)</li>
-                                <li><strong>📄 Informe d'anàlisi ocupacional</strong> (PDF)</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                        <div style="background: #D1222B; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">4</div>
-                        <div style="flex: 1;">
-                            <strong style="color: #D1222B;">📁 INCORPORA AL PORTAFOLIS</strong>
-                            <p style="margin-top:5px;">Guarda una còpia de tots els documents al teu <strong>portafolis digital professional</strong>.</p>
-                        </div>
-                    </div>
-                    
-                </div>
-                
-                <div style="background: #FFC72C; border-radius: 15px; padding: 15px; margin-top: 15px; border: 2px solid #D1222B; text-align: center;">
-                    <p style="font-weight:bold; color:#D1222B; font-size: 1.1rem;">⚠️ IMPORTANT: El fitxer JSON és l'única evidència que conté TOTES les teves respostes.</p>
-                    <p style="margin-top:5px;">Sense aquest fitxer, el professor no podrà avaluar correctament la teva activitat.</p>
-                </div>
+                <span style="font-size:1.3rem; font-weight:bold;">📁 Recorda</span>
+                <p style="margin-top:10px;">L'informe final (PDF) l'has de penjar a Moodle. Passarà a formar part del teu <strong>portafolis digital professional</strong>.</p>
             </div>
             <hr>
         </div>
@@ -1008,7 +966,7 @@
 
     <script>
         // ===========================================
-        // FUNCIONS DEL MODAL
+        // FUNCIONS DELS MODALS
         // ===========================================
         var modalPortafolis = document.getElementById('modalPortafolis');
         var btnPortafolis = document.getElementById('modalPortafolisBtn');
@@ -1029,25 +987,22 @@
         }
 
         // ===========================================
-        // PDF d'instruccions (AMPLIAT AMB TOTES LES PREGUNTES)
+        // PDF D'INSTRUCCIONS
         // ===========================================
         document.getElementById('pdfInstruccionsBtn').addEventListener('click', function() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             
-            // Títol
             doc.setFontSize(20);
             doc.setTextColor(209,34,43);
             doc.text('RA1 · Coneix el teu sector', 20, 20);
             
-            // Descripció
             doc.setFontSize(12);
             doc.setTextColor(0,0,0);
             doc.text('DESCRIPCIÓ', 20, 35);
             doc.setFontSize(10);
             doc.text('Activitat individual de 2 hores per analitzar el sector professional', 20, 45);
             
-            // Objectius
             doc.setFontSize(12);
             doc.text('OBJECTIUS', 20, 60);
             doc.setFontSize(10);
@@ -1055,108 +1010,12 @@
             doc.text('• Analitzar competències tècniques i personals', 25, 77);
             doc.text('• Reflexionar sobre tendències de futur', 25, 84);
             
-            // Metodologia
             doc.setFontSize(12);
             doc.text('METODOLOGIA', 20, 99);
             doc.setFontSize(10);
             doc.text('Fase 1 (1h): Exploració (Infojobs, Observatori, associacions)', 25, 109);
             doc.text('Fase 2 (1h): Informe 1-2 pàgines', 25, 116);
             doc.text('Fase 3: Lliurament PDF a Moodle + portafolis', 25, 123);
-            
-            // PREGUNTES DE L'ACTIVITAT
-            doc.setFontSize(12);
-            doc.text('PREGUNTES DE L\'ACTIVITAT', 20, 143);
-            doc.setFontSize(10);
-            
-            let y = 153;
-            const preguntes = [
-                'REFLEXIÓ FINAL:',
-                '1. Ocupacions més demandades a Catalunya?',
-                '2. Competències més valorades?',
-                '3. Tendències de futur?',
-                '4. Eina digital més útil?'
-            ];
-            
-            preguntes.forEach(p => {
-                if (p === '') {
-                    y += 3;
-                } else {
-                    doc.text(p, 25, y);
-                    y += 6;
-                }
-            });
-            
-            // Escala de valoració
-            doc.setFontSize(12);
-            doc.text('ESCALA DE VALORACIÓ (1–4)', 20, y+10);
-            doc.setFontSize(10);
-            doc.text('1 - No assolit', 25, y+20);
-            doc.text('2 - En la direcció adequada', 25, y+27);
-            doc.text('3 - Assolit', 25, y+34);
-            doc.text('4 - Excel·lent', 25, y+41);
-            
-            // RÚBRICA EN TAULA
-            doc.addPage();
-            doc.setFontSize(12);
-            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 20);
-            
-            doc.setFontSize(8);
-            doc.text('Criteri', 20, 30);
-            doc.text('Excel·lent (4)', 50, 30);
-            doc.text('Assolit (3)', 85, 30);
-            doc.text('En procés (2)', 120, 30);
-            doc.text('No assolit (1)', 155, 30);
-            doc.text('Pes', 185, 30);
-            
-            doc.line(20, 32, 195, 32);
-            
-            // Criteri 1 - Ocupacions
-            doc.text('C1: Ocupacions', 20, 42);
-            doc.text('5+ ocupacions', 50, 42);
-            doc.text('anàlisi detallada', 50, 47);
-            doc.text('4 ocupacions', 85, 42);
-            doc.text('descripció bàsica', 85, 47);
-            doc.text('2-3 ocupacions', 120, 42);
-            doc.text('sense detall', 120, 47);
-            doc.text('1 o cap', 155, 42);
-            doc.text('ocupació', 155, 47);
-            doc.text('40%', 185, 45);
-            
-            // Criteri 2 - Competències
-            doc.text('C2: Competències', 20, 57);
-            doc.text('Relaciona', 50, 57);
-            doc.text('amb ofertes', 50, 62);
-            doc.text('Diferencia', 85, 57);
-            doc.text('tèc/pers', 85, 62);
-            doc.text('Llista', 120, 57);
-            doc.text('genèrica', 120, 62);
-            doc.text('No', 155, 57);
-            doc.text('identifica', 155, 62);
-            doc.text('30%', 185, 60);
-            
-            // Criteri 3 - Tendències
-            doc.text('C3: Tendències', 20, 72);
-            doc.text('Projecta', 50, 72);
-            doc.text('impacte', 50, 77);
-            doc.text('2-3', 85, 72);
-            doc.text('coherents', 85, 77);
-            doc.text('1 tendència', 120, 72);
-            doc.text('sense desenv.', 120, 77);
-            doc.text('No', 155, 72);
-            doc.text('identifica', 155, 77);
-            doc.text('20%', 185, 75);
-            
-            // Criteri 4 - Qualitat
-            doc.text('C4: Qualitat', 20, 87);
-            doc.text('Professional', 50, 87);
-            doc.text('reflexiu', 50, 92);
-            doc.text('Clar', 85, 87);
-            doc.text('organitzat', 85, 92);
-            doc.text('Funcional', 120, 87);
-            doc.text('millorable', 120, 92);
-            doc.text('Desestruct', 155, 87);
-            doc.text('incomplet', 155, 92);
-            doc.text('10%', 185, 90);
             
             doc.save('RA1_instruccions_completes.pdf');
         });
@@ -1249,7 +1108,7 @@
         });
 
         // ===========================================
-        // Toggle autoavaluació
+        // Toggle autoavaluació 10 preguntes
         // ===========================================
         document.getElementById('toggleAutoavaluacioBtn').addEventListener('click', function() {
             let container = document.getElementById('autoavaluacioContainer');
@@ -1259,8 +1118,29 @@
             container.setAttribute('aria-hidden', !isHidden);
         });
 
+        document.getElementById('closeQuizBtn').addEventListener('click', function() {
+            document.getElementById('autoavaluacioContainer').style.display = 'none';
+            document.getElementById('toggleAutoavaluacioBtn').setAttribute('aria-expanded', 'false');
+        });
+
         // ===========================================
-        // Comprova autoavaluació
+        // Toggle examen 20 preguntes
+        // ===========================================
+        document.getElementById('toggleExamenBtn').addEventListener('click', function() {
+            let container = document.getElementById('examenContainer');
+            let isHidden = container.style.display === 'none' || container.style.display === '';
+            container.style.display = isHidden ? 'block' : 'none';
+            this.setAttribute('aria-expanded', isHidden);
+            container.setAttribute('aria-hidden', !isHidden);
+        });
+
+        document.getElementById('closeExamenBtn').addEventListener('click', function() {
+            document.getElementById('examenContainer').style.display = 'none';
+            document.getElementById('toggleExamenBtn').setAttribute('aria-expanded', 'false');
+        });
+
+        // ===========================================
+        // Comprova autoavaluació 10 preguntes
         // ===========================================
         document.getElementById('checkQuizBtn').addEventListener('click', function() {
             let correctes = 0;
@@ -1280,34 +1160,151 @@
             feedback.style.display = 'block';
             
             if (correctes === total) {
-                feedback.innerHTML = '✅ Excel·lent! Has respost correctament totes les preguntes. Estàs preparat per a l\'activitat.';
+                feedback.innerHTML = '✅ Excel·lent! Has respost correctament totes les preguntes.';
                 feedback.style.background = '#d4edda';
                 feedback.style.color = '#155724';
             } else if (correctes >= 7) {
-                feedback.innerHTML = `✅ Has obtingut ${correctes}/${total}. Molt bé! Revisa els errors abans de continuar.`;
+                feedback.innerHTML = `✅ Has obtingut ${correctes}/${total}. Molt bé! Revisa els errors.`;
                 feedback.style.background = '#fff3cd';
                 feedback.style.color = '#856404';
             } else {
-                feedback.innerHTML = `❌ Has obtingut ${correctes}/${total}. Torna a llegir l'activitat amb atenció i torna-ho a intentar abans d'enviar l'avaluació.`;
+                feedback.innerHTML = `❌ Has obtingut ${correctes}/${total}. Torna a llegir l'activitat.`;
                 feedback.style.background = '#f8d7da';
                 feedback.style.color = '#721c24';
             }
         });
 
-        // Reiniciar autoavaluació
+        // Reiniciar autoavaluació 10 preguntes
         document.getElementById('resetQuizBtn').addEventListener('click', function() {
-            document.querySelectorAll('#autoavaluacioContainer input[type="radio"]').forEach(r => r.checked = false);
+            for(let i = 1; i <= 10; i++) {
+                let radios = document.querySelectorAll(`input[name="q${i}"]`);
+                radios.forEach(r => r.checked = false);
+            }
             document.getElementById('quizFeedback').style.display = 'none';
         });
 
         // ===========================================
-        // BOTÓ RESET MILLORAT (esborra localStorage)
+        // EXAMEN DE 20 PREGUNTES (adaptat a RA1)
+        // ===========================================
+        const preguntesExamen = [
+            { pregunta: "1. Quin és el primer pas per conèixer el sector professional?", tipus: "mc", opcions: ["a) Buscar feina directament", "b) Analitzar el sector i les ocupacions", "c) Fer un currículum"], correcta: "b", explicacio: "Primer cal conèixer el sector abans de buscar feina." },
+            { pregunta: "2. Els portals d'ocupació serveixen per identificar ofertes i requisits.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "3. L'Observatori del Treball ofereix dades sobre ocupació.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "4. Quina competència tècnica és clau per a un electricista?", tipus: "mc", opcions: ["a) REBT", "b) Programació web", "c) Disseny gràfic"], correcta: "a", explicacio: "El REBT és fonamental." },
+            { pregunta: "5. Les competències personals no són importants en el sector elèctric.", tipus: "vf", correcta: "f", explicacio: "Fals, el treball en equip i autonomia són clau." },
+            { pregunta: "6. Quina tendència de futur és clau en el sector?", tipus: "mc", opcions: ["a) Digitalització", "b) Disminució de la demanda", "c) Menys tecnologia"], correcta: "a", explicacio: "Digitalització i eficiència energètica." },
+            { pregunta: "7. PIMEC Electricitat és una associació empresarial rellevant.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "8. Què és LinkedIn?", tipus: "mc", opcions: ["a) Xarxa social professional", "b) Portal d'ocupació", "c) Cercador"], correcta: "a", explicacio: "És una xarxa social professional." },
+            { pregunta: "9. L'informe del RA1 ha de tenir 10 pàgines.", tipus: "vf", correcta: "f", explicacio: "Fals, es recomana 1-2 pàgines." },
+            { pregunta: "10. El portafolis digital ha d'incloure tots els RA.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "11. El SOC és el Servei d'Ocupació de Catalunya.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "12. Quina ocupació és emergent al sector elèctric?", tipus: "mc", opcions: ["a) Instal·lador electricista", "b) Tècnic en domòtica", "c) Comercial"], correcta: "b", explicacio: "La domòtica està creixent." },
+            { pregunta: "13. Les tendències de futur no afecten el sector elèctric.", tipus: "vf", correcta: "f", explicacio: "Fals, el sector està en constant evolució." },
+            { pregunta: "14. La digitalització és una tendència de futur.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "15. Què és un objectiu SMART?", tipus: "mc", opcions: ["a) Específic, mesurable, assolible, rellevant, temporal", "b) Senzill, motivador, actiu, ràpid, total", "c) Social, màxim, actiu, real, tècnic"], correcta: "a", explicacio: "SMART són les sigles en anglès." },
+            { pregunta: "16. El Lifelong Learning és l'aprenentatge al llarg de la vida.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "17. Europass és un model de CV europeu.", tipus: "vf", correcta: "v", explicacio: "Vertader." },
+            { pregunta: "18. Les associacions empresarials no són fonts d'informació vàlides.", tipus: "vf", correcta: "f", explicacio: "Fals, són molt útils." },
+            { pregunta: "19. La qualitat de l'informe no s'avalua.", tipus: "vf", correcta: "f", explicacio: "Fals, és un criteri d'avaluació." },
+            { pregunta: "20. On has de penjar l'informe final?", tipus: "mc", opcions: ["a) A l'ordinador", "b) A Moodle i al portafolis", "c) Enviar per correu"], correcta: "b", explicacio: "S'ha de penjar a Moodle i incorporar al portafolis." }
+        ];
+
+        function generarPreguntesExamen() {
+            let html = '';
+            preguntesExamen.forEach((p, index) => {
+                html += `<div class="examen-pregunta">`;
+                html += `<p><strong>${p.pregunta}</strong></p>`;
+                
+                if (p.tipus === 'vf') {
+                    html += `<div class="examen-opcions">`;
+                    html += `<label><input type="radio" name="examen-${index}" value="v"> Vertader</label>`;
+                    html += `<label><input type="radio" name="examen-${index}" value="f"> Fals</label>`;
+                    html += `</div>`;
+                } else {
+                    html += `<div class="examen-opcions">`;
+                    p.opcions.forEach((opt, optIndex) => {
+                        let valor = String.fromCharCode(97 + optIndex);
+                        html += `<label><input type="radio" name="examen-${index}" value="${valor}"> ${opt}</label>`;
+                    });
+                    html += `</div>`;
+                }
+                html += `<div id="feedback-${index}" class="examen-feedback"></div>`;
+                html += `</div>`;
+            });
+            document.getElementById('examen-preguntes').innerHTML = html;
+        }
+
+        function comprovarExamen() {
+            let correctes = 0;
+            let total = preguntesExamen.length;
+            
+            preguntesExamen.forEach((p, index) => {
+                let seleccio = document.querySelector(`input[name="examen-${index}"]:checked`);
+                let feedbackDiv = document.getElementById(`feedback-${index}`);
+                
+                if (seleccio) {
+                    if (seleccio.value === p.correcta) {
+                        correctes++;
+                        feedbackDiv.innerHTML = `✅ Correcte! ${p.explicacio || ''}`;
+                        feedbackDiv.className = 'examen-feedback examen-correcte';
+                    } else {
+                        let correctaText = p.correcta === 'v' ? 'Vertader' : p.correcta === 'f' ? 'Fals' : p.opcions[{'a':0,'b':1,'c':2}[p.correcta]];
+                        feedbackDiv.innerHTML = `❌ Incorrecte. La resposta correcta és: ${correctaText}. ${p.explicacio || ''}`;
+                        feedbackDiv.className = 'examen-feedback examen-incorrecte';
+                    }
+                    feedbackDiv.style.display = 'block';
+                } else {
+                    feedbackDiv.innerHTML = '❌ Sense respondre.';
+                    feedbackDiv.className = 'examen-feedback examen-incorrecte';
+                    feedbackDiv.style.display = 'block';
+                }
+            });
+            
+            let percentatge = (correctes / total * 100).toFixed(1);
+            let resultatDiv = document.getElementById('examen-resultat');
+            let feedbackGlobal = document.getElementById('examen-feedback-global');
+            
+            resultatDiv.innerHTML = `Resultat: ${correctes}/${total} (${percentatge}%)`;
+            
+            if (correctes >= 14) {
+                resultatDiv.classList.add('examen-superat');
+                resultatDiv.classList.remove('examen-no-superat');
+                feedbackGlobal.innerHTML = '<p style="color:#155724;">✅ SUPERAT! Estàs preparat per a l\'examen final.</p>';
+            } else {
+                resultatDiv.classList.add('examen-no-superat');
+                resultatDiv.classList.remove('examen-superat');
+                feedbackGlobal.innerHTML = '<p style="color:#721c24;">❌ NO SUPERAT. Revisa els continguts i torna-ho a intentar.</p>';
+            }
+        }
+
+        function reiniciarExamen() {
+            preguntesExamen.forEach((_, index) => {
+                let radios = document.querySelectorAll(`input[name="examen-${index}"]`);
+                radios.forEach(r => r.checked = false);
+                let feedbackDiv = document.getElementById(`feedback-${index}`);
+                feedbackDiv.style.display = 'none';
+            });
+            document.getElementById('examen-resultat').innerHTML = '';
+            document.getElementById('examen-feedback-global').innerHTML = '';
+        }
+
+        generarPreguntesExamen();
+        document.getElementById('comprovarExamenBtn').addEventListener('click', comprovarExamen);
+        document.getElementById('reiniciarExamenBtn').addEventListener('click', reiniciarExamen);
+
+        // ===========================================
+        // BOTÓ RESET MILLORAT
         // ===========================================
         document.getElementById('resetBtn').addEventListener('click', function() {
             if (confirm('⚠️ Això esborrarà TOTES les respostes i les dades guardades. Estàs segur?')) {
                 
-                document.querySelectorAll('input, textarea, select').forEach(camp => camp.value = '');
-                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+                document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
+                    camp.value = '';
+                });
+                
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.checked = false;
+                });
                 
                 for (let i = localStorage.length - 1; i >= 0; i--) {
                     let clau = localStorage.key(i);
@@ -1323,7 +1320,7 @@
         });
 
         // ===========================================
-        // SUBMIT (Preparar per enviar)
+        // SUBMIT
         // ===========================================
         document.getElementById('submitBtn').addEventListener('click', function() {
             let requiredIds = ['nom', 'grup', 'enllac', 'ocupacions', 'competencies', 'tendencies'];
@@ -1360,7 +1357,7 @@
         });
 
         // ===========================================
-        // PDF (DESCARREGAR PDF PER A MOODLE)
+        // PDF
         // ===========================================
         document.getElementById('pdfBtn').addEventListener('click', function() {
             let d = window._estudiantData;
@@ -1379,8 +1376,8 @@
             doc.text('Grup: ' + (d.grup || ''), 20, 37);
             doc.text('Data: ' + new Date().toLocaleDateString('ca-ES'), 20, 44);
             
-            doc.text('REFLEXIONS', 20, 59);
-            let y = 69;
+            doc.text('REFLEXIONS', 20, 54);
+            let y = 64;
             
             let respostes = [
                 'Ocupacions: ' + (d.ocupacions || '-'),
@@ -1399,7 +1396,7 @@
         });
 
         // ===========================================
-        // JSON (EXPORTAR)
+        // JSON
         // ===========================================
         document.getElementById('jsonBtn').addEventListener('click', function() {
             let d = window._estudiantData;
@@ -1439,9 +1436,6 @@
             }
         });
 
-        // ===========================================
-        // Copiar JSON al portapapers
-        // ===========================================
         document.getElementById('copyJsonBtn').addEventListener('click', function() {
             let d = window._estudiantData;
             if (!d) { alert('Primer prepara les dades'); return; }
