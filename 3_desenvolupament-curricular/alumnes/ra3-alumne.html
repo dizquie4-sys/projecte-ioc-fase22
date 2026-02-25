@@ -6,7 +6,7 @@
     <title>RA3 · De l'oferta al conveni · Anàlisi laboral</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        /* ESTILS COMPLETS (exactament igual que l'original) */
+        /* ===== ESTILS COMPLETS (exactament igual que l'original) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -156,6 +156,15 @@
         }
         .btn-close:hover {
             background: #5a6268;
+        }
+        .btn-up {
+            background: #FFC72C;
+            color: #D1222B;
+            border: none;
+        }
+        .btn-up:hover {
+            background: #D1222B;
+            color: white;
         }
         .buttons {
             display: flex;
@@ -530,17 +539,6 @@
     </style>
 </head>
 <body>
-    <!-- BOTÓ FLOTANT ACCESSIBLE PER TORNAR A DALT -->
-    <button 
-        class="btn-flotant" 
-        id="tornarDaltBtn" 
-        title="Tornar a l'inici de la pàgina"
-        aria-label="Tornar a dalt"
-        role="button"
-        tabindex="0">
-        ⬆️ <span class="sr-only">Tornar a dalt</span>
-    </button>
-
     <!-- MODAL D'EXPLICACIÓ DEL JSON -->
     <div id="modalExplicacio" class="modal-explicacio">
         <div class="modal-explicacio-content">
@@ -577,6 +575,34 @@
         </div>
     </div>
 
+    <!-- MODAL D'AJUDA PER A LA TAULA DE CONTRAST -->
+    <div id="modalAjudaTaula" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>❓ Com omplir la Taula de contrast</h2>
+            
+            <h3>📝 Què has de fer?</h3>
+            <p>En aquesta secció has d'omplir les condicions laborals que has analitzat de l'oferta de treball.</p>
+            
+            <h3>📌 Instruccions:</h3>
+            <ul>
+                <li>Omple <strong>com a mínim 5 condicions</strong> (les 5 primeres són obligatòries).</li>
+                <li>Per a cada condició, descriu:
+                    <ul>
+                        <li>Què diu l'oferta de treball</li>
+                        <li>Què estableix el conveni col·lectiu</li>
+                        <li>La teva avaluació (ajustat / millorable / incompliment)</li>
+                    </ul>
+                </li>
+                <li>Pots afegir fins a 7 condicions (les 2 últimes són opcionals).</li>
+            </ul>
+            
+            <div style="text-align:center; margin-top:20px;">
+                <button class="btn btn-primary" onclick="tancarModalAjuda()">Entès</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <div>
@@ -588,95 +614,10 @@
             </div>
         </div>
         <div class="content">
-            <!-- Botons de la capçalera -->
-            <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-bottom: 20px;">
-                <button class="btn btn-primary" id="pdfInstruccionsBtn">
-                    📥 PDF Instruccions completes
-                </button>
-                <button class="btn btn-primary" id="modalPortafolisBtn">
-                    📋 Instruccions del portafolis
-                </button>
-            </div>
-
-            <!-- MODAL INSTRUCCIONS PORTAFOLIS -->
-            <div id="modalPortafolis" class="modal">
-                <div class="modal-content">
-                    <span class="close-modal">&times;</span>
-                    <h2>📋 INSTRUCCIONS DEL PORTAFOLIS DIGITAL PROFESSIONAL</h2>
-                    
-                    <h3>Què és el portafolis?</h3>
-                    <p>El portafolis digital és una recopilació de les teves evidències d'aprenentatge al llarg del mòdul. Ha de mostrar la teva evolució i les teves competències professionals.</p>
-                    
-                    <h3>Contingut obligatori:</h3>
-                    <ul>
-                        <li><strong>RA1 (Coneix el teu sector):</strong> Informe d'anàlisi ocupacional</li>
-                        <li><strong>RA2 (Investigació d'accidents):</strong> Informe d'investigació + Avaluació de riscos</li>
-                        <li><strong>RA3 (De l'oferta al conveni):</strong> Taula de contrast + conclusions grupals</li>
-                        <li><strong>RA4 (El meu perfil professional):</strong> DAFO + Full de ruta</li>
-                        <li><strong>RA5 (Identitat digital):</strong> PLE + Reflexió identitat digital + CV digital</li>
-                        <li><strong>Reflexió global:</strong> Connexions entre els RA i aprenentatges</li>
-                    </ul>
-                    
-                    <h3>Criteris d'avaluació del portafolis:</h3>
-                    <ul>
-                        <li><strong>Completesa (30%):</strong> Hi són totes les evidències?</li>
-                        <li><strong>Reflexió (30%):</strong> Qualitat de la reflexió global i connexions</li>
-                        <li><strong>Organització (20%):</strong> Estructura clara i professional</li>
-                        <li><strong>Accessibilitat (20%):</strong> El portafolis és usable per a tothom?</li>
-                    </ul>
-                    
-                    <h3>Dates clau:</h3>
-                    <ul>
-                        <li><strong>Lliurament final:</strong> [Data a determinar]</li>
-                        <li><strong>Revisió intermèdia:</strong> [Data a determinar]</li>
-                    </ul>
-                    
-                    <p style="margin-top:20px; font-style:italic;">Aquestes instruccions estan subjectes a possibles modificacions. Consulta sempre l'aula virtual per a la versió actualitzada.</p>
-                </div>
-            </div>
-
-            <!-- MODAL D'AJUDA PER A LA TAULA DE CONTRAST (NOU) -->
-            <div id="modalAjudaTaula" class="modal">
-                <div class="modal-content">
-                    <span class="close-modal" onclick="tancarModalAjuda()">&times;</span>
-                    <h2>❓ Com omplir la Taula de contrast</h2>
-                    
-                    <h3>📝 Què has de fer?</h3>
-                    <p>En aquesta secció has d'omplir les condicions laborals que has analitzat de l'oferta de treball.</p>
-                    
-                    <h3>📌 Instruccions:</h3>
-                    <ul>
-                        <li>Omple <strong>com a mínim 5 condicions</strong> (les 5 primeres són obligatòries).</li>
-                        <li>Per a cada condició, descriu:
-                            <ul>
-                                <li>Què diu l'oferta de treball</li>
-                                <li>Què estableix el conveni col·lectiu</li>
-                                <li>La teva avaluació (ajustat / millorable / incompliment)</li>
-                            </ul>
-                        </li>
-                        <li>Pots afegir fins a 7 condicions (les 2 últimes són opcionals).</li>
-                    </ul>
-                    
-                    <h3>🚀 Després d'omplir la taula:</h3>
-                    <ol>
-                        <li>Prem el botó <strong>"Preparar per enviar"</strong> (al final de la pàgina).</li>
-                        <li>A l'àrea de resultats, prem <strong>"Exportar JSON"</strong>.</li>
-                        <li>Puja el fitxer JSON generat a Moodle (o envia'l al professor).</li>
-                        <li>També pots generar un <strong>PDF</strong> de la teva activitat.</li>
-                    </ol>
-                    
-                    <p style="margin-top:20px; font-style:italic; color:#D1222B;">Aquestes respostes són les que avaluarà el professor.</p>
-                    
-                    <div style="text-align:center; margin-top:20px;">
-                        <button class="btn btn-primary" onclick="tancarModalAjuda()">Entès</button>
-                    </div>
-                </div>
-            </div>
-
             <!-- Distintiu groc -->
             <div class="badge-groc">📌 Activitat · 4 hores</div>
 
-            <!-- OBJECTIUS I JUSTIFICACIÓ (punt 7.4) -->
+            <!-- OBJECTIUS I JUSTIFICACIÓ -->
             <h2 class="section-title" id="objectius">🔍 Objectius i justificació</h2>
             <p>Aquesta activitat té com a objectiu que l'alumnat sigui capaç d'analitzar críticament una oferta de treball real del sector de les instal·lacions elèctriques, identificant les condicions laborals pactades i contrastant-les amb el conveni col·lectiu aplicable. Es treballen específicament els criteris d'avaluació 3.1, 3.2, 3.4 i 3.7 del RA3.</p>
 
@@ -733,7 +674,7 @@
                 <p style="margin-top:10px; font-style:italic;">Aquesta rúbrica és orientativa. El professor la utilitzarà per a la qualificació final.</p>
             </div>
 
-            <!-- ENLLAÇOS D'INTERÈS (ACTUALITZATS) -->
+            <!-- ENLLAÇOS D'INTERÈS -->
             <div class="info-links">
                 <p><strong>📚 Enllaços d'interès per a l'activitat:</strong></p>
                 <div>
@@ -765,7 +706,7 @@
                     <li>Contrasta, com a mínim, cinc condicions laborals (salari base, complements, jornada, hores extraordinàries, període de prova).</li>
                     <li>Emplena una taula de contrast amb tres columnes: Condició pactada a l'oferta / Condició segons conveni / Avaluació (ajustat/millorable/incompliment).</li>
                 </ol>
-                <p><strong>Aplica el <a href="#" onclick="mostrarAjudaTaula(); return false;">mètode VERIFICA</a> per analitzar la informació.</strong></p>
+                <p><strong>Aplica el <a href="https://dizquie4-sys.github.io/CURSO-CDD/mini-campanya%20digital.html" target="_blank">mètode VERIFICA</a> per analitzar la informació.</strong></p>
             </div>
 
             <!-- FASE 2: Treball col·laboratiu -->
@@ -823,12 +764,10 @@
                 </button>
             </div>
 
-            <!-- =========================================== -->
             <!-- BLOC TAULA DE CONTRAST -->
-            <!-- =========================================== -->
             <div class="bloc-container" id="blocTaulaContainer" aria-hidden="true">
                 <h3 class="bloc-title">📊 Taula de contrast individual</h3>
-                <p>Omple la taula amb com a mínim 5 condicions laborals. Prem el botó ❓ per a més informació.</p>
+                <p>Omple la taula amb com a mínim 5 condicions laborals.</p>
                 
                 <label class="required" for="condicio1">Condició 1 (ex: tipus de contracte)</label>
                 <textarea id="condicio1" required aria-required="true" rows="2" placeholder="Què diu l'oferta? Què diu el conveni? Avaluació"></textarea>
@@ -852,16 +791,14 @@
                 <textarea id="condicio7" rows="2"></textarea>
             </div>
 
-            <!-- =========================================== -->
             <!-- BLOC CONCLUSIONS -->
-            <!-- =========================================== -->
             <div class="bloc-container" id="blocConclusionsContainer" aria-hidden="true">
                 <h3 class="bloc-title">🧠 Conclusions individuals</h3>
                 <label class="required" for="conclusio">Quines conclusions extreus d'aquest contrast? Quins riscos legals has identificat?</label>
                 <textarea id="conclusio" required aria-required="true" rows="4"></textarea>
             </div>
 
-            <!-- BOTONS D'AUTOAVALUACIÓ -->
+            <!-- Botons d'autoavaluació -->
             <div style="text-align:center; margin:20px 0; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <button class="btn btn-primary" id="toggleAutoavaluacioBtn" aria-expanded="false">
                     📝 Autoavaluació prèvia (10 preguntes)
@@ -1063,41 +1000,30 @@
     </div>
 
     <script>
-        // ===========================================
         // FUNCIONS DELS MODALS
-        // ===========================================
-        var modalPortafolis = document.getElementById('modalPortafolis');
-        var btnPortafolis = document.getElementById('modalPortafolisBtn');
-        var spanPortafolis = document.getElementsByClassName('close-modal')[0];
+        var modalAjuda = document.getElementById('modalAjudaTaula');
         
-        btnPortafolis.onclick = function() {
-            modalPortafolis.style.display = 'block';
-        }
-        
-        spanPortafolis.onclick = function() {
-            modalPortafolis.style.display = 'none';
-        }
-        
-        window.onclick = function(event) {
-            if (event.target == modalPortafolis) {
-                modalPortafolis.style.display = 'none';
-            }
-            var modalAjuda = document.getElementById('modalAjudaTaula');
-            if (event.target == modalAjuda) {
-                modalAjuda.style.display = 'none';
-            }
-        }
-
         function mostrarAjudaTaula() {
-            document.getElementById('modalAjudaTaula').style.display = 'block';
+            modalAjuda.style.display = 'block';
         }
 
         function tancarModalAjuda() {
-            document.getElementById('modalAjudaTaula').style.display = 'none';
+            modalAjuda.style.display = 'none';
         }
 
         window.mostrarAjudaTaula = mostrarAjudaTaula;
         window.tancarModalAjuda = tancarModalAjuda;
+
+        // Tancar modal fent clic a la X o fora
+        document.querySelector('.close-modal').addEventListener('click', function() {
+            modalAjuda.style.display = 'none';
+        });
+
+        window.onclick = function(event) {
+            if (event.target == modalAjuda) {
+                modalAjuda.style.display = 'none';
+            }
+        };
 
         // ===========================================
         // GUARDAT AUTOMÀTIC AMB LOCALSTORAGE (PREFIX ra3_)
@@ -1125,10 +1051,8 @@
             localStorage.setItem(PREFIX + name, value);
         }
         
-        // Carregar en iniciar
         window.addEventListener('load', carregarDadesGuardades);
         
-        // Guardar en cada canvi
         document.querySelectorAll('input[type="text"], textarea, input[type="url"], select').forEach(camp => {
             camp.addEventListener('input', function() { guardarCamp(this); });
         });
@@ -1164,20 +1088,6 @@
         });
 
         // ===========================================
-        // BOTÓ FLOTANT TORNAR A DALT
-        // ===========================================
-        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        
-        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-
-        // ===========================================
         // Toggle Blocs (Taula i Conclusions)
         // ===========================================
         document.getElementById('toggleBlocTaulaBtn').addEventListener('click', function() {
@@ -1194,128 +1104,6 @@
             container.style.display = isHidden ? 'block' : 'none';
             this.setAttribute('aria-expanded', isHidden);
             container.setAttribute('aria-hidden', !isHidden);
-        });
-
-        // ===========================================
-        // PDF d'instruccions (cal ampliar-lo)
-        // ===========================================
-        document.getElementById('pdfInstruccionsBtn').addEventListener('click', function() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            doc.setFontSize(20);
-            doc.setTextColor(209,34,43);
-            doc.text('RA3 · De l\'oferta al conveni', 20, 20);
-            
-            doc.setFontSize(12);
-            doc.setTextColor(0,0,0);
-            doc.text('DESCRIPCIÓ', 20, 35);
-            doc.setFontSize(10);
-            doc.text('Activitat de 4 hores per analitzar una oferta de treball del sector elèctric', 20, 45);
-            
-            doc.setFontSize(12);
-            doc.text('OBJECTIUS', 20, 60);
-            doc.setFontSize(10);
-            doc.text('• Identificar les condicions clau d\'una oferta de treball', 25, 70);
-            doc.text('• Localitzar el conveni col·lectiu aplicable', 25, 77);
-            doc.text('• Contrastar oferta i conveni (mínim 5 condicions)', 25, 84);
-            
-            doc.setFontSize(12);
-            doc.text('METODOLOGIA', 20, 99);
-            doc.setFontSize(10);
-            doc.text('Fase 1 (2h): Anàlisi individual de l\'oferta', 25, 109);
-            doc.text('Fase 2 (2h): Treball col·laboratiu i conclusions', 25, 116);
-            doc.text('Fase 3: Lliurament de documents a Moodle + portafolis', 25, 123);
-            
-            // PREGUNTES DE L'ACTIVITAT (NOU)
-            doc.setFontSize(12);
-            doc.text('PREGUNTES DE L\'ACTIVITAT', 20, 143);
-            doc.setFontSize(10);
-            
-            let y = 153;
-            const preguntes = [
-                'TAULA DE CONTRAST:',
-                '• Condició 1 (ex: tipus de contracte)',
-                '• Condició 2 (ex: jornada laboral)',
-                '• Condició 3 (ex: salari base)',
-                '• Condició 4 (ex: període de prova)',
-                '• Condició 5 (ex: hores extraordinàries)',
-                '• Condició 6 (opcional)',
-                '• Condició 7 (opcional)',
-                '',
-                'CONCLUSIONS:',
-                '• Quines conclusions extreus? Quins riscos legals has identificat?'
-            ];
-            
-            preguntes.forEach(p => {
-                if (p === '') {
-                    y += 3;
-                } else {
-                    doc.text(p, 25, y);
-                    y += 6;
-                }
-            });
-            
-            // Rúbrica
-            doc.addPage();
-            doc.setFontSize(12);
-            doc.text('RÚBRICA D\'AVALUACIÓ', 20, 20);
-            
-            doc.setFontSize(8);
-            doc.text('Criteri', 20, 30);
-            doc.text('Excel·lent (4)', 50, 30);
-            doc.text('Assolit (3)', 85, 30);
-            doc.text('En procés (2)', 120, 30);
-            doc.text('No assolit (1)', 155, 30);
-            doc.text('Pes', 185, 30);
-            
-            doc.line(20, 32, 195, 32);
-            
-            doc.text('C1: Identificació', 20, 42);
-            doc.text('5+ condicions', 50, 42);
-            doc.text('anàlisi detallada', 50, 47);
-            doc.text('4 condicions', 85, 42);
-            doc.text('descripció', 85, 47);
-            doc.text('2-3 condicions', 120, 42);
-            doc.text('sense detall', 120, 47);
-            doc.text('1 o cap', 155, 42);
-            doc.text('condició', 155, 47);
-            doc.text('40%', 185, 45);
-            
-            doc.text('C2: Conveni', 20, 57);
-            doc.text('Articles', 50, 57);
-            doc.text('concrets', 50, 62);
-            doc.text('Continguts', 85, 57);
-            doc.text('generals', 85, 62);
-            doc.text('Esmenta', 120, 57);
-            doc.text('conveni', 120, 62);
-            doc.text('No aplica', 155, 57);
-            doc.text('conveni', 155, 62);
-            doc.text('30%', 185, 60);
-            
-            doc.text('C3: Anàlisi', 20, 72);
-            doc.text('Valora riscos', 50, 72);
-            doc.text('legals', 50, 77);
-            doc.text('Compara', 85, 72);
-            doc.text('sense aprof.', 85, 77);
-            doc.text('Descriu', 120, 72);
-            doc.text('sense anàlisi', 120, 77);
-            doc.text('No compara', 155, 72);
-            doc.text('oferta/conveni', 155, 77);
-            doc.text('20%', 185, 75);
-            
-            doc.text('C4: Qualitat', 20, 87);
-            doc.text('Clar', 50, 87);
-            doc.text('estructurat', 50, 92);
-            doc.text('Llegible', 85, 87);
-            doc.text('errors', 85, 92);
-            doc.text('Confús', 120, 87);
-            doc.text('millorable', 120, 92);
-            doc.text('Incomplet', 155, 87);
-            doc.text('inintel·ligible', 155, 92);
-            doc.text('10%', 185, 90);
-            
-            doc.save('RA3_instruccions_completes.pdf');
         });
 
         // ===========================================
@@ -1382,7 +1170,6 @@
             }
         });
 
-        // Reiniciar autoavaluació
         document.getElementById('resetQuizBtn').addEventListener('click', function() {
             for(let i = 1; i <= 10; i++) {
                 let radios = document.querySelectorAll(`input[name="quiz${i}"]`);
@@ -1563,7 +1350,6 @@
 
             document.getElementById('resultsArea').style.display = 'block';
             
-            // Mostrar modal de recordatori després de preparar
             setTimeout(() => {
                 document.getElementById('modalExplicacio').style.display = 'block';
             }, 500);
@@ -1630,13 +1416,11 @@
                 let jsonCont = document.getElementById('jsonContainer');
                 let jsonStr = JSON.stringify(d, null, 2);
                 
-                // Mostrar el JSON a la pantalla
                 if (jsonCont) {
                     jsonCont.style.display = 'block';
                     jsonCont.textContent = jsonStr;
                 }
                 
-                // Crear i descarregar el fitxer
                 const blob = new Blob([jsonStr], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -1646,7 +1430,6 @@
                 document.body.appendChild(a);
                 a.click();
                 
-                // Netejar
                 setTimeout(() => {
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
@@ -1660,9 +1443,6 @@
             }
         });
 
-        // ===========================================
-        // Copiar JSON al portapapers
-        // ===========================================
         document.getElementById('copyJsonBtn').addEventListener('click', function() {
             let d = window._estudiantData;
             if (!d) { alert('Primer prepara les dades'); return; }
