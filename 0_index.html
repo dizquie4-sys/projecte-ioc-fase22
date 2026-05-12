@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concurs de mèrits · IOC · Diego Izquierdo</title>
+    <title>Provisió de lloc de treball · IOC · Curs 2026-27 · Diego Izquierdo</title>
     <style>
         /* ===== RESET I ESTILS GENERALS ===== */
         * {
@@ -23,7 +23,7 @@
             justify-content: center;
         }
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
             background: white;
             border-radius: 30px;
@@ -52,7 +52,7 @@
             text-transform: uppercase;
         }
         .header .data {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             opacity: 0.9;
             border-top: 2px solid #FFC72C;
             border-bottom: 2px solid #FFC72C;
@@ -71,7 +71,7 @@
             text-align: center;
             margin-bottom: 30px;
             font-size: 3rem;
-            color: #D1222B;
+            color: #FFC72C;
         }
 
         /* ===== CAIXA DESTACADA ===== */
@@ -97,6 +97,7 @@
             background: white;
             border-radius: 10px;
             border: 2px solid #FFC72C;
+            text-align: center;
         }
 
         /* ===== ENLLAÇ A LA RESOLUCIÓ ===== */
@@ -112,7 +113,7 @@
             color: #D1222B;
             font-weight: 700;
             text-decoration: none;
-            font-size: 1.1rem;
+            font-size: 1rem;
             display: inline-flex;
             align-items: center;
             gap: 10px;
@@ -122,7 +123,7 @@
             color: #b01e25;
         }
 
-        /* ===== TAULA DE DADES (ACTUALITZADA) ===== */
+        /* ===== TAULA DE DADES ===== */
         .dades {
             display: grid;
             grid-template-columns: 1fr 2fr;
@@ -140,6 +141,33 @@
         }
         .dades-value {
             color: #1e293b;
+        }
+
+        /* ===== CAIXES DE REQUISITS I COMPETÈNCIA ===== */
+        .caixa-requisits, .caixa-competencia {
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 8px solid;
+        }
+        .caixa-requisits {
+            background: #fff3cd;
+            border-left-color: #FFC72C;
+        }
+        .caixa-competencia {
+            background: #e8f0fe;
+            border-left-color: #D1222B;
+        }
+        .caixa-requisits p:first-child, .caixa-competencia p:first-child {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        ul {
+            margin-left: 25px;
+        }
+        li {
+            margin-bottom: 8px;
         }
 
         /* ===== BOTONS ===== */
@@ -227,7 +255,8 @@
             .content { padding: 25px; }
             .dades { grid-template-columns: 1fr; }
             .dades-label { text-align: left; }
-            .header h2 { font-size: 1.8rem; }
+            .header h2 { font-size: 1.6rem; }
+            .btn-gran { font-size: 1.2rem; padding: 15px 25px; }
         }
     </style>
 </head>
@@ -251,85 +280,105 @@
             <!-- TÍTOL CONVOCATÒRIA -->
             <div style="text-align: center; margin-bottom: 20px;">
                 <span class="badge-groc" style="background: #FFC72C; padding: 8px 20px; border-radius: 40px; font-weight: 700; display: inline-block; border: 2px solid #D1222B;">
-                    CONCURS DE MÈRITS · RESOLUCIÓ EDF/135/2026
+                    PROCÉS DE SELECCIÓ · RESOLUCIÓ EDF/570/2026
                 </span>
             </div>
 
-            <!-- CAIXA DESTACADA AMB EL PROJECTE -->
+            <!-- CAIXA DESTACADA AMB EL PROJECTE PER A L'IOC -->
             <div class="destacat">
-                <h3>📌 Projecte de desenvolupament dels continguts del lloc</h3>
+                <h3>📌 Projecte d'actuació per a l'IOC</h3>
                 <div class="titol-projecte">
                     "Identitat digital, anàlisi crítica i prevenció: <br>
                     un fil conductor per a l'ocupabilitat en el sector elèctric"
                 </div>
+                <p style="margin-top: 20px;">Projecte dissenyat específicament per a l'entorn virtual de l'IOC, amb materials interactius, avaluació automàtica i seguiment personalitzat de l'alumnat. Dóna resposta als criteris de <strong>coherència, qualitat pedagògica, viabilitat i adequació al context d'ensenyament a distància</strong> que estableix la Resolució EDF/570/2026.</p>
             </div>
 
-            <!-- ENLLAÇ A LA RESOLUCIÓ OFICIAL -->
+            <!-- ENLLAÇ A LA RESOLUCIÓ OFICIAL (ENLLAÇ CORRECTE) -->
             <div class="enllac-oficial">
-                <a href="https://dogc.gencat.cat/ca/document-del-dogc/?documentId=1035145" target="_blank" rel="noopener noreferrer">
-                    📄 Veure Resolució EDF/135/2026 al DOGC
+                <a href="https://dogc.gencat.cat/ca/document-del-dogc/?documentId=1038654" target="_blank" rel="noopener noreferrer">
+                    📄 Veure Resolució EDF/570/2026 al DOGC
                 </a>
+                <p style="font-size: 0.8rem; margin-top: 10px; color: #6c757d;">Document ID: 1038654 · DOGC 5.3.2026</p>
             </div>
 
-            <!-- TAULA DE DADES (SENSE PLACES NI FASE) -->
+            <!-- TAULA DE DADES DE LA VACANT -->
             <div class="dades">
                 <div class="dades-label">Especialitat:</div>
-                <div class="dades-value">505 – Formació i Orientació Laboral</div>
+                <div class="dades-value">505 – Formació i Orientació Laboral (FOL)</div>
 
-                <div class="dades-label">Data convocatòria:</div>
-                <div class="dades-value">26 de gener de 2026 (DOGC núm. 9590)</div>
+                <div class="dades-label">Centre:</div>
+                <div class="dades-value">Institut Obert de Catalunya (IOC)</div>
+
+                <div class="dades-label">Convocatòria:</div>
+                <div class="dades-value">Resolució EDF/570/2026, de 3 de març (DOGC 5.3.2026)</div>
 
                 <div class="dades-label">Autor del projecte:</div>
                 <div class="dades-value">Diego Izquierdo Perán</div>
             </div>
 
-            <!-- REQUISITS DE PARTICIPACIÓ -->
-            <div style="background: #fff3cd; border-radius: 15px; padding: 20px; margin: 30px 0; border-left: 8px solid #FFC72C;">
-                <p style="font-weight: 700; margin-bottom: 10px;">✅ Requisits de participació acreditats:</p>
-                <ul style="margin-left: 25px;">
+            <!-- REQUISITS DE PARTICIPACIÓ (NOVA CONVOCATÒRIA) -->
+            <div class="caixa-requisits">
+                <p>✅ Requisits de participació acreditats (Annex 1, punt 4e de la Resolució)</p>
+                <ul>
                     <li>Funcionari de carrera del cos de professors d'ensenyament secundari (especialitat 505)</li>
-                    <li>Més de 5 anys d'exercici de la docència presencial</li>
-                    <li>Més de 3 anys en l'especialitat 505</li>
-                    <li>Perfil professional de competència digital docent (CDD B2).</li>
+                    <li>Competència Digital Docent Nivell B2 (2026)</li>
+                    <li>Més de 14 anys d'experiència en l'especialitat FOL en centres públics</li>
+                    <li>Presentació del projecte d'actuació per a l'IOC (aquest lloc web)</li>
                 </ul>
             </div>
 
-            <!-- BOTÓ PER COMENÇAR LA PRESENTACIÓ -->
+            <!-- COMPETÈNCIA DIGITAL APLICADA AL PROJECTE -->
+            <div class="caixa-competencia">
+                <p>💻 Competència digital aplicada al projecte (criteri clau per a l'IOC)</p>
+                <ul>
+                    <li><strong>Desenvolupament complet</strong> de materials en HTML/CSS/JavaScript per als RA4 i RA5 d'IPO I.</li>
+                    <li><strong>Avaluació automàtica</strong> amb exportació de resultats en JSON i generació d'informes PDF.</li>
+                    <li>Estructura <strong>modular, responsive i accessible</strong> (WCAG 2.1, nivell AA).</li>
+                    <li>Dissenyat per a la seva <strong>integració a la plataforma de l'IOC</strong> (Moodle/Teams) i per a l'aprenentatge asíncron.</li>
+                    <li>Ús professional d'eines Google, pissarra digital i entorns virtuals d'aprenentatge.</li>
+                </ul>
+            </div>
+
+            <!-- BOTÓ PER ACCEDIR AL PROJECTE COMPLET -->
             <div style="text-align: center; margin: 40px 0 20px;">
                 <a href="1_presentacio.html" class="btn btn-primary btn-gran">
-                    🚀 COMENÇAR PRESENTACIÓ DEL PROJECTE
+                    🚀 ACCEDIR AL PROJECTE COMPLET
                 </a>
                 <p style="margin-top: 15px; color: #6c757d; font-size: 0.9rem;">
-                    ⚡ Accediu a la presentació completa del projecte didàctic
+                    ⚡ Presentació detallada del projecte, desenvolupament curricular, conclusions i bibliografia.
                 </p>
             </div>
         </div>
 
         <!-- PEU DE PÀGINA -->
         <div class="footer">
-            Diego Izquierdo Perán · FOL · IOC · 
+            © Diego Izquierdo Perán · FOL · IOC · Curs 2026-27 · 
             <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
         </div>
     </div>
 
     <script>
         // BOTÓ TORNAR A DALT
-        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
+        const tornarDaltBtn = document.getElementById('tornarDaltBtn');
+        if (tornarDaltBtn) {
+            tornarDaltBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            tornarDaltBtn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
 
         // INFO ACCESSIBILITAT
-        document.getElementById('accesibilitatInfo').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Aquest lloc compleix les pautes d\'accessibilitat WCAG 2.1 (nivell AA).');
-        });
+        const accesibilitatLink = document.getElementById('accesibilitatInfo');
+        if (accesibilitatLink) {
+            accesibilitatLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Aquest lloc compleix les pautes d\'accessibilitat WCAG 2.1 (nivell AA).');
+            });
+        }
     </script>
 </body>
 </html>
