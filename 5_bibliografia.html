@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bibliografia · Projecte IOC</title>
+    <title>Bibliografia · IOC · Diego Izquierdo</title>
     <style>
-        /* ===== ESTILS COMPARTITS ===== */
         * {
             margin: 0;
             padding: 0;
@@ -19,325 +18,188 @@
             line-height: 1.6;
         }
         .container {
-            max-width: 1100px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 30px;
             box-shadow: 0 20px 40px rgba(209,34,43,0.2);
             overflow: hidden;
-            position: relative;
+            border: 2px solid #D1222B;
         }
         .header {
             background: #D1222B;
-            padding: 25px 35px;
+            padding: 25px 40px;
             color: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            text-align: center;
         }
         .header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 5px;
-        }
-
-        /* ===== BOTÓ PER TORNAR A LA PORTADA (NOU) ===== */
-        .btn-tornar-portada {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: #FFC72C;
-            color: #D1222B;
-            border: 2px solid #D1222B;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: 1.8rem;
-            text-decoration: none;
-            transition: all 0.2s;
-            z-index: 1001;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-weight: 400;
         }
-        .btn-tornar-portada:hover {
-            background: #D1222B;
-            color: white;
-            transform: scale(1.05);
+        .header p {
+            margin-top: 5px;
+            opacity: 0.9;
         }
-
         .content {
             padding: 40px 50px;
-        }
-        .section-title {
-            font-size: 1.8rem;
-            color: #D1222B;
-            border-left: 8px solid #FFC72C;
-            padding-left: 18px;
-            margin: 40px 0 20px;
-        }
-        .btn {
             background: white;
-            border: 2px solid #D1222B;
+        }
+        .section {
+            margin-bottom: 35px;
+        }
+        .section h2 {
             color: #D1222B;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin: 5px;
-            transition: all 0.2s;
+            border-bottom: 2px solid #FFC72C;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .ref {
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .ref a {
+            color: #D1222B;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .ref a:hover {
+            color: #b01e25;
             text-decoration: none;
-        }
-        .btn:hover, .btn:focus {
-            background: #D1222B;
-            color: white;
-            outline: 3px solid #FFC72C;
-        }
-        .btn-primary {
-            background: #D1222B;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #b01e25;
-        }
-        .btn-flotant {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 9999;
-            background: #FFC72C;
-            color: #D1222B;
-            border: 2px solid #D1222B;
-            border-radius: 50px;
-            padding: 12px 20px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .btn-flotant:hover {
-            background: #D1222B;
-            color: white;
-        }
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
         }
         .footer {
             background: #1e293b;
             color: white;
             text-align: center;
-            padding: 25px;
+            padding: 20px;
+            font-size: 0.9rem;
         }
         .footer a {
             color: #FFC72C;
             text-decoration: none;
         }
-        .nav-footer {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px dashed #FFC72C;
-        }
-        .referencia {
-            margin-bottom: 15px;
-            padding-left: 20px;
-            border-left: 3px solid #FFC72C;
-        }
-        .ref-titol {
-            font-weight: 700;
-            color: #D1222B;
-        }
-        .ref-enllac {
-            display: inline-block;
-            margin-left: 10px;
-            color: #D1222B;
-            text-decoration: none;
-            font-size: 0.9rem;
-            border: 1px solid #D1222B;
-            border-radius: 20px;
-            padding: 2px 10px;
-            transition: all 0.2s;
-        }
-        .ref-enllac:hover {
-            background: #D1222B;
-            color: white;
-        }
         @media (max-width: 768px) {
-            .btn-tornar-portada {
-                width: 40px;
-                height: 40px;
-                font-size: 1.5rem;
-                top: 15px;
-                left: 15px;
-            }
-            .header h1 { font-size: 1.8rem; }
+            .content { padding: 25px; }
         }
     </style>
 </head>
 <body>
-    <!-- BOTÓ FLOTANT TORNAR A DALT -->
-    <button class="btn-flotant" id="tornarDaltBtn" title="Tornar a dalt" aria-label="Tornar a dalt">
-        ⬆️ <span class="sr-only">Tornar a dalt</span>
-    </button>
-
     <div class="container">
-        <!-- CAPÇALERA AMB BOTÓ DE RETORN -->
         <div class="header">
-            <a href="1_presentacio.html" class="btn-tornar-portada" title="Tornar a la portada del projecte" aria-label="Tornar a la portada del projecte">
-                🏠
-            </a>
             <h1>📖 Bibliografia i referències normatives</h1>
+            <p>Institut Obert de Catalunya · Especialitat 505 · Diego Izquierdo Perán</p>
         </div>
 
-        <!-- CONTINGUT -->
         <div class="content">
-            <!-- CURRÍCULUM I ORDENACIÓ ACADÈMICA -->
-            <h2 class="section-title">📚 Currículum i ordenació acadèmica</h2>
-            
-            <div class="referencia">
-                <span class="ref-titol">Decret 57/2020</span>, de 19 de maig, de l'Institut Obert de Catalunya. DOGC núm. 8145, de 21.5.2020.
-                <a href="https://portaljuridic.gencat.cat/ca/document-del-pjur/?documentId=880332" target="_blank" class="ref-enllac">Enllaç</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Decret 125/2012</span>, de 9 d'octubre, pel qual s'estableix el currículum del cicle formatiu de grau mitjà d'instal·lacions elèctriques i automàtiques. DOGC núm. 6234, d'11.10.2012.
-                <a href="https://portaljuridic.gencat.cat/ca/document-del-pjur/?documentId=625399" target="_blank" class="ref-enllac">Enllaç</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Reial decret 177/2008</span>, de 8 de febrer, pel qual s'estableix el títol de tècnic en instal·lacions elèctriques i automàtiques i se'n fixen els ensenyaments mínims. BOE núm. 59, de 8.3.2008.
-                <a href="https://www.boe.es/buscar/doc.php?id=BOE-A-2008-5456" target="_blank" class="ref-enllac">Enllaç</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Departament d'Educació (2024)</span>. Orientacions als centres educatius per a organitzar els mòduls professionals d'Itinerari Personal per a l'Ocupabilitat I i II. Generalitat de Catalunya.
-            </div>
-
-            <!-- DOCUMENTACIÓ INSTITUCIONAL DE L'IOC -->
-            <h2 class="section-title">🏛️ Documentació institucional de l'IOC</h2>
-            
-            <div class="referencia">
-                <span class="ref-titol">Institut Obert de Catalunya (2019)</span>. Concrecions Curriculars d'FP. Cicles LOE.
-                <a href="https://ioc.cat/wp-content/uploads/2021/01/CCCFPLOE_v8_2019.pdf" target="_blank" class="ref-enllac">PDF</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Institut Obert de Catalunya (2021)</span>. Normes d'Organització i Funcionament del Centre.
-                <a href="https://ioc.cat/wp-content/uploads/2021/09/NOFC_v22_2021.pdf" target="_blank" class="ref-enllac">PDF</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Institut Obert de Catalunya (2021)</span>. Projecte Educatiu de Centre (PEC).
-                <a href="https://ioc.cat/wp-content/uploads/2021/09/PEC_v5_2021.pdf" target="_blank" class="ref-enllac">PDF</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Institut Obert de Catalunya (2025)</span>. Programació General Anual 2025-2026 (PGA).
+            <!-- 📚 CURRÍCULUM I ORDENACIÓ ACADÈMICA -->
+            <div class="section">
+                <h2>📚 Currículum i ordenació acadèmica</h2>
+                
+                <div class="ref">
+                    <a href="https://portaljuridic.gencat.cat/ca/document-del-pjur/?documentId=873622" target="_blank">Decret 57/2020, de 19 de maig, de l'Institut Obert de Catalunya.</a> DOGC núm. 8145, de 21.5.2020.
+                </div>
+                
+                <div class="ref">
+                    <a href="https://xtec.gencat.cat/web/.content/alfresco/d/d/workspace/SpacesStore/0038/215fe7f1-05a9-484e-9f78-ff04dc86f387/DOGC_T_instal_electriques_automatiques.pdf" target="_blank">Decret 125/2012, de 9 d'octubre, pel qual s'estableix el currículum del cicle formatiu de grau mitjà d'instal·lacions elèctriques i automàtiques.</a> DOGC núm. 6234, d'11.10.2012.
+                </div>
+                
+                <div class="ref">
+                    <a href="https://www.boe.es/buscar/doc.php?id=BOE-A-2008-3957" target="_blank">Reial decret 177/2008, de 8 de febrer, pel qual s'estableix el títol de tècnic en instal·lacions elèctriques i automàtiques i se'n fixen els ensenyaments mínims.</a> BOE núm. 59, de 8.3.2008.
+                </div>
+                
+                <div class="ref">
+                    <a href="https://share.google/EgdqQL0FwoLrLHcG0" target="_blank">Departament d'Educació (2024). Orientacions als centres educatius per a organitzar els mòduls professionals d'Itinerari Personal per a l'Ocupabilitat I i II.</a> Generalitat de Catalunya.
+                </div>
             </div>
 
-            <!-- FONAMENTS PEDAGÒGICS I METODOLOGIA -->
-            <h2 class="section-title">🧠 Fonaments pedagògics i metodologia</h2>
-            
-            <div class="referencia">
-                <span class="ref-titol">Area, M. (2019)</span>. Guía para la producción y uso de materiales didácticos digitales.
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Barberà, E., et al. (2005)</span>. Eduweb: ús educatiu de les eines telemàtiques. UOC.
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">CAST (2011)</span>. Pautes de Disseny Universal per a l'Aprenentatge (DUA), v.2.0.
-                <a href="https://www.cast.org/publications/2011/universal-design-learning-guidelines-version-2-0" target="_blank" class="ref-enllac">Web</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Coll, C., et al. (1993)</span>. El constructivismo en el aula. Barcelona: Graó.
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Vygotsky, L. S. (1979)</span>. El Desarrollo de los Procesos Psicológicos Superiores. Barcelona: Crítica.
+            <!-- 🏛️ DOCUMENTACIÓ INSTITUCIONAL DE L'IOC -->
+            <div class="section">
+                <h2>🏛️ Documentació institucional de l'IOC</h2>
+                
+                <div class="ref">
+                    <a href="https://drive.google.com/file/d/1uQJDhjfLjYTepWP2F-zZiM17wfT68eAK/view?pli=1" target="_blank">Institut Obert de Catalunya (2019). Concrecions Curriculars d'FP. Cicles LOE.</a>
+                </div>
+                
+                <div class="ref">
+                    <a href="https://ioc.xtec.cat/educacio/wp-content/uploads/2025/11/nofc_v22.pdf" target="_blank">Institut Obert de Catalunya (2021). Normes d'Organització i Funcionament del Centre (NOFC).</a>
+                </div>
+                
+                <div class="ref">
+                    <a href="https://ioc.xtec.cat/educacio/wp-content/uploads/2025/11/PEC.pdf-1.pdf" target="_blank">Institut Obert de Catalunya (2021). Projecte Educatiu de Centre (PEC).</a>
+                </div>
+                
+                <div class="ref">
+                    <a href="https://ioc.xtec.cat/educacio/wp-content/uploads/2025/11/PGA-2526.pdf" target="_blank">Institut Obert de Catalunya (2025). Programació General Anual 2025-2026 (PGA).</a>
+                </div>
             </div>
 
-            <!-- PREVENCIÓ DE RISCOS LABORALS -->
-            <h2 class="section-title">⚠️ Prevenció de riscos laborals</h2>
-            
-            <div class="referencia">
-                <span class="ref-titol">Llei 31/1995</span>, de 8 de novembre, de prevenció de riscos laborals. Text consolidat. BOE núm. 269, de 10.11.1995.
-                <a href="https://www.boe.es/buscar/act.php?id=BOE-A-1995-24292" target="_blank" class="ref-enllac">Enllaç</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Reial decret 39/1997</span>, de 17 de gener, pel qual s'aprova el Reglament dels serveis de prevenció. BOE núm. 27, de 31.1.1997.
-                <a href="https://www.boe.es/buscar/act.php?id=BOE-A-1997-1853" target="_blank" class="ref-enllac">Enllaç</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Reial decret 842/2002</span>, de 2 d'agost, pel qual s'aprova el Reglament electrotècnic per a baixa tensió (REBT). BOE núm. 224, de 18.9.2002.
-                <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2002-18099" target="_blank" class="ref-enllac">Enllaç</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Reial decret 1027/2007</span>, de 20 de juliol, pel qual s'aprova el Reglament d'instal·lacions tèrmiques en edificis (RITE). BOE núm. 207, de 29.8.2007.
-                <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-15820" target="_blank" class="ref-enllac">Enllaç</a>
-            </div>
-
-            <!-- COMPETÈNCIA DIGITAL I INTEL·LIGÈNCIA ARTIFICIAL -->
-            <h2 class="section-title">🤖 Competència digital i intel·ligència artificial</h2>
-            
-            <div class="referencia">
-                <span class="ref-titol">INTEF (2022)</span>. Marco de Referencia de la Competencia Digital Docente.
-                <a href="https://intef.es/wp-content/uploads/2023/05/MRCDD_GTTA_2022.pdf" target="_blank" class="ref-enllac">PDF</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">UNESCO (2025)</span>. Inteligencia artificial y educación: Guía para las personas a cargo de formular políticas.
-                <a href="https://unesdoc.unesco.org/ark:/48223/pf0000389373" target="_blank" class="ref-enllac">Enllaç</a>
-            </div>
-            
-            <div class="referencia">
-                <span class="ref-titol">Napo Films</span>. Agència Europea per a la Seguretat i la Salut en el Treball (EU-OSHA).
-                <a href="https://www.napofilm.net/ca" target="_blank" class="ref-enllac">Web</a>
+            <!-- 🧠 FONAMENTS PEDAGÒGICS I METODOLOGIA -->
+            <div class="section">
+                <h2>🧠 Fonaments pedagògics i metodologia</h2>
+                
+                <div class="ref">
+                    <a href="https://riull.ull.es/xmlui/bitstream/handle/915/16086/Manuel%20Area%20GU%C3%8DA%20PARA%20LA%20PRODUCCI%C3%93N%20Y%20USO%20DE%20MATERIALES%20DID%C3%81CTICOS%20DIGITALES.pdf" target="_blank">Area, M. (2019). Guía para la producción y uso de materiales didácticos digitales.</a> Universidad de la Laguna.
+                </div>
+                
+                <div class="ref">
+                    <a href="https://openaccess.uoc.edu/server/api/core/bitstreams/8bc6379f-0e52-447d-8326-6dfc94dae090/content" target="_blank">Barberà, E., et al. (2005). Eduweb: ús educatiu de les eines telemàtiques.</a> UOC.
+                </div>
+                
+                <div class="ref">
+                    <a href="https://educadua.es/doc/dua/dua_pautas_2_0.pdf" target="_blank">CAST (2011). Pautes de Disseny Universal per a l'Aprenentatge (DUA), v.2.0.</a>
+                </div>
+                
+                <div class="ref">
+                    Coll, C., et al. (1993). El constructivismo en el aula. Barcelona: Graó.
+                </div>
+                
+                <div class="ref">
+                    Vygotsky, L. S. (1979). El Desarrollo de los Procesos Psicológicos Superiores. Barcelona: Crítica.
+                </div>
             </div>
 
-            <!-- NAVEGACIÓ -->
-            <div class="nav-footer">
-                <a href="4_conclusions.html" class="btn">⬅️ Anterior: Conclusions</a>
-                <a href="annexos/index.html" class="btn btn-primary">Següent: Annexos ➡️</a>
+            <!-- ⚠️ PREVENCIÓ DE RISCOS LABORALS (TEXT CLICABLE) -->
+            <div class="section">
+                <h2>⚠️ Prevenció de riscos laborals</h2>
+                
+                <div class="ref">
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-1995-24292" target="_blank">Llei 31/1995, de 8 de novembre, de prevenció de riscos laborals. Text consolidat.</a> BOE núm. 269, de 10.11.1995.
+                </div>
+                
+                <div class="ref">
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-1997-1853" target="_blank">Reial decret 39/1997, de 17 de gener, pel qual s'aprova el Reglament dels serveis de prevenció.</a> BOE núm. 27, de 31.1.1997.
+                </div>
+                
+                <div class="ref">
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2002-18088" target="_blank">Reial decret 842/2002, de 2 d'agost, pel qual s'aprova el Reglament electrotècnic per a baixa tensió (REBT).</a> BOE núm. 224, de 18.9.2002.
+                </div>
+                
+                <div class="ref">
+                    <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2007-15980" target="_blank">Reial decret 1027/2007, de 20 de juliol, pel qual s'aprova el Reglament d'instal·lacions tèrmiques en edificis (RITE).</a> BOE núm. 207, de 29.8.2007.
+                </div>
+            </div>
+
+            <!-- 🤖 COMPETÈNCIA DIGITAL I INTEL·LIGÈNCIA ARTIFICIAL -->
+            <div class="section">
+                <h2>🤖 Competència digital i intel·ligència artificial</h2>
+                
+                <div class="ref">
+                    <a href="https://intef.es/wp-content/uploads/2023/05/MRCDD_GTTA_2022.pdf" target="_blank">INTEF (2022). Marco de Referencia de la Competencia Digital Docente.</a>
+                </div>
+                
+                <div class="ref">
+                    <a href="https://www.unesco.org/es/articles/inteligencia-artificial-y-educacion-guia-para-las-personas-cargo-de-formular-politicas" target="_blank">UNESCO (2025). Inteligencia artificial y educación: Guía para las personas a cargo de formular políticas.</a> UNESCO Publishing.
+                </div>
+                
+                <div class="ref">
+                    <a href="https://www.napofilm.net/ca" target="_blank">Napo Films. Agència Europea per a la Seguretat i la Salut en el Treball (EU-OSHA).</a>
+                </div>
             </div>
         </div>
 
-        <!-- PEU -->
         <div class="footer">
-            Diego Izquierdo Perán · FOL · IOC · 
-            <a href="#" id="accesibilitatInfo">Contingut accessible ♿</a>
+            <a href="../0_index.html">← Tornar al projecte principal</a> · Diego Izquierdo Perán · IOC · 2026
         </div>
     </div>
-
-    <script>
-        // TORNAR A DALT
-        document.getElementById('tornarDaltBtn').addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        document.getElementById('tornarDaltBtn').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-        document.getElementById('accesibilitatInfo').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Aquest lloc compleix les pautes d\'accessibilitat WCAG 2.1 (nivell AA).');
-        });
-    </script>
 </body>
 </html>
